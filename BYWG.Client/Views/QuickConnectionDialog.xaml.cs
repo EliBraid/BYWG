@@ -41,7 +41,7 @@ namespace BYWG.Client.Views
                 case "modbus_tcp":
                     ProtocolTypeText.Text = "Modbus TCP";
                     DeviceNameTextBox.Text = "Modbus_Device";
-                    IpAddressTextBox.Text = "192.168.1.100";
+                    IpAddressTextBox.Text = "192.168.6.6";
                     PortTextBox.Text = "502";
                     SlaveAddressLabel.Visibility = Visibility.Visible;
                     SlaveAddressTextBox.Visibility = Visibility.Visible;

@@ -476,7 +476,7 @@ namespace BYWG.Server.Core
                             NamespaceIndex = dn.NodeId.NamespaceIndex
                         },
                         DisplayName = dn.DisplayName?.Text ?? dn.BrowseName?.Name ?? string.Empty,
-                        DataType = MapToContractsDataType(dn.Value?.Value?.Value),
+                        DataType = MapToContractsDataType(dn.Value?.Value != null ? UnwrapVariant(dn.Value.Value).Type : BYWG.Server.Core.OpcUa.VariantType.Null),
                         CurrentValue = ConvertFromDataValue(dn.Value)
                     };
                     response.Nodes.Add(nodeInfo);
@@ -587,33 +587,81 @@ namespace BYWG.Server.Core
 
             var result = new Contracts.DataValue
             {
-                Timestamp = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(DateTime.UtcNow).Seconds * 1000,
+                // 使用节点的实际时间戳，如果没有则使用当前时间
+                Timestamp = dataValue.SourceTimestamp != default ? 
+                    ((DateTimeOffset)dataValue.SourceTimestamp).ToUnixTimeMilliseconds() : 
+                    ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeMilliseconds(),
                 Quality = Contracts.DataQuality.Good // 默认值
             };
 
-            if (dataValue.Value != null && dataValue.Value.Value != null)
+            if (dataValue.Value != null)
             {
-                switch (dataValue.Value.Value)
+                var (Type, Value) = UnwrapVariant(dataValue.Value);
+                switch (Type)
                 {
-                    case bool boolValue:
-                        result.BooleanValue = boolValue;
+                    case BYWG.Server.Core.OpcUa.VariantType.Boolean:
+                        result.BooleanValue = Value is bool vb && vb;
                         break;
-                    case int intValue:
-                        result.Int32Value = intValue;
+                    case BYWG.Server.Core.OpcUa.VariantType.SByte:
+                        result.Int32Value = Value is sbyte vsb ? vsb : 0;
                         break;
-                    case float floatValue:
-                        result.FloatValue = floatValue;
+                    case BYWG.Server.Core.OpcUa.VariantType.Byte:
+                        result.Int32Value = Value is byte vby ? vby : 0;
                         break;
-                    case double doubleValue:
-                        result.DoubleValue = doubleValue;
+                    case BYWG.Server.Core.OpcUa.VariantType.Int16:
+                        result.Int32Value = Value is short vsh ? vsh : 0;
                         break;
-                    case string stringValue:
-                        result.StringValue = stringValue;
+                    case BYWG.Server.Core.OpcUa.VariantType.UInt16:
+                        result.Int32Value = Value is ushort vush ? vush : 0;
+                        break;
+                    case BYWG.Server.Core.OpcUa.VariantType.Int32:
+                        result.Int32Value = Value is int vi ? vi : 0;
+                        break;
+                    case BYWG.Server.Core.OpcUa.VariantType.UInt32:
+                        if (Value is uint vui)
+                            result.Int32Value = vui <= int.MaxValue ? (int)vui : 0;
+                        break;
+                    case BYWG.Server.Core.OpcUa.VariantType.Int64:
+                        if (Value is long vl)
+                            result.Int32Value = vl >= int.MinValue && vl <= int.MaxValue ? (int)vl : 0;
+                        break;
+                    case BYWG.Server.Core.OpcUa.VariantType.UInt64:
+                        if (Value is ulong vul)
+                            result.Int32Value = vul <= (ulong)int.MaxValue ? (int)vul : 0;
+                        break;
+                    case BYWG.Server.Core.OpcUa.VariantType.Float:
+                        result.FloatValue = Value is float vf ? vf : 0f;
+                        break;
+                    case BYWG.Server.Core.OpcUa.VariantType.Double:
+                        result.DoubleValue = Value is double vd ? vd : 0d;
+                        break;
+                    case BYWG.Server.Core.OpcUa.VariantType.String:
+                        result.StringValue = Value?.ToString() ?? string.Empty;
+                        break;
+                    default:
+                        result.StringValue = Value?.ToString() ?? string.Empty;
                         break;
                 }
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 解包可能嵌套的 Variant，返回最内层的 Type 与 Value
+        /// </summary>
+        private static (BYWG.Server.Core.OpcUa.VariantType Type, object Value) UnwrapVariant(BYWG.Server.Core.OpcUa.Variant variant)
+        {
+            var current = variant;
+            while (current?.Value is BYWG.Server.Core.OpcUa.Variant inner)
+            {
+                current = inner;
+            }
+            if (current == null)
+            {
+                return (BYWG.Server.Core.OpcUa.VariantType.Null, null);
+            }
+            return (current.Type, current.Value);
         }
 
         /// <summary>
@@ -625,10 +673,10 @@ namespace BYWG.Server.Core
             return value switch
             {
                 bool => Contracts.DataType.Boolean,
-                sbyte => Contracts.DataType.Int32,
-                byte => Contracts.DataType.Int32,
-                short => Contracts.DataType.Int32,
-                ushort => Contracts.DataType.Int32,
+                sbyte => Contracts.DataType.Int16,
+                byte => Contracts.DataType.Int16,
+                short => Contracts.DataType.Int16,
+                ushort => Contracts.DataType.Int16,
                 int => Contracts.DataType.Int32,
                 uint => Contracts.DataType.Int32,
                 long => Contracts.DataType.Int32,

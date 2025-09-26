@@ -3,6 +3,42 @@
   "WorkspaceRootPath": "F:\\C#\\BYWG\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|f:\\c#\\bywg\\bywg.client\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|solutionrelative:bywg.client\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92763808-E6E9-33F2-E23E-496B63174742}|BYWG.Server.Core\\BYWG.Server.Core.csproj|f:\\c#\\bywg\\bywg.server.core\\opcuaserviceimpl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{92763808-E6E9-33F2-E23E-496B63174742}|BYWG.Server.Core\\BYWG.Server.Core.csproj|solutionrelative:bywg.server.core\\opcuaserviceimpl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92763808-E6E9-33F2-E23E-496B63174742}|BYWG.Server.Core\\BYWG.Server.Core.csproj|f:\\c#\\bywg\\bywg.server.core\\opcuatypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{92763808-E6E9-33F2-E23E-496B63174742}|BYWG.Server.Core\\BYWG.Server.Core.csproj|solutionrelative:bywg.server.core\\opcuatypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B466677D-A438-5073-699B-5C95FEDD52B9}|BYWG.Client.Core\\BYWG.Client.Core.csproj|f:\\c#\\bywg\\bywg.client.core\\clientserviceproxy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B466677D-A438-5073-699B-5C95FEDD52B9}|BYWG.Client.Core\\BYWG.Client.Core.csproj|solutionrelative:bywg.client.core\\clientserviceproxy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|f:\\c#\\bywg\\bywg.client\\views\\nodemanagerwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|solutionrelative:bywg.client\\views\\nodemanagerwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92763808-E6E9-33F2-E23E-496B63174742}|BYWG.Server.Core\\BYWG.Server.Core.csproj|f:\\c#\\bywg\\bywg.server.core\\services\\dataprocessingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{92763808-E6E9-33F2-E23E-496B63174742}|BYWG.Server.Core\\BYWG.Server.Core.csproj|solutionrelative:bywg.server.core\\services\\dataprocessingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|f:\\c#\\bywg\\bywg.client\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|solutionrelative:bywg.client\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|f:\\c#\\bywg\\bywg.client\\views\\quickconnectiondialog.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|solutionrelative:bywg.client\\views\\quickconnectiondialog.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|f:\\c#\\bywg\\bywg.client\\views\\quickconnectiondialog.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|solutionrelative:bywg.client\\views\\quickconnectiondialog.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{CEC574D0-C2A8-49EE-B68D-F091C6C598DB}|BYWGLib\\BYWGLib.csproj|f:\\c#\\bywg\\bywglib\\protocols\\asyncmodbustcpprotocol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CEC574D0-C2A8-49EE-B68D-F091C6C598DB}|BYWGLib\\BYWGLib.csproj|solutionrelative:bywglib\\protocols\\asyncmodbustcpprotocol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -27,20 +63,8 @@
       "RelativeMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|solutionrelative:bywg.client\\nodeconfigwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|f:\\c#\\bywg\\bywg.client\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|solutionrelative:bywg.client\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CEC574D0-C2A8-49EE-B68D-F091C6C598DB}|BYWGLib\\BYWGLib.csproj|f:\\c#\\bywg\\bywglib\\protocolmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CEC574D0-C2A8-49EE-B68D-F091C6C598DB}|BYWGLib\\BYWGLib.csproj|solutionrelative:bywglib\\protocolmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|f:\\c#\\bywg\\bywg.client\\views\\quickconnectiondialog.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|solutionrelative:bywg.client\\views\\quickconnectiondialog.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|f:\\c#\\bywg\\bywg.client\\views\\quickconnectiondialog.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|solutionrelative:bywg.client\\views\\quickconnectiondialog.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|f:\\c#\\bywg\\bywg.client\\protocolconfigwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
@@ -57,10 +81,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|f:\\c#\\bywg\\bywg.client\\protocolconfigwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|solutionrelative:bywg.client\\protocolconfigwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|f:\\c#\\bywg\\bywg.client\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|solutionrelative:bywg.client\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CEC574D0-C2A8-49EE-B68D-F091C6C598DB}|BYWGLib\\BYWGLib.csproj|f:\\c#\\bywg\\bywglib\\versioninfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -97,14 +117,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|f:\\c#\\bywg\\bywg.client\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{2651AB62-AF22-CE3E-05E1-18508993D1A7}|BYWG.Client\\BYWG.Client.csproj|solutionrelative:bywg.client\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{92763808-E6E9-33F2-E23E-496B63174742}|BYWG.Server.Core\\BYWG.Server.Core.csproj|f:\\c#\\bywg\\bywg.server.core\\opcuatypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{92763808-E6E9-33F2-E23E-496B63174742}|BYWG.Server.Core\\BYWG.Server.Core.csproj|solutionrelative:bywg.server.core\\opcuatypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{92763808-E6E9-33F2-E23E-496B63174742}|BYWG.Server.Core\\BYWG.Server.Core.csproj|f:\\c#\\bywg\\bywg.server.core\\opcuaserviceimpl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{92763808-E6E9-33F2-E23E-496B63174742}|BYWG.Server.Core\\BYWG.Server.Core.csproj|solutionrelative:bywg.server.core\\opcuaserviceimpl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CA67F3DC-C025-FF70-E549-BAFB81F3726F}|BYWG.Server\\BYWG.Server.csproj|f:\\c#\\bywg\\bywg.server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -191,82 +203,83 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "AsyncModbusTcpProtocol.cs",
-              "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\AsyncModbusTcpProtocol.cs",
-              "RelativeDocumentMoniker": "BYWGLib\\Protocols\\AsyncModbusTcpProtocol.cs",
-              "ToolTip": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\AsyncModbusTcpProtocol.cs",
-              "RelativeToolTip": "BYWGLib\\Protocols\\AsyncModbusTcpProtocol.cs",
-              "ViewState": "AgIAAG8BAAAAAAAAAAAAAI0BAAAQAAAAAAAAAA==",
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "BYWG.Client\\MainWindow.xaml.cs",
+              "ToolTip": "F:\\C#\\BYWG\\BYWG.Client\\MainWindow.xaml.cs",
+              "RelativeToolTip": "BYWG.Client\\MainWindow.xaml.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAgwDsAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-26T02:46:50.613Z",
+              "WhenOpened": "2025-09-25T06:24:03.793Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ModbusTcpProtocol.cs",
-              "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\ModbusTcpProtocol.cs",
-              "RelativeDocumentMoniker": "BYWGLib\\Protocols\\ModbusTcpProtocol.cs",
-              "ToolTip": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\ModbusTcpProtocol.cs",
-              "RelativeToolTip": "BYWGLib\\Protocols\\ModbusTcpProtocol.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "DataProcessingService.cs",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Server.Core\\Services\\DataProcessingService.cs",
+              "RelativeDocumentMoniker": "BYWG.Server.Core\\Services\\DataProcessingService.cs",
+              "ToolTip": "F:\\C#\\BYWG\\BYWG.Server.Core\\Services\\DataProcessingService.cs",
+              "RelativeToolTip": "BYWG.Server.Core\\Services\\DataProcessingService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwoAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-26T02:46:48.407Z",
+              "WhenOpened": "2025-09-26T06:17:55.25Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "BYWG.Client\\MainWindow.xaml",
+              "ToolTip": "F:\\C#\\BYWG\\BYWG.Client\\MainWindow.xaml",
+              "RelativeToolTip": "BYWG.Client\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-09-23T07:33:51.367Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLibDemo\\Program.cs",
-              "RelativeDocumentMoniker": "BYWGLibDemo\\Program.cs",
-              "ToolTip": "F:\\C#\\BYWG\\BYWGLibDemo\\Program.cs",
-              "RelativeToolTip": "BYWGLibDemo\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAApwBIAAAAZAAAAAAAAAA==",
+              "Title": "OpcUaTypes.cs",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Server.Core\\OpcUaTypes.cs",
+              "RelativeDocumentMoniker": "BYWG.Server.Core\\OpcUaTypes.cs",
+              "ToolTip": "F:\\C#\\BYWG\\BYWG.Server.Core\\OpcUaTypes.cs",
+              "RelativeToolTip": "BYWG.Server.Core\\OpcUaTypes.cs",
+              "ViewState": "AgIAANIAAAAAAAAAAAAswOEAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-26T00:45:54.658Z",
+              "WhenOpened": "2025-09-23T08:43:17.562Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "QuickConnectionDialog.xaml.cs",
-              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\Views\\QuickConnectionDialog.xaml.cs",
-              "RelativeDocumentMoniker": "BYWG.Client\\Views\\QuickConnectionDialog.xaml.cs",
-              "ToolTip": "F:\\C#\\BYWG\\BYWG.Client\\Views\\QuickConnectionDialog.xaml.cs",
-              "RelativeToolTip": "BYWG.Client\\Views\\QuickConnectionDialog.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHIAAAAPAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "OpcUaServiceImpl.cs",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Server.Core\\OpcUaServiceImpl.cs",
+              "RelativeDocumentMoniker": "BYWG.Server.Core\\OpcUaServiceImpl.cs",
+              "ToolTip": "F:\\C#\\BYWG\\BYWG.Server.Core\\OpcUaServiceImpl.cs",
+              "RelativeToolTip": "BYWG.Server.Core\\OpcUaServiceImpl.cs",
+              "ViewState": "AgIAAEYCAAAAAAAAAAAuwFcCAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-25T06:48:56.951Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "DeviceManagementService.cs",
-              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Server.Core\\Services\\DeviceManagementService.cs",
-              "RelativeDocumentMoniker": "BYWG.Server.Core\\Services\\DeviceManagementService.cs",
-              "ToolTip": "F:\\C#\\BYWG\\BYWG.Server.Core\\Services\\DeviceManagementService.cs",
-              "RelativeToolTip": "BYWG.Server.Core\\Services\\DeviceManagementService.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAAwCcAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-25T06:28:35.233Z"
+              "WhenOpened": "2025-09-26T06:18:51.112Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "ProtocolManagerService.cs",
-              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Server.Core\\ProtocolManagerService.cs",
-              "RelativeDocumentMoniker": "BYWG.Server.Core\\ProtocolManagerService.cs",
-              "ToolTip": "F:\\C#\\BYWG\\BYWG.Server.Core\\ProtocolManagerService.cs",
-              "RelativeToolTip": "BYWG.Server.Core\\ProtocolManagerService.cs",
-              "ViewState": "AgIAAHYBAAAAAAAAAAAvwIsBAAAYAAAAAAAAAA==",
+              "Title": "ClientServiceProxy.cs",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client.Core\\ClientServiceProxy.cs",
+              "RelativeDocumentMoniker": "BYWG.Client.Core\\ClientServiceProxy.cs",
+              "ToolTip": "F:\\C#\\BYWG\\BYWG.Client.Core\\ClientServiceProxy.cs",
+              "RelativeToolTip": "BYWG.Client.Core\\ClientServiceProxy.cs",
+              "ViewState": "AgIAAIoBAAAAAAAAAAAuwJkBAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-23T08:43:25.152Z",
+              "WhenOpened": "2025-09-26T06:18:06.364Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 13,
               "Title": "AsyncProtocolManager.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\AsyncProtocolManager.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Protocols\\AsyncProtocolManager.cs",
@@ -279,19 +292,109 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "BYWG.Client\\MainWindow.xaml.cs",
-              "ToolTip": "F:\\C#\\BYWG\\BYWG.Client\\MainWindow.xaml.cs",
-              "RelativeToolTip": "BYWG.Client\\MainWindow.xaml.cs",
-              "ViewState": "AgIAACYBAAAAAAAAAAArwC4BAAAUAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "NodeManagerWindow.xaml.cs",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\Views\\NodeManagerWindow.xaml.cs",
+              "RelativeDocumentMoniker": "BYWG.Client\\Views\\NodeManagerWindow.xaml.cs",
+              "ToolTip": "F:\\C#\\BYWG\\BYWG.Client\\Views\\NodeManagerWindow.xaml.cs",
+              "RelativeToolTip": "BYWG.Client\\Views\\NodeManagerWindow.xaml.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAswCYAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-25T06:24:03.793Z"
+              "WhenOpened": "2025-09-26T06:18:30.995Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
+              "Title": "QuickConnectionDialog.xaml.cs",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\Views\\QuickConnectionDialog.xaml.cs",
+              "RelativeDocumentMoniker": "BYWG.Client\\Views\\QuickConnectionDialog.xaml.cs",
+              "ToolTip": "F:\\C#\\BYWG\\BYWG.Client\\Views\\QuickConnectionDialog.xaml.cs",
+              "RelativeToolTip": "BYWG.Client\\Views\\QuickConnectionDialog.xaml.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAAACsAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-25T06:48:56.951Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AsyncModbusTcpProtocol.cs",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\AsyncModbusTcpProtocol.cs",
+              "RelativeDocumentMoniker": "BYWGLib\\Protocols\\AsyncModbusTcpProtocol.cs",
+              "ToolTip": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\AsyncModbusTcpProtocol.cs",
+              "RelativeToolTip": "BYWGLib\\Protocols\\AsyncModbusTcpProtocol.cs",
+              "ViewState": "AgIAAFwBAAAAAAAAAAAuwG4BAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-26T02:46:50.613Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ProtocolManagerService.cs",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Server.Core\\ProtocolManagerService.cs",
+              "RelativeDocumentMoniker": "BYWG.Server.Core\\ProtocolManagerService.cs",
+              "ToolTip": "F:\\C#\\BYWG\\BYWG.Server.Core\\ProtocolManagerService.cs",
+              "RelativeToolTip": "BYWG.Server.Core\\ProtocolManagerService.cs",
+              "ViewState": "AgIAAHUBAAAAAAAAAAAvwIsBAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T08:43:25.152Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "QuickConnectionDialog.xaml",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\Views\\QuickConnectionDialog.xaml",
+              "RelativeDocumentMoniker": "BYWG.Client\\Views\\QuickConnectionDialog.xaml",
+              "ToolTip": "F:\\C#\\BYWG\\BYWG.Client\\Views\\QuickConnectionDialog.xaml",
+              "RelativeToolTip": "BYWG.Client\\Views\\QuickConnectionDialog.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-09-25T00:58:49.626Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "DeviceManagementService.cs",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Server.Core\\Services\\DeviceManagementService.cs",
+              "RelativeDocumentMoniker": "BYWG.Server.Core\\Services\\DeviceManagementService.cs",
+              "ToolTip": "F:\\C#\\BYWG\\BYWG.Server.Core\\Services\\DeviceManagementService.cs",
+              "RelativeToolTip": "BYWG.Server.Core\\Services\\DeviceManagementService.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAAwCcAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-25T06:28:35.233Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Program.cs",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLibDemo\\Program.cs",
+              "RelativeDocumentMoniker": "BYWGLibDemo\\Program.cs",
+              "ToolTip": "F:\\C#\\BYWG\\BYWGLibDemo\\Program.cs",
+              "RelativeToolTip": "BYWGLibDemo\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAApwBIAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-26T00:45:54.658Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ModbusTcpProtocol.cs",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\ModbusTcpProtocol.cs",
+              "RelativeDocumentMoniker": "BYWGLib\\Protocols\\ModbusTcpProtocol.cs",
+              "ToolTip": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\ModbusTcpProtocol.cs",
+              "RelativeToolTip": "BYWGLib\\Protocols\\ModbusTcpProtocol.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-26T02:46:48.407Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "NodeConfigWindow.xaml.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\NodeConfigWindow.xaml.cs",
               "RelativeDocumentMoniker": "BYWG.Client\\NodeConfigWindow.xaml.cs",
@@ -303,7 +406,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 19,
               "Title": "ProtocolConfigWindow.xaml.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\ProtocolConfigWindow.xaml.cs",
               "RelativeDocumentMoniker": "BYWG.Client\\ProtocolConfigWindow.xaml.cs",
@@ -315,7 +418,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 21,
               "Title": "ProtocolBenchmarks.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.IntegrationTest\\Benchmarks\\ProtocolBenchmarks.cs",
               "RelativeDocumentMoniker": "BYWG.IntegrationTest\\Benchmarks\\ProtocolBenchmarks.cs",
@@ -327,7 +430,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 22,
               "Title": "README.md",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\README.md",
               "RelativeDocumentMoniker": "BYWGLib\\README.md",
@@ -339,7 +442,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 23,
               "Title": "Program.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.IntegrationTest\\Program.cs",
               "RelativeDocumentMoniker": "BYWG.IntegrationTest\\Program.cs",
@@ -351,18 +454,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "QuickConnectionDialog.xaml",
-              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\Views\\QuickConnectionDialog.xaml",
-              "RelativeDocumentMoniker": "BYWG.Client\\Views\\QuickConnectionDialog.xaml",
-              "ToolTip": "F:\\C#\\BYWG\\BYWG.Client\\Views\\QuickConnectionDialog.xaml",
-              "RelativeToolTip": "BYWG.Client\\Views\\QuickConnectionDialog.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-25T00:58:49.626Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 24,
               "Title": "ProtocolConfigurationWizard.xaml",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\Views\\ProtocolConfigurationWizard.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\Views\\ProtocolConfigurationWizard.xaml",
@@ -373,7 +465,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 25,
               "Title": "HighPerformanceProtocolExample.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Examples\\HighPerformanceProtocolExample.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Examples\\HighPerformanceProtocolExample.cs",
@@ -385,18 +477,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 26,
               "Title": "Styles.xaml",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\Resources\\Styles.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\Resources\\Styles.xaml",
               "ToolTip": "F:\\C#\\BYWG\\BYWG.Client\\Resources\\Styles.xaml",
               "RelativeToolTip": "BYWG.Client\\Resources\\Styles.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-25T00:49:01.724Z"
+              "WhenOpened": "2025-09-25T00:49:01.724Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 27,
               "Title": "DataDashboard.xaml",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\Views\\DataDashboard.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\Views\\DataDashboard.xaml",
@@ -407,19 +500,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "OpcUaTypes.cs",
-              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Server.Core\\OpcUaTypes.cs",
-              "RelativeDocumentMoniker": "BYWG.Server.Core\\OpcUaTypes.cs",
-              "ToolTip": "F:\\C#\\BYWG\\BYWG.Server.Core\\OpcUaTypes.cs",
-              "RelativeToolTip": "BYWG.Server.Core\\OpcUaTypes.cs",
-              "ViewState": "AgIAABABAAAAAAAAAAAzwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-23T08:43:17.562Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 39,
               "Title": "AddProtocolDialog.xaml",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG\\Dialogs\\AddProtocolDialog.xaml",
               "RelativeDocumentMoniker": "BYWG\\Dialogs\\AddProtocolDialog.xaml",
@@ -430,7 +511,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 40,
               "Title": "AddNodeDialog.xaml",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG\\Dialogs\\AddNodeDialog.xaml",
               "RelativeDocumentMoniker": "BYWG\\Dialogs\\AddNodeDialog.xaml",
@@ -442,18 +523,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 28,
               "Title": "App.xaml",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\App.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\App.xaml",
               "ToolTip": "F:\\C#\\BYWG\\BYWG.Client\\App.xaml",
               "RelativeToolTip": "BYWG.Client\\App.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-23T07:34:19.493Z"
+              "WhenOpened": "2025-09-23T07:34:19.493Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 16,
               "Title": "ProtocolConfigWindow.xaml",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\ProtocolConfigWindow.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\ProtocolConfigWindow.xaml",
@@ -464,7 +546,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 17,
               "Title": "NodeConfigWindow.xaml",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\NodeConfigWindow.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\NodeConfigWindow.xaml",
@@ -475,30 +557,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Client\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "BYWG.Client\\MainWindow.xaml",
-              "ToolTip": "F:\\C#\\BYWG\\BYWG.Client\\MainWindow.xaml",
-              "RelativeToolTip": "BYWG.Client\\MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-23T07:33:51.367Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
-              "Title": "OpcUaServiceImpl.cs",
-              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Server.Core\\OpcUaServiceImpl.cs",
-              "RelativeDocumentMoniker": "BYWG.Server.Core\\OpcUaServiceImpl.cs",
-              "ToolTip": "F:\\C#\\BYWG\\BYWG.Server.Core\\OpcUaServiceImpl.cs",
-              "RelativeToolTip": "BYWG.Server.Core\\OpcUaServiceImpl.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAAwAcAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-23T05:57:03.915Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 29,
               "Title": "Program.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG.Server\\Program.cs",
               "RelativeDocumentMoniker": "BYWG.Server\\Program.cs",
@@ -510,7 +569,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 30,
               "Title": "HighPerformanceProtocolFactory.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\HighPerformanceProtocolFactory.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Protocols\\HighPerformanceProtocolFactory.cs",
@@ -522,7 +581,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 31,
               "Title": "CRCUtils.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Utils\\CRCUtils.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Utils\\CRCUtils.cs",
@@ -534,7 +593,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 32,
               "Title": "DataChangedEventArgs.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\DataChangedEventArgs.cs",
               "RelativeDocumentMoniker": "BYWGLib\\DataChangedEventArgs.cs",
@@ -546,7 +605,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 33,
               "Title": "DataReceivedEventArgs.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\DataReceivedEventArgs.cs",
               "RelativeDocumentMoniker": "BYWGLib\\DataReceivedEventArgs.cs",
@@ -558,7 +617,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 34,
               "Title": "IIndustrialProtocol.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\IIndustrialProtocol.cs",
               "RelativeDocumentMoniker": "BYWGLib\\IIndustrialProtocol.cs",
@@ -570,7 +629,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 20,
               "Title": "VersionInfo.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\VersionInfo.cs",
               "RelativeDocumentMoniker": "BYWGLib\\VersionInfo.cs",
@@ -582,7 +641,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 38,
               "Title": "ILogger.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Logging\\ILogger.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Logging\\ILogger.cs",
@@ -594,7 +653,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 37,
               "Title": "HighPerformanceLogger.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Logging\\HighPerformanceLogger.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Logging\\HighPerformanceLogger.cs",
@@ -606,7 +665,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 36,
               "Title": "IndustrialProtocolConfig.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\IndustrialProtocolConfig.cs",
               "RelativeDocumentMoniker": "BYWGLib\\IndustrialProtocolConfig.cs",
@@ -618,7 +677,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 35,
               "Title": "IndustrialDataItem.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\IndustrialDataItem.cs",
               "RelativeDocumentMoniker": "BYWGLib\\IndustrialDataItem.cs",
@@ -630,7 +689,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 15,
               "Title": "ProtocolManager.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\ProtocolManager.cs",
               "RelativeDocumentMoniker": "BYWGLib\\ProtocolManager.cs",
@@ -642,7 +701,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 41,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG\\MainWindow.xaml",
               "RelativeDocumentMoniker": "BYWG\\MainWindow.xaml",
@@ -653,7 +712,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 42,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "BYWG\\MainWindow.xaml.cs",
@@ -665,7 +724,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 43,
               "Title": "HighPerformanceMitsubishiMCProtocol.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\HighPerformanceMitsubishiMCProtocol.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Protocols\\HighPerformanceMitsubishiMCProtocol.cs",
@@ -677,7 +736,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 44,
               "Title": "HighPerformanceModbusRTUProtocol.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\HighPerformanceModbusRTUProtocol.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Protocols\\HighPerformanceModbusRTUProtocol.cs",
@@ -689,7 +748,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 45,
               "Title": "HighPerformanceS7Protocol.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\HighPerformanceS7Protocol.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Protocols\\HighPerformanceS7Protocol.cs",

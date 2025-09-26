@@ -166,7 +166,7 @@
                 <!-- 连接控制区域 -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                     <Label Content="服务地址:" Style="{StaticResource ModernLabel}"/>
-                    <TextBox x:Name="ServerAddressTextBox" Text="http://localhost:5000" Width="200" Style="{StaticResource ModernTextBox}"/>
+                    <TextBox x:Name="ServerAddressTextBox" Text="http://localhost:5001" Width="200" Style="{StaticResource ModernTextBox}"/>
                 </StackPanel>
                 
                 <Button Grid.Column="1" Content="连接" Click="ConnectButton_Click" x:Name="ConnectButton" Style="{StaticResource ModernButton}"/>
@@ -295,7 +295,7 @@
                             <DataGridTextColumn Header="节点ID" Binding="{Binding NodeId.Identifier}" Width="2*" FontFamily="Consolas" FontSize="12"/>
                             <DataGridTextColumn Header="显示名称" Binding="{Binding DisplayName}" Width="1.5*" FontWeight="SemiBold"/>
                             <DataGridTextColumn Header="数据类型" Binding="{Binding DataType}" Width="120"/>
-                            <DataGridTextColumn Header="当前值" Binding="{Binding CurrentValue}" Width="1.5*">
+                            <DataGridTextColumn Header="当前值" Binding="{Binding CurrentValueString}" Width="1.5*">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -304,7 +304,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="时间戳" Binding="{Binding CurrentValue.Timestamp}" Width="1.5*"/>
+                            <DataGridTextColumn Header="时间戳" Binding="{Binding CurrentValueTimestamp}" Width="1.5*"/>
                         </DataGrid.Columns>
                     </DataGrid>
 

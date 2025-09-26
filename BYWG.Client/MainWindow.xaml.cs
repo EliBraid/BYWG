@@ -23,7 +23,7 @@ namespace BYWG.Client
         private readonly ILogger<MainWindow> _logger;
 
         private List<BYWG.Contracts.ProtocolInfo> _protocols = new List<BYWG.Contracts.ProtocolInfo>();
-        private List<NodeInfo> _nodes = new List<NodeInfo>();
+        private List<ExtendedNodeInfo> _nodes = new List<ExtendedNodeInfo>();
         private List<DeviceInfo> _devices = new List<DeviceInfo>();
         private List<DeviceStatus> _deviceStatuses = new List<DeviceStatus>();
         private readonly System.Windows.Threading.DispatcherTimer _nodeRefreshTimer = new System.Windows.Threading.DispatcherTimer();
@@ -463,12 +463,24 @@ namespace BYWG.Client
             {
                 var nodes = await _clientServiceProxy.GetNodesAsync();
                 _nodes.Clear();
+                
                 // 映射当前值与时间戳字段，便于表格直接展示
                 foreach (var n in nodes)
                 {
-                    // 将 DataValue 解读为字符串与时间戳，放入扩展字段（通过匿名类型绑定）
+                    // 创建扩展的节点信息，包含格式化的值和时间戳
+                    var extendedNode = new ExtendedNodeInfo
+                    {
+                        NodeId = n.NodeId,
+                        DisplayName = n.DisplayName,
+                        DataType = n.DataType,
+                        CurrentValue = n.CurrentValue,
+                        CurrentValueString = FormatDataValue(n.CurrentValue),
+                        CurrentValueTimestamp = n.CurrentValue != null && n.CurrentValue.Timestamp > 0 ?
+                            DateTimeOffset.FromUnixTimeMilliseconds(n.CurrentValue.Timestamp).LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss") : 
+                            string.Empty
+                    };
+                    _nodes.Add(extendedNode);
                 }
-                _nodes.AddRange(nodes);
                 NodeDataGrid.Items.Refresh();
             }
             catch (Exception ex)
@@ -760,6 +772,24 @@ namespace BYWG.Client
         }
         
         /// <summary>
+        /// 格式化数据值为字符串
+        /// </summary>
+        private static string FormatDataValue(BYWG.Contracts.DataValue dataValue)
+        {
+            if (dataValue == null) return string.Empty;
+            
+            return dataValue.ValueCase switch
+            {
+                BYWG.Contracts.DataValue.ValueOneofCase.BooleanValue => dataValue.BooleanValue.ToString(),
+                BYWG.Contracts.DataValue.ValueOneofCase.Int32Value => dataValue.Int32Value.ToString(),
+                BYWG.Contracts.DataValue.ValueOneofCase.FloatValue => dataValue.FloatValue.ToString("F2"),
+                BYWG.Contracts.DataValue.ValueOneofCase.DoubleValue => dataValue.DoubleValue.ToString("F2"),
+                BYWG.Contracts.DataValue.ValueOneofCase.StringValue => dataValue.StringValue,
+                _ => string.Empty
+            };
+        }
+
+        /// <summary>
         /// 从字符串获取协议类型
         /// </summary>
         private BYWG.Contracts.ProtocolType GetProtocolTypeFromString(string typeString)
@@ -789,6 +819,19 @@ namespace BYWG.Client
                     return BYWG.Contracts.ProtocolType.Unspecified;
             }
         }
+    }
+    
+    /// <summary>
+    /// 扩展的节点信息，包含格式化的值和时间戳
+    /// </summary>
+    public class ExtendedNodeInfo
+    {
+        public BYWG.Contracts.NodeId NodeId { get; set; }
+        public string DisplayName { get; set; }
+        public BYWG.Contracts.DataType DataType { get; set; }
+        public BYWG.Contracts.DataValue CurrentValue { get; set; }
+        public string CurrentValueString { get; set; }
+        public string CurrentValueTimestamp { get; set; }
     }
     
     /// <summary>
