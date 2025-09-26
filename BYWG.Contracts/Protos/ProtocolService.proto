@@ -1,0 +1,97 @@
+syntax = "proto3";
+
+import "Protos/Common.proto";
+import "Protos/OpcUaService.proto"; // 复用 DataValue 定义
+
+option csharp_namespace = "BYWG.Contracts";
+
+// 协议配置请求消息
+message AddProtocolRequest {
+  string name = 1;
+  ProtocolType type = 2;
+  string connection_string = 3;
+  map<string, string> parameters = 4;
+}
+
+// 协议配置响应消息
+message AddProtocolResponse {
+  BaseResponse base_response = 1;
+}
+
+// 删除协议请求消息
+message RemoveProtocolRequest {
+  string name = 1;
+}
+
+// 删除协议响应消息
+message RemoveProtocolResponse {
+  BaseResponse base_response = 1;
+}
+
+// 启动协议请求消息
+message StartProtocolRequest {
+  string name = 1;
+}
+
+// 启动协议响应消息
+message StartProtocolResponse {
+  BaseResponse base_response = 1;
+}
+
+// 停止协议请求消息
+message StopProtocolRequest {
+  string name = 1;
+}
+
+// 停止协议响应消息
+message StopProtocolResponse {
+  BaseResponse base_response = 1;
+}
+
+// 协议信息消息
+message ProtocolInfo {
+  string name = 1;
+  ProtocolType type = 2;
+  bool is_running = 3;
+  string connection_string = 4;
+  map<string, string> parameters = 5;
+}
+
+// 获取协议列表请求消息
+message GetProtocolsRequest {
+}
+
+// 获取协议列表响应消息
+message GetProtocolsResponse {
+  BaseResponse base_response = 1;
+  repeated ProtocolInfo protocols = 2;
+}
+
+// 测试读取请求
+message TestReadRequest {
+  string name = 1;           // 协议名称/设备名称
+  string address = 2;        // 协议地址
+  string data_type = 3;      // 数据类型（如: bool/int16/int32/float/double/string）
+}
+
+// 测试读取响应
+message TestReadResponse {
+  BaseResponse base_response = 1;
+  DataValue data_value = 2;  // 返回的值（若成功）
+}
+
+// 协议管理服务
+service ProtocolService {
+  // 添加协议
+  rpc AddProtocol(AddProtocolRequest) returns (AddProtocolResponse);
+  // 删除协议
+  rpc RemoveProtocol(RemoveProtocolRequest) returns (RemoveProtocolResponse);
+  // 启动协议
+  rpc StartProtocol(StartProtocolRequest) returns (StartProtocolResponse);
+  // 停止协议
+  rpc StopProtocol(StopProtocolRequest) returns (StopProtocolResponse);
+  // 获取协议列表
+  rpc GetProtocols(GetProtocolsRequest) returns (GetProtocolsResponse);
+  // 测试读取
+  rpc TestRead(TestReadRequest) returns (TestReadResponse);
+}

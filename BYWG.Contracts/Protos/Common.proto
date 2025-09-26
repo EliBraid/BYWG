@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+option csharp_namespace = "BYWG.Contracts";
+
+// 通用状态码枚举
+enum StatusCode {
+  STATUS_CODE_UNSPECIFIED = 0;
+  STATUS_CODE_OK = 1;
+  STATUS_CODE_ERROR = 2;
+  STATUS_CODE_NOT_FOUND = 3;
+  STATUS_CODE_ALREADY_EXISTS = 4;
+  STATUS_CODE_INVALID_PARAMETER = 5;
+  STATUS_CODE_ACCESS_DENIED = 6;
+}
+
+// 工业协议类型枚举
+enum ProtocolType {
+  PROTOCOL_TYPE_UNSPECIFIED = 0;
+  PROTOCOL_TYPE_MODBUS = 1;
+  PROTOCOL_TYPE_SIEMENS = 2;
+  PROTOCOL_TYPE_MITSUBISHI = 3;
+  PROTOCOL_TYPE_OMRON = 4;
+  PROTOCOL_TYPE_AB = 5;
+}
+
+// 数据质量枚举
+enum DataQuality {
+  DATA_QUALITY_UNSPECIFIED = 0;
+  DATA_QUALITY_GOOD = 1;
+  DATA_QUALITY_BAD = 2;
+  DATA_QUALITY_UNCERTAIN = 3;
+}
+
+// 数据类型枚举
+enum DataType {
+  DATA_TYPE_UNSPECIFIED = 0;
+  DATA_TYPE_BOOLEAN = 1;
+  DATA_TYPE_INT16 = 2;
+  DATA_TYPE_INT32 = 3;
+  DATA_TYPE_FLOAT = 4;
+  DATA_TYPE_DOUBLE = 5;
+  DATA_TYPE_STRING = 6;
+}
+
+// 基础响应消息
+message BaseResponse {
+  StatusCode status_code = 1;
+  string message = 2;
+}

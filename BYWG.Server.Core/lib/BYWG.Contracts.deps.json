@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "BYWG.Contracts/1.0.0": {
+        "dependencies": {
+          "Google.Protobuf": "3.23.4"
+        },
+        "runtime": {
+          "BYWG.Contracts.dll": {}
+        }
+      },
+      "Google.Protobuf/3.23.4": {
+        "runtime": {
+          "lib/net5.0/Google.Protobuf.dll": {
+            "assemblyVersion": "3.23.4.0",
+            "fileVersion": "3.23.4.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "BYWG.Contracts/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Google.Protobuf/3.23.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DF+mB+Fwan5Hm5dnbKbrIl7C5ypMr8tJJheutkYgFXCoM88HfBNo2qYO60CEf6fvEe/fhCGtvfEBCoCIhIn7dQ==",
+      "path": "google.protobuf/3.23.4",
+      "hashPath": "google.protobuf.3.23.4.nupkg.sha512"
+    }
+  }
+}

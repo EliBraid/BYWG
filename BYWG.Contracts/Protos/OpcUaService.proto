@@ -1,0 +1,139 @@
+syntax = "proto3";
+
+import "Protos/Common.proto";
+
+option csharp_namespace = "BYWG.Contracts";
+
+// 节点ID消息
+message NodeId {
+  string identifier = 1;
+  uint32 namespace_index = 2;
+}
+
+// 数据值消息
+message DataValue {
+  oneof value {
+    bool boolean_value = 1;
+    int32 int32_value = 2;
+    float float_value = 3;
+    double double_value = 4;
+    string string_value = 5;
+  }
+  DataQuality quality = 6;
+  int64 timestamp = 7; // Unix时间戳，毫秒
+}
+
+// 添加节点请求消息
+message AddNodeRequest {
+  string node_id = 1;
+  string display_name = 2;
+  DataType data_type = 3;
+  DataValue initial_value = 4;
+}
+
+// 添加节点响应消息
+message AddNodeResponse {
+  BaseResponse base_response = 1;
+  NodeId node_id = 2;
+}
+
+// 删除节点请求消息
+message RemoveNodeRequest {
+  NodeId node_id = 1;
+}
+
+// 删除节点响应消息
+message RemoveNodeResponse {
+  BaseResponse base_response = 1;
+}
+
+// 读取节点请求消息
+message ReadNodeRequest {
+  NodeId node_id = 1;
+}
+
+// 读取节点响应消息
+message ReadNodeResponse {
+  BaseResponse base_response = 1;
+  DataValue data_value = 2;
+}
+
+// 写入节点请求消息
+message WriteNodeRequest {
+  NodeId node_id = 1;
+  DataValue data_value = 2;
+}
+
+// 写入节点响应消息
+message WriteNodeResponse {
+  BaseResponse base_response = 1;
+}
+
+// 节点信息消息
+message NodeInfo {
+  NodeId node_id = 1;
+  string display_name = 2;
+  DataType data_type = 3;
+  DataValue current_value = 4;
+}
+
+// 获取节点列表请求消息
+message GetNodesRequest {
+}
+
+// 获取节点列表响应消息
+message GetNodesResponse {
+  BaseResponse base_response = 1;
+  repeated NodeInfo nodes = 2;
+}
+
+// OPC UA服务
+service OpcUaService {
+  // 添加节点
+  rpc AddNode(AddNodeRequest) returns (AddNodeResponse);
+  // 删除节点
+  rpc RemoveNode(RemoveNodeRequest) returns (RemoveNodeResponse);
+  // 读取节点值
+  rpc ReadNode(ReadNodeRequest) returns (ReadNodeResponse);
+  // 写入节点值
+  rpc WriteNode(WriteNodeRequest) returns (WriteNodeResponse);
+  // 获取节点列表
+  rpc GetNodes(GetNodesRequest) returns (GetNodesResponse);
+  // 启动OPC UA服务器
+  rpc StartOpcUaServer(StartOpcUaServerRequest) returns (StartOpcUaServerResponse);
+  // 停止OPC UA服务器
+  rpc StopOpcUaServer(StopOpcUaServerRequest) returns (StopOpcUaServerResponse);
+  // 获取服务器状态
+  rpc GetServerStatus(GetServerStatusRequest) returns (GetServerStatusResponse);
+}
+
+// 启动OPC UA服务器请求消息
+message StartOpcUaServerRequest {
+  int32 port = 1;
+}
+
+// 启动OPC UA服务器响应消息
+message StartOpcUaServerResponse {
+  BaseResponse base_response = 1;
+}
+
+// 停止OPC UA服务器请求消息
+message StopOpcUaServerRequest {
+}
+
+// 停止OPC UA服务器响应消息
+message StopOpcUaServerResponse {
+  BaseResponse base_response = 1;
+}
+
+// 获取服务器状态请求消息
+message GetServerStatusRequest {
+}
+
+// 获取服务器状态响应消息
+message GetServerStatusResponse {
+  BaseResponse base_response = 1;
+  bool is_running = 2;
+  int32 session_count = 3;
+  int32 node_count = 4;
+}
