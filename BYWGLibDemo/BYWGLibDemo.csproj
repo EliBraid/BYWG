@@ -11,8 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- 仅编译入口文件，避免测试类导致的编译失败 -->
+    <!-- 仅编译入口文件和测试文件 -->
     <Compile Include="Program.cs" />
+    <Compile Include="D4500Test.cs" />
+    <Compile Include="EnhancedD4500Test.cs" />
+    <Compile Include="AddressDiagnostic.cs" />
+    <Compile Include="CorrectedD4500Test.cs" />
+    <Compile Include="PreciseAddressTest.cs" />
 
     <!-- 引用BYWGLib库 -->
     <ProjectReference Include="..\BYWGLib\BYWGLib.csproj" />
