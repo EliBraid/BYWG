@@ -5,19 +5,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <LangVersion>12.0</LangVersion>
     <StartupObject>BYWGLibDemo.Program</StartupObject>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- 仅编译入口文件和测试文件 -->
+    <!-- 仅编译入口文件 -->
     <Compile Include="Program.cs" />
-    <Compile Include="D4500Test.cs" />
-    <Compile Include="EnhancedD4500Test.cs" />
-    <Compile Include="AddressDiagnostic.cs" />
-    <Compile Include="CorrectedD4500Test.cs" />
-    <Compile Include="PreciseAddressTest.cs" />
 
     <!-- 引用BYWGLib库 -->
     <ProjectReference Include="..\BYWGLib\BYWGLib.csproj" />
@@ -25,7 +19,6 @@
     <!-- 日志 -->
     <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
   </ItemGroup>
 
 </Project>
