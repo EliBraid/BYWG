@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "F:\\C#\\BYWG\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B2237500-A0C5-40F1-AB78-298F2D6CB620}|BYWG\\BYWG.csproj|f:\\c#\\bywg\\bywg\\protocols\\modbusrtuprotocol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B2237500-A0C5-40F1-AB78-298F2D6CB620}|BYWG\\BYWG.csproj|solutionrelative:bywg\\protocols\\modbusrtuprotocol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B2237500-A0C5-40F1-AB78-298F2D6CB620}|BYWG\\BYWG.csproj|f:\\c#\\bywg\\bywg\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{B2237500-A0C5-40F1-AB78-298F2D6CB620}|BYWG\\BYWG.csproj|solutionrelative:bywg\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
@@ -31,6 +35,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "ModbusRTUProtocol.cs",
+              "DocumentMoniker": "F:\\C#\\BYWG\\BYWG\\Protocols\\ModbusRTUProtocol.cs",
+              "RelativeDocumentMoniker": "BYWG\\Protocols\\ModbusRTUProtocol.cs",
+              "ToolTip": "F:\\C#\\BYWG\\BYWG\\Protocols\\ModbusRTUProtocol.cs",
+              "RelativeToolTip": "BYWG\\Protocols\\ModbusRTUProtocol.cs",
+              "ViewState": "AgIAAKIBAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-22T10:01:44.503Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG\\MainWindow.xaml",
               "RelativeDocumentMoniker": "BYWG\\MainWindow.xaml",
@@ -42,13 +59,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "BYWG\\MainWindow.xaml.cs",
               "ToolTip": "F:\\C#\\BYWG\\BYWG\\MainWindow.xaml.cs",
               "RelativeToolTip": "BYWG\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-22T09:47:40.244Z",
               "EditorCaption": ""
