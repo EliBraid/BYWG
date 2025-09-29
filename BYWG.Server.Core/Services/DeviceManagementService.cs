@@ -208,43 +208,8 @@ namespace BYWG.Server.Core.Services
         /// </summary>
         private async Task LoadConfiguredDevicesAsync()
         {
-            // 这里可以从配置文件或数据库加载设备配置
-            // 示例：加载一些默认设备
-            var defaultDevices = new[]
-            {
-                new DeviceInfo
-                {
-                    DeviceId = "PLC_001",
-                    DeviceName = "主控PLC",
-                    DeviceType = "Siemens S7",
-                    IpAddress = "192.168.1.100",
-                    Port = 102,
-                    Description = "主控PLC设备"
-                },
-                new DeviceInfo
-                {
-                    DeviceId = "PLC_002",
-                    DeviceName = "从控PLC",
-                    DeviceType = "Mitsubishi MC",
-                    IpAddress = "192.168.1.101",
-                    Port = 5007,
-                    Description = "从控PLC设备"
-                },
-                new DeviceInfo
-                {
-                    DeviceId = "PLC_003",
-                    DeviceName = "Modbus设备",
-                    DeviceType = "Modbus TCP",
-                    IpAddress = "192.168.1.102",
-                    Port = 502,
-                    Description = "Modbus TCP设备"
-                }
-            };
-            
-            foreach (var device in defaultDevices)
-            {
-                await RegisterDeviceAsync(device);
-            }
+            // 生产逻辑：不注入任何示例设备，由外部调用注册真实设备
+            await Task.CompletedTask;
         }
         
         /// <summary>

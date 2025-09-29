@@ -35,7 +35,8 @@ namespace BYWGLibDemo
         /// </summary>
         private static async Task BasicUsageExample()
         {
-            Log.Information("=== BYWGLib 基本使用示例 ===");
+            Log.Info
+            rmation("=== BYWGLib 基本使用示例 ===");
 
             // 创建配置
             var config = new IndustrialProtocolConfig
