@@ -36,7 +36,7 @@ function getCurrentPageTitle() {
     <!-- 侧边栏 -->
     <aside class="sidebar" :class="{ collapsed: sidebarCollapsed }">
       <div class="sidebar-header">
-        <div class="brand">
+      <div class="brand">
           <div class="brand-icon">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
@@ -45,13 +45,22 @@ function getCurrentPageTitle() {
             </svg>
           </div>
           <div class="brand-text" v-show="!sidebarCollapsed">
-            <span class="title">BYWG</span>
+        <span class="title">BYWG</span>
             <span class="subtitle">工业边缘网关</span>
           </div>
         </div>
-        <button class="sidebar-toggle" @click="toggleSidebar">
+        <button v-show="!sidebarCollapsed" class="sidebar-toggle" @click="toggleSidebar" title="折叠侧边栏">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="currentColor"/>
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- 折叠状态下的切换按钮 -->
+      <div v-show="sidebarCollapsed" class="collapsed-toggle">
+        <button class="sidebar-toggle collapsed" @click="toggleSidebar" title="展开侧边栏">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" fill="currentColor"/>
           </svg>
         </button>
       </div>
@@ -60,19 +69,19 @@ function getCurrentPageTitle() {
         <!-- 系统监控 -->
         <div class="nav-section">
           <div class="nav-section-title" v-show="!sidebarCollapsed">系统监控</div>
-          <RouterLink to="/dashboard" class="nav-item">
+          <RouterLink to="/dashboard" class="nav-item" :title="sidebarCollapsed ? '数据仪表板' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" fill="currentColor"/>
             </svg>
             <span v-show="!sidebarCollapsed">数据仪表板</span>
           </RouterLink>
-          <RouterLink to="/monitoring" class="nav-item">
+          <RouterLink to="/monitoring" class="nav-item" :title="sidebarCollapsed ? '实时监控' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="currentColor"/>
             </svg>
             <span v-show="!sidebarCollapsed">实时监控</span>
           </RouterLink>
-          <RouterLink to="/alerts" class="nav-item">
+          <RouterLink to="/alerts" class="nav-item" :title="sidebarCollapsed ? '报警管理' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" fill="currentColor"/>
             </svg>
@@ -83,19 +92,19 @@ function getCurrentPageTitle() {
         <!-- 设备管理 -->
         <div class="nav-section">
           <div class="nav-section-title" v-show="!sidebarCollapsed">设备管理</div>
-          <RouterLink to="/devices" class="nav-item">
+          <RouterLink to="/devices" class="nav-item" :title="sidebarCollapsed ? '设备列表' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
             </svg>
             <span v-show="!sidebarCollapsed">设备列表</span>
           </RouterLink>
-          <RouterLink to="/device-groups" class="nav-item">
+          <RouterLink to="/device-groups" class="nav-item" :title="sidebarCollapsed ? '设备分组' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H16c-.8 0-1.54.37-2.01.99L12 11l-1.99-2.01A2.5 2.5 0 0 0 8 8H5.46c-.8 0-1.54.37-2.01.99L1 13.5V16h2v6h2v-6h2.5l2.5-7.5h2l2.5 7.5H14v6h2z" fill="currentColor"/>
             </svg>
             <span v-show="!sidebarCollapsed">设备分组</span>
           </RouterLink>
-          <RouterLink to="/device-discovery" class="nav-item">
+          <RouterLink to="/device-discovery" class="nav-item" :title="sidebarCollapsed ? '设备发现' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
             </svg>
@@ -106,13 +115,13 @@ function getCurrentPageTitle() {
         <!-- 协议管理 -->
         <div class="nav-section">
           <div class="nav-section-title" v-show="!sidebarCollapsed">协议管理</div>
-          <RouterLink to="/protocols" class="nav-item">
+          <RouterLink to="/protocols" class="nav-item" :title="sidebarCollapsed ? '协议配置' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
             </svg>
             <span v-show="!sidebarCollapsed">协议配置</span>
           </RouterLink>
-          <RouterLink to="/protocol-templates" class="nav-item">
+          <RouterLink to="/protocol-templates" class="nav-item" :title="sidebarCollapsed ? '协议模板' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" fill="currentColor"/>
             </svg>
@@ -123,13 +132,13 @@ function getCurrentPageTitle() {
         <!-- OPC UA管理 -->
         <div class="nav-section">
           <div class="nav-section-title" v-show="!sidebarCollapsed">OPC UA管理</div>
-          <RouterLink to="/nodes" class="nav-item">
+          <RouterLink to="/nodes" class="nav-item" :title="sidebarCollapsed ? '节点管理' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor"/>
             </svg>
             <span v-show="!sidebarCollapsed">节点管理</span>
           </RouterLink>
-          <RouterLink to="/node-browser" class="nav-item">
+          <RouterLink to="/node-browser" class="nav-item" :title="sidebarCollapsed ? '节点浏览器' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor"/>
             </svg>
@@ -140,19 +149,19 @@ function getCurrentPageTitle() {
         <!-- 服务器集群 -->
         <div class="nav-section">
           <div class="nav-section-title" v-show="!sidebarCollapsed">服务器集群</div>
-          <RouterLink to="/servers" class="nav-item">
+          <RouterLink to="/servers" class="nav-item" :title="sidebarCollapsed ? '服务器管理' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" fill="currentColor"/>
             </svg>
             <span v-show="!sidebarCollapsed">服务器管理</span>
           </RouterLink>
-          <RouterLink to="/server-clusters" class="nav-item">
+          <RouterLink to="/server-clusters" class="nav-item" :title="sidebarCollapsed ? '集群监控' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
             </svg>
             <span v-show="!sidebarCollapsed">集群监控</span>
           </RouterLink>
-          <RouterLink to="/load-balancing" class="nav-item">
+          <RouterLink to="/load-balancing" class="nav-item" :title="sidebarCollapsed ? '负载均衡' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
             </svg>
@@ -163,13 +172,13 @@ function getCurrentPageTitle() {
         <!-- 系统设置 -->
         <div class="nav-section">
           <div class="nav-section-title" v-show="!sidebarCollapsed">系统设置</div>
-          <RouterLink to="/settings" class="nav-item">
+          <RouterLink to="/settings" class="nav-item" :title="sidebarCollapsed ? '系统设置' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" fill="currentColor"/>
             </svg>
             <span v-show="!sidebarCollapsed">系统设置</span>
           </RouterLink>
-          <RouterLink to="/users" class="nav-item">
+          <RouterLink to="/users" class="nav-item" :title="sidebarCollapsed ? '用户管理' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H16c-.8 0-1.54.37-2.01.99L12 11l-1.99-2.01A2.5 2.5 0 0 0 8 8H5.46c-.8 0-1.54.37-2.01.99L1 13.5V16h2v6h2v-6h2.5l2.5-7.5h2l2.5 7.5H14v6h2z" fill="currentColor"/>
             </svg>
@@ -210,12 +219,12 @@ function getCurrentPageTitle() {
             </div>
           </div>
         </div>
-      </header>
+    </header>
       
-      <main class="main">
-        <RouterView />
-      </main>
-    </div>
+    <main class="main">
+      <RouterView />
+    </main>
+  </div>
   </div>
 </template>
 
@@ -232,14 +241,18 @@ function getCurrentPageTitle() {
 /* 侧边栏样式 */
 .sidebar {
   width: 280px;
+  height: 100vh;
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   color: #fff;
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
   z-index: 1000;
+  overflow: hidden;
 }
 
 .sidebar.collapsed {
@@ -252,6 +265,7 @@ function getCurrentPageTitle() {
   justify-content: space-between;
   padding: 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 .brand {
@@ -305,10 +319,38 @@ function getCurrentPageTitle() {
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0.7;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
 }
 
 .sidebar-toggle:hover {
   background: rgba(255, 255, 255, 0.2);
+  opacity: 1;
+}
+
+.sidebar.collapsed .sidebar-toggle {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.15);
+  width: 28px;
+  height: 28px;
+  padding: 6px;
+}
+
+.collapsed-toggle {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.collapsed-toggle .sidebar-toggle {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.15);
+  width: 32px;
+  height: 32px;
+  padding: 8px;
 }
 
 .sidebar-nav {
@@ -369,6 +411,12 @@ function getCurrentPageTitle() {
   flex-direction: column;
   min-width: 0;
   width: 100%;
+  margin-left: 280px;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar.collapsed + .main-container {
+  margin-left: 80px;
 }
 
 .header {
@@ -535,6 +583,7 @@ function getCurrentPageTitle() {
   
   .main-container {
     width: 100%;
+    margin-left: 0;
   }
   
   .header-content {

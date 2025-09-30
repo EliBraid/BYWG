@@ -11,6 +11,62 @@ const cpuUsage = ref(45)
 const memoryUsage = ref(68)
 const networkTraffic = ref(1250)
 const lastUpdate = ref(new Date())
+// 边缘网关集群数据
+const edgeGateways = ref([
+  {
+    id: 1,
+    name: 'BYWG-Gateway-01',
+    ip: '192.168.1.100',
+    status: 'online',
+    cpuUsage: 45,
+    memoryUsage: 62,
+    networkTraffic: 12.5,
+    deviceCount: 45,
+    protocolCount: 8,
+    uptime: '15天 8小时',
+    lastUpdate: '1分钟前'
+  },
+  {
+    id: 2,
+    name: 'BYWG-Gateway-02',
+    ip: '192.168.1.101',
+    status: 'online',
+    cpuUsage: 38,
+    memoryUsage: 45,
+    networkTraffic: 8.2,
+    deviceCount: 32,
+    protocolCount: 6,
+    uptime: '12天 3小时',
+    lastUpdate: '2分钟前'
+  },
+  {
+    id: 3,
+    name: 'BYWG-Gateway-03',
+    ip: '192.168.1.102',
+    status: 'offline',
+    cpuUsage: 0,
+    memoryUsage: 0,
+    networkTraffic: 0,
+    deviceCount: 0,
+    protocolCount: 0,
+    uptime: '0天 0小时',
+    lastUpdate: '1小时前'
+  },
+  {
+    id: 4,
+    name: 'BYWG-Gateway-04',
+    ip: '192.168.1.103',
+    status: 'maintenance',
+    cpuUsage: 15,
+    memoryUsage: 25,
+    networkTraffic: 2.1,
+    deviceCount: 12,
+    protocolCount: 3,
+    uptime: '3天 12小时',
+    lastUpdate: '30分钟前'
+  }
+])
+
 const alerts = ref([
   { id: 1, level: 'warning', message: '设备 192.168.1.101 连接超时', time: '2分钟前' },
   { id: 2, level: 'info', message: '系统自动备份完成', time: '5分钟前' },
@@ -50,6 +106,15 @@ onUnmounted(() => {
     clearInterval(refreshInterval)
   }
 })
+
+function getGatewayStatusText(status: string) {
+  const statusMap: Record<string, string> = {
+    online: '在线',
+    offline: '离线',
+    maintenance: '维护中'
+  }
+  return statusMap[status] || '未知'
+}
 </script>
 
 <template>
@@ -139,6 +204,93 @@ onUnmounted(() => {
           </div>
           <div class="last-update">
             最后更新: {{ lastUpdate.toLocaleTimeString() }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 边缘网关集群状态 -->
+    <div class="edge-gateways-section">
+      <div class="section-header">
+        <h3>边缘网关集群状态</h3>
+        <div class="gateway-stats">
+          <div class="stat-item">
+            <span class="stat-label">总网关数</span>
+            <span class="stat-value">{{ edgeGateways.length }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">在线网关</span>
+            <span class="stat-value online">{{ edgeGateways.filter(g => g.status === 'online').length }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">离线网关</span>
+            <span class="stat-value offline">{{ edgeGateways.filter(g => g.status === 'offline').length }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="gateways-grid">
+        <div 
+          v-for="gateway in edgeGateways" 
+          :key="gateway.id" 
+          class="gateway-card"
+          :class="{ 'offline': gateway.status === 'offline', 'maintenance': gateway.status === 'maintenance' }"
+        >
+          <div class="gateway-header">
+            <div class="gateway-info">
+              <h4>{{ gateway.name }}</h4>
+              <p class="gateway-ip">{{ gateway.ip }}</p>
+            </div>
+            <div class="gateway-status">
+              <div class="status-indicator" :class="gateway.status">
+                <div class="status-dot"></div>
+                <span>{{ getGatewayStatusText(gateway.status) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="gateway-metrics">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">CPU使用率</div>
+                <div class="metric-bar">
+                  <div class="metric-fill" :style="{ width: gateway.cpuUsage + '%' }"></div>
+                </div>
+                <div class="metric-value">{{ gateway.cpuUsage }}%</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">内存使用率</div>
+                <div class="metric-bar">
+                  <div class="metric-fill" :style="{ width: gateway.memoryUsage + '%' }"></div>
+                </div>
+                <div class="metric-value">{{ gateway.memoryUsage }}%</div>
+              </div>
+            </div>
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">网络流量</div>
+                <div class="metric-value">{{ gateway.networkTraffic }} MB/s</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">运行时间</div>
+                <div class="metric-value">{{ gateway.uptime }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="gateway-details">
+            <div class="detail-item">
+              <span class="detail-label">设备数量:</span>
+              <span class="detail-value">{{ gateway.deviceCount }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">协议数量:</span>
+              <span class="detail-value">{{ gateway.protocolCount }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">最后更新:</span>
+              <span class="detail-value">{{ gateway.lastUpdate }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -662,6 +814,238 @@ onUnmounted(() => {
   
   .stat-item {
     padding: 12px;
+  }
+}
+
+/* 边缘网关样式 */
+.edge-gateways-section {
+  margin-bottom: 24px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 0 4px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.gateway-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.gateway-stats .stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.gateway-stats .stat-label {
+  font-size: 12px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.gateway-stats .stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.gateway-stats .stat-value.online {
+  color: #27ae60;
+}
+
+.gateway-stats .stat-value.offline {
+  color: #e74c3c;
+}
+
+.gateways-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.gateway-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.gateway-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.gateway-card.offline {
+  opacity: 0.6;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.gateway-card.maintenance {
+  border-left: 4px solid #f39c12;
+}
+
+.gateway-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.gateway-info h4 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.gateway-ip {
+  margin: 0;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.gateway-status {
+  display: flex;
+  align-items: center;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-indicator.online {
+  background: rgba(39, 174, 96, 0.1);
+  color: #27ae60;
+}
+
+.status-indicator.offline {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+}
+
+.status-indicator.maintenance {
+  background: rgba(243, 156, 18, 0.1);
+  color: #f39c12;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.gateway-metrics {
+  margin-bottom: 16px;
+}
+
+.metric-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.metric-row:last-child {
+  margin-bottom: 0;
+}
+
+.metric {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: #6c757d;
+  margin-bottom: 8px;
+}
+
+.metric-bar {
+  height: 6px;
+  background: #e9ecef;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4a90e2, #357abd);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.metric-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.gateway-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.detail-label {
+  color: #6c757d;
+}
+
+.detail-value {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+/* 响应式设计 - 边缘网关 */
+@media (max-width: 768px) {
+  .gateways-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .gateway-stats {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .metric-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .gateway-details {
+    grid-template-columns: 1fr;
   }
 }
 </style>
