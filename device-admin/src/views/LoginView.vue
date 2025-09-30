@@ -208,6 +208,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { login, type LoginRequest } from '@/api/auth'
 
 const router = useRouter()
 
@@ -253,38 +254,35 @@ async function handleLogin() {
   isLoading.value = true
   
   try {
-    // 模拟登录验证
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    // 调试信息
-    console.log('登录尝试:', {
+    // 使用真实的API登录
+    const loginRequest: LoginRequest = {
       username: loginForm.username,
       password: loginForm.password,
-      usernameMatch: loginForm.username === 'admin',
-      passwordMatch: loginForm.password === '123456'
-    })
-    
-    // 简单的用户名密码验证
-    if (loginForm.username === 'admin' && loginForm.password === '123456') {
-      // 登录成功，跳转到主界面
-      console.log('登录成功，跳转到仪表板')
-      
-      // 添加路由跳转的调试信息
-      try {
-        await router.push('/dashboard')
-        console.log('路由跳转成功')
-      } catch (routerError) {
-        console.error('路由跳转失败:', routerError)
-        alert('路由跳转失败，请检查路由配置')
-      }
-    } else {
-      // 登录失败，显示错误信息
-      console.log('登录失败：用户名或密码错误')
-      alert('用户名或密码错误！\n\n默认账号：admin\n默认密码：123456')
+      rememberMe: loginForm.rememberMe
     }
-  } catch (error) {
+    
+    const response = await login(loginRequest)
+    
+    // 登录成功，保存用户信息
+    localStorage.setItem('user', JSON.stringify(response.user))
+    localStorage.setItem('auth_token', response.token)
+    
+    console.log('登录成功:', response.user)
+    
+    // 跳转到主界面
+    await router.push('/dashboard')
+    
+  } catch (error: any) {
     console.error('登录失败:', error)
-    alert('登录失败，请重试')
+    
+    // 显示错误信息
+    const errorMessage = error.message || '登录失败，请检查用户名和密码'
+    alert(errorMessage)
+    
+    // 如果是网络错误，提供默认凭据提示
+    if (error.message?.includes('fetch')) {
+      alert('无法连接到服务器，请检查网络连接或使用默认凭据：\n\n用户名：admin\n密码：123456')
+    }
   } finally {
     isLoading.value = false
   }

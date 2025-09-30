@@ -1,11 +1,56 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { listDevices, type DeviceDto } from '@/api/devices'
+import { listDevices, createDevice, updateDevice, deleteDevice, searchDevices, type DeviceDto, type CreateDeviceRequest, type UpdateDeviceRequest } from '@/api/devices'
 
 const devices = ref<DeviceDto[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 const searchQuery = ref('')
+// 新建设备表单与弹窗
+const showCreateModal = ref(false)
+const createForm = ref<CreateDeviceRequest>({
+  name: '',
+  type: '',
+  ipAddress: '',
+  port: 502,
+  protocol: 'ModbusTCP',
+  description: '',
+  gatewayId: undefined,
+  parameters: {}
+})
+
+function openCreateModal() {
+  createForm.value = {
+    name: '',
+    type: '',
+    ipAddress: '',
+    port: 502,
+    protocol: 'ModbusTCP',
+    description: '',
+    gatewayId: undefined,
+    parameters: {}
+  }
+  showCreateModal.value = true
+}
+
+function closeCreateModal() {
+  showCreateModal.value = false
+}
+
+async function submitCreateDevice() {
+  if (loading.value) return
+  loading.value = true
+  error.value = null
+  try {
+    const created = await createDevice(createForm.value)
+    devices.value.unshift(created)
+    showCreateModal.value = false
+  } catch (e: any) {
+    error.value = e.message || String(e)
+  } finally {
+    loading.value = false
+  }
+}
 const statusFilter = ref('all')
 const sortBy = ref('name')
 const sortOrder = ref('asc')
@@ -24,7 +69,8 @@ const filteredDevices = computed(() => {
 
   // 状态过滤
   if (statusFilter.value !== 'all') {
-    filtered = filtered.filter(device => device.status === statusFilter.value)
+    const target = statusFilter.value === 'online' ? 1 : 0
+    filtered = filtered.filter(device => device.status === target)
   }
 
   // 排序
@@ -49,7 +95,7 @@ const filteredDevices = computed(() => {
 
 const deviceStats = computed(() => {
   const total = devices.value.length
-  const online = devices.value.filter(d => d.status === 'online').length
+  const online = devices.value.filter(d => d.status === 1).length
   const offline = total - online
   return { total, online, offline }
 })
@@ -61,6 +107,7 @@ async function fetchDevices() {
     devices.value = await listDevices()
   } catch (e: any) {
     error.value = e.message || String(e)
+    console.error('获取设备列表失败:', e)
   } finally {
     loading.value = false
   }
@@ -75,19 +122,114 @@ function handleSort(field: string) {
   }
 }
 
-function getStatusColor(status: string) {
+function getStatusColor(status: number) {
   switch (status) {
-    case 'online': return '#28a745'
-    case 'offline': return '#dc3545'
+    case 1: return '#28a745' // 在线
+    case 0: return '#dc3545' // 离线
+    case 2: return '#ffc107' // 连接中
+    case 3: return '#dc3545' // 错误
+    case 4: return '#6c757d' // 维护中
     default: return '#6c757d'
   }
 }
 
-function getStatusIcon(status: string) {
+function getStatusIcon(status: number) {
   switch (status) {
-    case 'online': return 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'
-    case 'offline': return 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'
+    case 1: return 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z' // 在线
+    case 0: return 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z' // 离线
+    case 2: return 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z' // 连接中
+    case 3: return 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z' // 错误
+    case 4: return 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z' // 维护中
     default: return 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'
+  }
+}
+
+// 搜索功能
+async function handleSearch() {
+  if (!searchQuery.value.trim()) {
+    await fetchDevices()
+    return
+  }
+  
+  loading.value = true
+  error.value = null
+  
+  try {
+    devices.value = await searchDevices(searchQuery.value)
+  } catch (e: any) {
+    error.value = e.message || String(e)
+    console.error('搜索设备失败:', e)
+  } finally {
+    loading.value = false
+  }
+}
+
+// 创建设备
+async function handleCreateDevice(deviceData: CreateDeviceRequest) {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const newDevice = await createDevice(deviceData)
+    devices.value.push(newDevice)
+    return newDevice
+  } catch (e: any) {
+    error.value = e.message || String(e)
+    console.error('创建设备失败:', e)
+    throw e
+  } finally {
+    loading.value = false
+  }
+}
+
+// 更新设备
+async function handleUpdateDevice(id: number, deviceData: UpdateDeviceRequest) {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const updatedDevice = await updateDevice(id, deviceData)
+    const index = devices.value.findIndex(d => d.id === id)
+    if (index !== -1) {
+      devices.value[index] = updatedDevice
+    }
+    return updatedDevice
+  } catch (e: any) {
+    error.value = e.message || String(e)
+    console.error('更新设备失败:', e)
+    throw e
+  } finally {
+    loading.value = false
+  }
+}
+
+// 删除设备
+async function handleDeleteDevice(id: number) {
+  loading.value = true
+  error.value = null
+  
+  try {
+    await deleteDevice(id)
+    devices.value = devices.value.filter(d => d.id !== id)
+    return true
+  } catch (e: any) {
+    error.value = e.message || String(e)
+    console.error('删除设备失败:', e)
+    throw e
+  } finally {
+    loading.value = false
+  }
+}
+
+// 获取状态文本
+function getStatusText(status: number): string {
+  switch (status) {
+    case 0: return '离线'
+    case 1: return '在线'
+    case 2: return '连接中'
+    case 3: return '错误'
+    case 4: return '维护中'
+    default: return '未知'
   }
 }
 
@@ -96,6 +238,7 @@ onMounted(fetchDevices)
 
 <template>
   <div class="devices-container">
+    
     <!-- 设备统计卡片 -->
     <div class="stats-cards">
       <div class="stat-card total">
@@ -145,7 +288,7 @@ onMounted(fetchDevices)
               <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/>
             </svg>
           </button>
-          <button class="btn-add" disabled>
+          <button type="button" class="btn-add" @click="openCreateModal">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
             </svg>
@@ -238,14 +381,14 @@ onMounted(fetchDevices)
                   <span>{{ device.name }}</span>
                 </div>
               </td>
-              <td class="device-ip">{{ device.ip }}</td>
+              <td class="device-ip">{{ device.ipAddress }}</td>
               <td class="device-status">
                 <div class="status-indicator">
                   <div 
                     class="status-dot" 
-                    :style="{ backgroundColor: getStatusColor(device.status || 'offline') }"
+                    :style="{ backgroundColor: getStatusColor(device.status) }"
                   ></div>
-                  <span class="status-text">{{ device.status || 'offline' }}</span>
+                  <span class="status-text">{{ getStatusText(device.status) }}</span>
                 </div>
             </td>
               <td class="device-time">2分钟前</td>
@@ -272,6 +415,57 @@ onMounted(fetchDevices)
       </div>
     </div>
   </div>
+
+  <!-- 新建设备弹窗 -->
+  <div v-if="showCreateModal" class="modal-mask" @click.self="closeCreateModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>新增设备</h3>
+        <button type="button" class="modal-close" @click="closeCreateModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <label>设备名称</label>
+          <input v-model="createForm.name" placeholder="例如：PLC-001" />
+        </div>
+        <div class="form-row">
+          <label>设备类型</label>
+          <input v-model="createForm.type" placeholder="例如：PLC/Sensor" />
+        </div>
+        <div class="form-row two-cols">
+          <div>
+            <label>IP地址</label>
+            <input v-model="createForm.ipAddress" placeholder="例如：192.168.1.10" />
+          </div>
+          <div>
+            <label>端口</label>
+            <input v-model.number="createForm.port" type="number" min="1" />
+          </div>
+        </div>
+        <div class="form-row">
+          <label>协议</label>
+          <select v-model="createForm.protocol">
+            <option value="ModbusTCP">ModbusTCP</option>
+            <option value="OPCUA">OPCUA</option>
+            <option value="MQTT">MQTT</option>
+            <option value="S7">S7</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>描述</label>
+          <textarea v-model="createForm.description" rows="3" placeholder="可选"></textarea>
+        </div>
+        <div class="form-row">
+          <label>网关ID（可选）</label>
+          <input v-model.number="createForm.gatewayId" type="number" min="1" placeholder="绑定到网关的ID" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" @click="closeCreateModal" :disabled="loading">取消</button>
+        <button type="button" class="btn-primary" @click="submitCreateDevice" :disabled="loading || !createForm.name || !createForm.type || !createForm.ipAddress || !createForm.protocol">保存</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -282,6 +476,132 @@ onMounted(fetchDevices)
   width: 100%;
   max-width: 100%;
   min-height: calc(100vh - 120px);
+}
+/* 新建设备弹窗样式 */
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.modal-container {
+  width: 640px;
+  max-width: calc(100vw - 32px);
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid #eef1f4;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: #6c757d;
+}
+
+.modal-close:hover {
+  color: #2c3e50;
+}
+
+.modal-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-row.two-cols {
+  flex-direction: row;
+  gap: 12px;
+}
+
+.form-row.two-cols > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row label {
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+  padding: 10px 12px;
+  border: 1px solid #e6e9ee;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 12px 16px 16px;
+  border-top: 1px solid #eef1f4;
+}
+
+.btn-primary {
+  padding: 8px 14px;
+  border: none;
+  background: linear-gradient(90deg, #4a90e2, #357abd);
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn {
+  padding: 8px 14px;
+  border: 1px solid #e6e9ee;
+  background: #fff;
+  color: #2c3e50;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn[disabled],
+.btn-primary[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .stats-cards {

@@ -1,0 +1,160 @@
+version: '3.8'
+
+services:
+  # 前端管理界面
+  frontend:
+    build: 
+      context: ./device-admin
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - admin-api
+    environment:
+      - VITE_API_URL=http://localhost:5000
+
+  # 管理后端API
+  admin-api:
+    build:
+      context: ./BYWG.Admin
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=bywg_admin;Username=bywg;Password=bywg123
+      - JWT__SecretKey=your-super-secret-jwt-key-here
+      - JWT__Issuer=BYWG.Admin
+      - JWT__Audience=BYWG.Users
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    volumes:
+      - ./logs/admin:/app/logs
+
+  # 认证服务
+  auth-service:
+    build:
+      context: ./BYWG.Auth
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=bywg_auth;Username=bywg;Password=bywg123
+      - JWT__SecretKey=your-super-secret-jwt-key-here
+    depends_on:
+      - postgres
+      - redis
+
+  # 配置服务
+  config-service:
+    build:
+      context: ./BYWG.Config
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5002"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=bywg_config;Username=bywg;Password=bywg123
+    depends_on:
+      - postgres
+
+  # PostgreSQL数据库
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=bywg
+      - POSTGRES_USER=bywg
+      - POSTGRES_PASSWORD=bywg123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+
+  # Redis缓存
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  # RabbitMQ消息队列
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=bywg
+      - RABBITMQ_DEFAULT_PASS=bywg123
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  # MinIO对象存储
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=bywg
+      - MINIO_ROOT_PASSWORD=bywg123
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+
+  # 网关节点1 (示例)
+  gateway-1:
+    build:
+      context: ./BYWG.Gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Data Source=gateway1.db
+      - ADMIN_API_URL=http://admin-api:5000
+      - GATEWAY_ID=gateway-1
+    depends_on:
+      - admin-api
+    volumes:
+      - ./logs/gateway1:/app/logs
+
+  # 网关节点2 (示例)
+  gateway-2:
+    build:
+      context: ./BYWG.Gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Data Source=gateway2.db
+      - ADMIN_API_URL=http://admin-api:5000
+      - GATEWAY_ID=gateway-2
+    depends_on:
+      - admin-api
+    volumes:
+      - ./logs/gateway2:/app/logs
+
+  # Nginx负载均衡器
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - admin-api
+
+volumes:
+  postgres_data:
+  redis_data:
+  rabbitmq_data:
+  minio_data:
+
+networks:
+  default:
+    name: bywg-network
