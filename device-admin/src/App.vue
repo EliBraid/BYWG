@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const sidebarCollapsed = ref(false)
+
+// 判断是否为登录页面
+const isLoginPage = computed(() => {
+  return route.path === '/login'
+})
 
 function toggleSidebar() {
   sidebarCollapsed.value = !sidebarCollapsed.value
@@ -32,7 +37,13 @@ function getCurrentPageTitle() {
 </script>
 
 <template>
-  <div class="layout">
+  <!-- 登录页面独立布局 -->
+  <div v-if="isLoginPage" class="login-layout">
+    <RouterView />
+  </div>
+  
+  <!-- 主界面布局 -->
+  <div v-else class="layout">
     <!-- 侧边栏 -->
     <aside class="sidebar" :class="{ collapsed: sidebarCollapsed }">
       <div class="sidebar-header">
@@ -229,6 +240,14 @@ function getCurrentPageTitle() {
 </template>
 
 <style scoped>
+/* 登录页面独立布局 */
+.login-layout {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 主界面布局 */
 .layout { 
   display: flex; 
   min-height: 100vh; 
