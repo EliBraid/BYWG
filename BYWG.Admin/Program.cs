@@ -64,7 +64,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["JWT:Issuer"],
             ValidAudience = builder.Configuration["JWT:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]))
+                Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"])),
+            // 开发环境放宽时间漂移，明确设置角色/名称声明类型
+            ClockSkew = TimeSpan.FromMinutes(5),
+            RoleClaimType = System.Security.Claims.ClaimTypes.Role,
+            NameClaimType = System.Security.Claims.ClaimTypes.Name
         };
     });
 

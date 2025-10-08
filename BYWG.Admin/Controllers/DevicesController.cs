@@ -22,6 +22,64 @@ public class DevicesController : ControllerBase
     }
 
     /// <summary>
+    /// 测试设备连接（基础连通性）
+    /// </summary>
+    public class TestConnectionRequest
+    {
+        public string IpAddress { get; set; } = string.Empty;
+        public int Port { get; set; }
+        public string Protocol { get; set; } = ""; // ModbusTCP/OPCUA/MQTT/S7
+        public int TimeoutMs { get; set; } = 3000;
+    }
+
+    public class TestConnectionResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public long? LatencyMs { get; set; }
+    }
+
+    [HttpPost("test-connection")]
+    [Authorize(Roles = "Admin,admin")]
+    public async Task<ActionResult<TestConnectionResponse>> TestConnection([FromBody] TestConnectionRequest request)
+    {
+        try
+        {
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            using var cts = new CancellationTokenSource(request.TimeoutMs > 0 ? request.TimeoutMs : 3000);
+
+            // 基础TCP连通性测试（ModbusTCP/S7/大多数基于TCP的协议）
+            using var client = new System.Net.Sockets.TcpClient();
+            var connectTask = client.ConnectAsync(request.IpAddress, request.Port);
+            var completed = await Task.WhenAny(connectTask, Task.Delay(request.TimeoutMs, cts.Token));
+            if (completed != connectTask || !client.Connected)
+            {
+                return Ok(new TestConnectionResponse
+                {
+                    Success = false,
+                    Message = "连接超时或失败"
+                });
+            }
+            sw.Stop();
+            return Ok(new TestConnectionResponse
+            {
+                Success = true,
+                Message = "连接成功",
+                LatencyMs = sw.ElapsedMilliseconds
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "测试连接失败 {Ip}:{Port}", request.IpAddress, request.Port);
+            return Ok(new TestConnectionResponse
+            {
+                Success = false,
+                Message = ex.Message
+            });
+        }
+    }
+
+    /// <summary>
     /// 获取所有设备
     /// </summary>
     [HttpGet]
@@ -65,7 +123,7 @@ public class DevicesController : ControllerBase
     /// 创建设备
     /// </summary>
     [HttpPost]
-    [Authorize(Roles = "Admin")] // 只有管理员可以创建设备
+    [Authorize(Roles = "Admin,admin")] // 只有管理员可以创建设备
     public async Task<ActionResult<Device>> CreateDevice([FromBody] Device device)
     {
         try
@@ -89,7 +147,7 @@ public class DevicesController : ControllerBase
     /// 更新设备
     /// </summary>
     [HttpPut("{id}")]
-    [Authorize(Roles = "Admin")] // 只有管理员可以更新设备
+    [Authorize(Roles = "Admin,admin")] // 只有管理员可以更新设备
     public async Task<ActionResult<Device>> UpdateDevice(int id, [FromBody] Device device)
     {
         try
@@ -122,7 +180,7 @@ public class DevicesController : ControllerBase
     /// 删除设备
     /// </summary>
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Admin")] // 只有管理员可以删除设备
+    [Authorize(Roles = "Admin,admin")] // 只有管理员可以删除设备
     public async Task<ActionResult> DeleteDevice(int id)
     {
         try

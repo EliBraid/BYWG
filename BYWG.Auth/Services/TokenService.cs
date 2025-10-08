@@ -27,8 +27,14 @@ public class TokenService : ITokenService
             new Claim(ClaimTypes.Email, user.Email)
         };
 
-        // 添加角色声明
-        claims.Add(new Claim(ClaimTypes.Role, user.Role));
+        // 添加角色声明（统一大小写：将 "admin" 规范化为 "Admin"，避免授权大小写不一致）
+        var normalizedRole = string.IsNullOrWhiteSpace(user.Role)
+            ? string.Empty
+            : (user.Role.Equals("admin", StringComparison.OrdinalIgnoreCase) ? "Admin" : user.Role);
+        if (!string.IsNullOrEmpty(normalizedRole))
+        {
+            claims.Add(new Claim(ClaimTypes.Role, normalizedRole));
+        }
 
         var token = new JwtSecurityToken(
             issuer: _configuration["JWT:Issuer"],

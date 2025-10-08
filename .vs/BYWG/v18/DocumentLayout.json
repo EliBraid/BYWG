@@ -3,6 +3,34 @@
   "WorkspaceRootPath": "F:\\CSharp\\BYWG\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|f:\\csharp\\bywg\\bywg.admin\\services\\deviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|solutionrelative:bywg.admin\\services\\deviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|f:\\csharp\\bywg\\bywg.gateway\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|solutionrelative:bywg.gateway\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|f:\\csharp\\bywg\\bywg.gateway\\services\\datacollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|solutionrelative:bywg.gateway\\services\\datacollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|f:\\csharp\\bywg\\bywg.gateway\\controllers\\managementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|solutionrelative:bywg.gateway\\controllers\\managementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|f:\\csharp\\bywg\\bywg.gateway\\data\\gatewaydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|solutionrelative:bywg.gateway\\data\\gatewaydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|f:\\csharp\\bywg\\bywg.admin\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|solutionrelative:bywg.admin\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|f:\\csharp\\bywg\\bywg.admin\\controllers\\gatewaymanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|solutionrelative:bywg.admin\\controllers\\gatewaymanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A5E140E0-887D-31CC-AAA4-7A8FF7B3FA51}|BYWG.Auth\\BYWG.Auth.csproj|f:\\csharp\\bywg\\bywg.auth\\services\\ionlineuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A5E140E0-887D-31CC-AAA4-7A8FF7B3FA51}|BYWG.Auth\\BYWG.Auth.csproj|solutionrelative:bywg.auth\\services\\ionlineuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -25,10 +53,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A5E140E0-887D-31CC-AAA4-7A8FF7B3FA51}|BYWG.Auth\\BYWG.Auth.csproj|f:\\csharp\\bywg\\bywg.auth\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A5E140E0-887D-31CC-AAA4-7A8FF7B3FA51}|BYWG.Auth\\BYWG.Auth.csproj|solutionrelative:bywg.auth\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|f:\\csharp\\bywg\\bywg.admin\\services\\deviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|solutionrelative:bywg.admin\\services\\deviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A5E140E0-887D-31CC-AAA4-7A8FF7B3FA51}|BYWG.Auth\\BYWG.Auth.csproj|f:\\csharp\\bywg\\bywg.auth\\data\\authdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -61,10 +85,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|f:\\csharp\\bywg\\bywg.admin\\data\\admindbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|solutionrelative:bywg.admin\\data\\admindbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|f:\\csharp\\bywg\\bywg.admin\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|solutionrelative:bywg.admin\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|f:\\csharp\\bywg\\bywg.admin\\services\\gatewayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -267,23 +287,101 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Gateway\\Program.cs",
+              "RelativeDocumentMoniker": "BYWG.Gateway\\Program.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Gateway\\Program.cs",
+              "RelativeToolTip": "BYWG.Gateway\\Program.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAAAFAAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T10:06:40.673Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DataCollectionService.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Gateway\\Services\\DataCollectionService.cs",
+              "RelativeDocumentMoniker": "BYWG.Gateway\\Services\\DataCollectionService.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Gateway\\Services\\DataCollectionService.cs",
+              "RelativeToolTip": "BYWG.Gateway\\Services\\DataCollectionService.cs",
+              "ViewState": "AgIAAKAAAAAAAAAAAAAAALAAAABlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T10:06:36.513Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ManagementController.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Gateway\\Controllers\\ManagementController.cs",
+              "RelativeDocumentMoniker": "BYWG.Gateway\\Controllers\\ManagementController.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Gateway\\Controllers\\ManagementController.cs",
+              "RelativeToolTip": "BYWG.Gateway\\Controllers\\ManagementController.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAuwBkAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T10:06:31.698Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "GatewayDbContext.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Gateway\\Data\\GatewayDbContext.cs",
+              "RelativeDocumentMoniker": "BYWG.Gateway\\Data\\GatewayDbContext.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Gateway\\Data\\GatewayDbContext.cs",
+              "RelativeToolTip": "BYWG.Gateway\\Data\\GatewayDbContext.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAAAwDwAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T10:05:00.126Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DeviceService.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Services\\DeviceService.cs",
+              "RelativeDocumentMoniker": "BYWG.Admin\\Services\\DeviceService.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Admin\\Services\\DeviceService.cs",
+              "RelativeToolTip": "BYWG.Admin\\Services\\DeviceService.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAAADcAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T06:51:15.356Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{0174dea2-fdbe-4ef1-8f99-c0beae78880f}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
+              "Title": "GatewayManagementController.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\GatewayManagementController.cs",
+              "RelativeDocumentMoniker": "BYWG.Admin\\Controllers\\GatewayManagementController.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\GatewayManagementController.cs",
+              "RelativeToolTip": "BYWG.Admin\\Controllers\\GatewayManagementController.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAjwCwAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T10:01:23.675Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "UsersController.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Controllers\\UsersController.cs",
               "RelativeDocumentMoniker": "BYWG.Auth\\Controllers\\UsersController.cs",
@@ -296,7 +394,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 7,
               "Title": "IOnlineUserService.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Services\\IOnlineUserService.cs",
               "RelativeDocumentMoniker": "BYWG.Auth\\Services\\IOnlineUserService.cs",
@@ -309,150 +407,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "DeviceService.cs",
-              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Services\\DeviceService.cs",
-              "RelativeDocumentMoniker": "BYWG.Admin\\Services\\DeviceService.cs",
-              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Admin\\Services\\DeviceService.cs",
-              "RelativeToolTip": "BYWG.Admin\\Services\\DeviceService.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAADgvxcAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T06:51:15.356Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "UserService.cs",
-              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Services\\UserService.cs",
-              "RelativeDocumentMoniker": "BYWG.Auth\\Services\\UserService.cs",
-              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\Services\\UserService.cs",
-              "RelativeToolTip": "BYWG.Auth\\Services\\UserService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T06:08:31.339Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "BYWG.Auth\\Controllers\\AuthController.cs",
-              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "BYWG.Auth\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAEEAAAAAAAAAAAAiwFMAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T02:42:27.262Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "appsettings.Development.json",
-              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\appsettings.Development.json",
-              "RelativeDocumentMoniker": "BYWG.Auth\\appsettings.Development.json",
-              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\appsettings.Development.json",
-              "RelativeToolTip": "BYWG.Auth\\appsettings.Development.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-08T02:17:14.523Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "DevicesController.cs",
-              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\DevicesController.cs",
-              "RelativeDocumentMoniker": "BYWG.Admin\\Controllers\\DevicesController.cs",
-              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\DevicesController.cs",
-              "RelativeToolTip": "BYWG.Admin\\Controllers\\DevicesController.cs",
-              "ViewState": "AgIAALIAAAAAAAAAAADwv2MAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T01:32:25.701Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Program.cs",
-              "RelativeDocumentMoniker": "BYWG.Auth\\Program.cs",
-              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\Program.cs",
-              "RelativeToolTip": "BYWG.Auth\\Program.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T01:31:48.362Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Services\\AuthService.cs",
-              "RelativeDocumentMoniker": "BYWG.Auth\\Services\\AuthService.cs",
-              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\Services\\AuthService.cs",
-              "RelativeToolTip": "BYWG.Auth\\Services\\AuthService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBIAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T02:42:14.104Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "GatewaysController.cs",
-              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\GatewaysController.cs",
-              "RelativeDocumentMoniker": "BYWG.Admin\\Controllers\\GatewaysController.cs",
-              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\GatewaysController.cs",
-              "RelativeToolTip": "BYWG.Admin\\Controllers\\GatewaysController.cs",
-              "ViewState": "AgIAANMAAAAAAAAAAAAAAJ4AAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T01:32:29.412Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AuthDbContext.cs",
-              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Data\\AuthDbContext.cs",
-              "RelativeDocumentMoniker": "BYWG.Auth\\Data\\AuthDbContext.cs",
-              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\Data\\AuthDbContext.cs",
-              "RelativeToolTip": "BYWG.Auth\\Data\\AuthDbContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T02:43:08.585Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "IntegrationsController.cs",
-              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\IntegrationsController.cs",
-              "RelativeDocumentMoniker": "BYWG.Admin\\Controllers\\IntegrationsController.cs",
-              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\IntegrationsController.cs",
-              "RelativeToolTip": "BYWG.Admin\\Controllers\\IntegrationsController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T02:17:54.753Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "20251008031549_InitialCreate.cs",
-              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Migrations\\20251008031549_InitialCreate.cs",
-              "RelativeDocumentMoniker": "BYWG.Auth\\Migrations\\20251008031549_InitialCreate.cs",
-              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\Migrations\\20251008031549_InitialCreate.cs",
-              "RelativeToolTip": "BYWG.Auth\\Migrations\\20251008031549_InitialCreate.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T03:18:47.834Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\appsettings.Development.json",
               "RelativeDocumentMoniker": "BYWG.Admin\\appsettings.Development.json",
@@ -466,19 +421,149 @@
             {
               "$type": "Document",
               "DocumentIndex": 12,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "BYWG.Auth\\Services\\UserService.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\Services\\UserService.cs",
+              "RelativeToolTip": "BYWG.Auth\\Services\\UserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T06:08:31.339Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "BYWG.Auth\\Controllers\\AuthController.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "BYWG.Auth\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAiwFMAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T02:42:27.262Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "BYWG.Auth\\appsettings.Development.json",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\appsettings.Development.json",
+              "RelativeToolTip": "BYWG.Auth\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-10-08T02:17:14.523Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "DevicesController.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\DevicesController.cs",
+              "RelativeDocumentMoniker": "BYWG.Admin\\Controllers\\DevicesController.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\DevicesController.cs",
+              "RelativeToolTip": "BYWG.Admin\\Controllers\\DevicesController.cs",
+              "ViewState": "AgIAAOwAAAAAAAAAAADwv50AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T01:32:25.701Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Program.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Program.cs",
+              "RelativeDocumentMoniker": "BYWG.Auth\\Program.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\Program.cs",
+              "RelativeToolTip": "BYWG.Auth\\Program.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T01:31:48.362Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "BYWG.Auth\\Services\\AuthService.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\Services\\AuthService.cs",
+              "RelativeToolTip": "BYWG.Auth\\Services\\AuthService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBIAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T02:42:14.104Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "GatewaysController.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\GatewaysController.cs",
+              "RelativeDocumentMoniker": "BYWG.Admin\\Controllers\\GatewaysController.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\GatewaysController.cs",
+              "RelativeToolTip": "BYWG.Admin\\Controllers\\GatewaysController.cs",
+              "ViewState": "AgIAANMAAAAAAAAAAAAAAJ4AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T01:32:29.412Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AuthDbContext.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Data\\AuthDbContext.cs",
+              "RelativeDocumentMoniker": "BYWG.Auth\\Data\\AuthDbContext.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\Data\\AuthDbContext.cs",
+              "RelativeToolTip": "BYWG.Auth\\Data\\AuthDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T02:43:08.585Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "IntegrationsController.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\IntegrationsController.cs",
+              "RelativeDocumentMoniker": "BYWG.Admin\\Controllers\\IntegrationsController.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\IntegrationsController.cs",
+              "RelativeToolTip": "BYWG.Admin\\Controllers\\IntegrationsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T02:17:54.753Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "20251008031549_InitialCreate.cs",
+              "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Auth\\Migrations\\20251008031549_InitialCreate.cs",
+              "RelativeDocumentMoniker": "BYWG.Auth\\Migrations\\20251008031549_InitialCreate.cs",
+              "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Auth\\Migrations\\20251008031549_InitialCreate.cs",
+              "RelativeToolTip": "BYWG.Auth\\Migrations\\20251008031549_InitialCreate.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T03:18:47.834Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
               "Title": "Program.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Program.cs",
               "RelativeDocumentMoniker": "BYWG.Admin\\Program.cs",
               "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Admin\\Program.cs",
               "RelativeToolTip": "BYWG.Admin\\Program.cs",
-              "ViewState": "AgIAAF4AAAAAAAAAAAAAAEsAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAGIAAAAAAAAAAAAAAE8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-08T02:16:55.849Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 21,
               "Title": "GatewayService.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Services\\GatewayService.cs",
               "RelativeDocumentMoniker": "BYWG.Admin\\Services\\GatewayService.cs",
@@ -491,7 +576,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 20,
               "Title": "AdminDbContext.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Data\\AdminDbContext.cs",
               "RelativeDocumentMoniker": "BYWG.Admin\\Data\\AdminDbContext.cs",
@@ -504,7 +589,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 22,
               "Title": "MonitoringHub.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Hubs\\MonitoringHub.cs",
               "RelativeDocumentMoniker": "BYWG.Admin\\Hubs\\MonitoringHub.cs",
@@ -516,7 +601,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 23,
               "Title": "admin-20250930.txt",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\logs\\admin-20250930.txt",
               "RelativeDocumentMoniker": "BYWG.Admin\\logs\\admin-20250930.txt",
@@ -528,7 +613,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 24,
               "Title": "AsyncModbusTcpProtocol.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\Protocols\\AsyncModbusTcpProtocol.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Protocols\\AsyncModbusTcpProtocol.cs",
@@ -540,7 +625,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 25,
               "Title": "S7Protocol.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\Protocols\\S7Protocol.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Protocols\\S7Protocol.cs",
@@ -552,7 +637,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 26,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "BYWG.Client\\MainWindow.xaml.cs",
@@ -564,7 +649,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 29,
               "Title": "AsyncProtocolManager.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\Protocols\\AsyncProtocolManager.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Protocols\\AsyncProtocolManager.cs",
@@ -576,7 +661,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 27,
               "Title": "AsyncMitsubishiMCProtocol.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\Protocols\\AsyncMitsubishiMCProtocol.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Protocols\\AsyncMitsubishiMCProtocol.cs",
@@ -588,7 +673,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 33,
               "Title": "ClientServiceProxy.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client.Core\\ClientServiceProxy.cs",
               "RelativeDocumentMoniker": "BYWG.Client.Core\\ClientServiceProxy.cs",
@@ -600,7 +685,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 28,
               "Title": "Program.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLibDemo\\Program.cs",
               "RelativeDocumentMoniker": "BYWGLibDemo\\Program.cs",
@@ -612,7 +697,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 30,
               "Title": "ProtocolManagerService.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Server.Core\\ProtocolManagerService.cs",
               "RelativeDocumentMoniker": "BYWG.Server.Core\\ProtocolManagerService.cs",
@@ -624,7 +709,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 31,
               "Title": "OpcUaServiceImpl.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Server.Core\\OpcUaServiceImpl.cs",
               "RelativeDocumentMoniker": "BYWG.Server.Core\\OpcUaServiceImpl.cs",
@@ -636,7 +721,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 32,
               "Title": "OpcUaTypes.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Server.Core\\OpcUaTypes.cs",
               "RelativeDocumentMoniker": "BYWG.Server.Core\\OpcUaTypes.cs",
@@ -648,7 +733,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 36,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client\\MainWindow.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\MainWindow.xaml",
@@ -659,7 +744,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 35,
               "Title": "DataProcessingService.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Server.Core\\Services\\DataProcessingService.cs",
               "RelativeDocumentMoniker": "BYWG.Server.Core\\Services\\DataProcessingService.cs",
@@ -671,7 +756,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 34,
               "Title": "NodeManagerWindow.xaml.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client\\Views\\NodeManagerWindow.xaml.cs",
               "RelativeDocumentMoniker": "BYWG.Client\\Views\\NodeManagerWindow.xaml.cs",
@@ -683,7 +768,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 37,
               "Title": "QuickConnectionDialog.xaml.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client\\Views\\QuickConnectionDialog.xaml.cs",
               "RelativeDocumentMoniker": "BYWG.Client\\Views\\QuickConnectionDialog.xaml.cs",
@@ -695,7 +780,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 38,
               "Title": "QuickConnectionDialog.xaml",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client\\Views\\QuickConnectionDialog.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\Views\\QuickConnectionDialog.xaml",
@@ -706,7 +791,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 43,
               "Title": "DeviceManagementService.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Server.Core\\Services\\DeviceManagementService.cs",
               "RelativeDocumentMoniker": "BYWG.Server.Core\\Services\\DeviceManagementService.cs",
@@ -718,7 +803,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 39,
               "Title": "NodeConfigWindow.xaml.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client\\NodeConfigWindow.xaml.cs",
               "RelativeDocumentMoniker": "BYWG.Client\\NodeConfigWindow.xaml.cs",
@@ -730,7 +815,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 44,
               "Title": "ProtocolConfigWindow.xaml.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client\\ProtocolConfigWindow.xaml.cs",
               "RelativeDocumentMoniker": "BYWG.Client\\ProtocolConfigWindow.xaml.cs",
@@ -742,7 +827,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 46,
               "Title": "ProtocolBenchmarks.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.IntegrationTest\\Benchmarks\\ProtocolBenchmarks.cs",
               "RelativeDocumentMoniker": "BYWG.IntegrationTest\\Benchmarks\\ProtocolBenchmarks.cs",
@@ -754,7 +839,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 47,
               "Title": "README.md",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\README.md",
               "RelativeDocumentMoniker": "BYWGLib\\README.md",
@@ -766,7 +851,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 48,
               "Title": "Program.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.IntegrationTest\\Program.cs",
               "RelativeDocumentMoniker": "BYWG.IntegrationTest\\Program.cs",
@@ -778,7 +863,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 49,
               "Title": "ProtocolConfigurationWizard.xaml",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client\\Views\\ProtocolConfigurationWizard.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\Views\\ProtocolConfigurationWizard.xaml",
@@ -789,7 +874,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 50,
               "Title": "HighPerformanceProtocolExample.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\Examples\\HighPerformanceProtocolExample.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Examples\\HighPerformanceProtocolExample.cs",
@@ -801,7 +886,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 51,
               "Title": "Styles.xaml",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client\\Resources\\Styles.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\Resources\\Styles.xaml",
@@ -812,7 +897,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 52,
               "Title": "DataDashboard.xaml",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client\\Views\\DataDashboard.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\Views\\DataDashboard.xaml",
@@ -823,7 +908,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 59,
+              "DocumentIndex": 64,
               "Title": "AddProtocolDialog.xaml",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG\\Dialogs\\AddProtocolDialog.xaml",
               "RelativeDocumentMoniker": "..\\..\\C#\\BYWG\\BYWG\\Dialogs\\AddProtocolDialog.xaml",
@@ -834,7 +919,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 60,
+              "DocumentIndex": 65,
               "Title": "AddNodeDialog.xaml",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG\\Dialogs\\AddNodeDialog.xaml",
               "RelativeDocumentMoniker": "..\\..\\C#\\BYWG\\BYWG\\Dialogs\\AddNodeDialog.xaml",
@@ -846,7 +931,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 53,
               "Title": "App.xaml",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client\\App.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\App.xaml",
@@ -857,7 +942,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 41,
               "Title": "ProtocolConfigWindow.xaml",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client\\ProtocolConfigWindow.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\ProtocolConfigWindow.xaml",
@@ -868,7 +953,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 42,
               "Title": "NodeConfigWindow.xaml",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Client\\NodeConfigWindow.xaml",
               "RelativeDocumentMoniker": "BYWG.Client\\NodeConfigWindow.xaml",
@@ -879,7 +964,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 54,
               "Title": "Program.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Server\\Program.cs",
               "RelativeDocumentMoniker": "BYWG.Server\\Program.cs",
@@ -891,7 +976,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
+              "DocumentIndex": 55,
               "Title": "HighPerformanceProtocolFactory.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\Protocols\\HighPerformanceProtocolFactory.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Protocols\\HighPerformanceProtocolFactory.cs",
@@ -903,7 +988,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 56,
               "Title": "CRCUtils.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\Utils\\CRCUtils.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Utils\\CRCUtils.cs",
@@ -915,7 +1000,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 57,
               "Title": "DataChangedEventArgs.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\DataChangedEventArgs.cs",
               "RelativeDocumentMoniker": "BYWGLib\\DataChangedEventArgs.cs",
@@ -927,7 +1012,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 53,
+              "DocumentIndex": 58,
               "Title": "DataReceivedEventArgs.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\DataReceivedEventArgs.cs",
               "RelativeDocumentMoniker": "BYWGLib\\DataReceivedEventArgs.cs",
@@ -939,7 +1024,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 54,
+              "DocumentIndex": 59,
               "Title": "IIndustrialProtocol.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\IIndustrialProtocol.cs",
               "RelativeDocumentMoniker": "BYWGLib\\IIndustrialProtocol.cs",
@@ -951,7 +1036,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 45,
               "Title": "VersionInfo.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\VersionInfo.cs",
               "RelativeDocumentMoniker": "BYWGLib\\VersionInfo.cs",
@@ -963,7 +1048,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 58,
+              "DocumentIndex": 63,
               "Title": "ILogger.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\Logging\\ILogger.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Logging\\ILogger.cs",
@@ -975,7 +1060,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 57,
+              "DocumentIndex": 62,
               "Title": "HighPerformanceLogger.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\Logging\\HighPerformanceLogger.cs",
               "RelativeDocumentMoniker": "BYWGLib\\Logging\\HighPerformanceLogger.cs",
@@ -987,7 +1072,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 56,
+              "DocumentIndex": 61,
               "Title": "IndustrialProtocolConfig.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\IndustrialProtocolConfig.cs",
               "RelativeDocumentMoniker": "BYWGLib\\IndustrialProtocolConfig.cs",
@@ -999,7 +1084,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 55,
+              "DocumentIndex": 60,
               "Title": "IndustrialDataItem.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\IndustrialDataItem.cs",
               "RelativeDocumentMoniker": "BYWGLib\\IndustrialDataItem.cs",
@@ -1011,7 +1096,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 40,
               "Title": "ProtocolManager.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWGLib\\ProtocolManager.cs",
               "RelativeDocumentMoniker": "BYWGLib\\ProtocolManager.cs",
@@ -1023,7 +1108,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 61,
+              "DocumentIndex": 66,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG\\MainWindow.xaml",
               "RelativeDocumentMoniker": "..\\..\\C#\\BYWG\\BYWG\\MainWindow.xaml",
@@ -1034,7 +1119,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 62,
+              "DocumentIndex": 67,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWG\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "..\\..\\C#\\BYWG\\BYWG\\MainWindow.xaml.cs",
@@ -1046,7 +1131,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 63,
+              "DocumentIndex": 68,
               "Title": "HighPerformanceMitsubishiMCProtocol.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\HighPerformanceMitsubishiMCProtocol.cs",
               "RelativeDocumentMoniker": "..\\..\\C#\\BYWG\\BYWGLib\\Protocols\\HighPerformanceMitsubishiMCProtocol.cs",
@@ -1058,7 +1143,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 64,
+              "DocumentIndex": 69,
               "Title": "HighPerformanceModbusRTUProtocol.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\HighPerformanceModbusRTUProtocol.cs",
               "RelativeDocumentMoniker": "..\\..\\C#\\BYWG\\BYWGLib\\Protocols\\HighPerformanceModbusRTUProtocol.cs",
@@ -1070,7 +1155,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 65,
+              "DocumentIndex": 70,
               "Title": "HighPerformanceS7Protocol.cs",
               "DocumentMoniker": "F:\\C#\\BYWG\\BYWGLib\\Protocols\\HighPerformanceS7Protocol.cs",
               "RelativeDocumentMoniker": "..\\..\\C#\\BYWG\\BYWGLib\\Protocols\\HighPerformanceS7Protocol.cs",

@@ -13,18 +13,18 @@ namespace BYWG.Gateway.Services;
 public class DataCollectionService : IHostedService, IDisposable
 {
     private readonly ProtocolManager _protocolManager;
-    private readonly GatewayDbContext _context;
+    private readonly IDbContextFactory<GatewayDbContext> _dbFactory;
     private readonly ILogger<DataCollectionService> _logger;
     private readonly Timer _collectionTimer;
     private readonly ConcurrentDictionary<string, object> _latestData = new();
 
     public DataCollectionService(
         ProtocolManager protocolManager,
-        GatewayDbContext context,
+        IDbContextFactory<GatewayDbContext> dbFactory,
         ILogger<DataCollectionService> logger)
     {
         _protocolManager = protocolManager;
-        _context = context;
+        _dbFactory = dbFactory;
         _logger = logger;
         _collectionTimer = new Timer(CollectData, null, Timeout.Infinite, Timeout.Infinite);
     }
@@ -36,9 +36,20 @@ public class DataCollectionService : IHostedService, IDisposable
         // 从数据库加载协议配置
         await LoadProtocolConfigurations();
 
-        // 启动协议管理器
-        _protocolManager.StartAllProtocols();
-        _protocolManager.StartPolling();
+        // 仅当存在启用的协议配置时才启动协议与轮询
+        using (var ctx = await _dbFactory.CreateDbContextAsync())
+        {
+            bool hasEnabled = await ctx.ProtocolConfigs.AnyAsync(p => p.IsEnabled);
+            if (hasEnabled)
+            {
+                _protocolManager.StartAllProtocols();
+                _protocolManager.StartPolling();
+            }
+            else
+            {
+                _logger.LogInformation("未发现启用的协议配置，暂不启动轮询");
+            }
+        }
 
         // 订阅数据变化事件
         _protocolManager.DataChanged += OnDataChanged;
@@ -65,7 +76,8 @@ public class DataCollectionService : IHostedService, IDisposable
     {
         try
         {
-            var configs = await _context.ProtocolConfigs
+            using var context = await _dbFactory.CreateDbContextAsync();
+            var configs = await context.ProtocolConfigs
                 .Where(p => p.IsEnabled)
                 .ToListAsync();
 
@@ -74,7 +86,7 @@ public class DataCollectionService : IHostedService, IDisposable
                 var protocolConfig = new IndustrialProtocolConfig
                 {
                     Name = config.Name,
-                    ProtocolType = config.ProtocolType,
+                    Type = config.ProtocolType,
                     Parameters = config.Parameters,
                     Enabled = config.IsEnabled
                 };
@@ -94,7 +106,8 @@ public class DataCollectionService : IHostedService, IDisposable
         try
         {
             // 获取所有启用的协议
-            var protocols = _context.ProtocolConfigs
+            using var context = _dbFactory.CreateDbContext();
+            var protocols = context.ProtocolConfigs
                 .Where(p => p.IsEnabled)
                 .ToList();
 
@@ -123,9 +136,9 @@ public class DataCollectionService : IHostedService, IDisposable
     {
         try
         {
-            foreach (var item in e.DataItems)
+            foreach (var item in e.ChangedItems)
             {
-                var key = $"{item.ProtocolName}.{item.Name}";
+                var key = item.Name;
                 _latestData[key] = item.Value;
 
                 _logger.LogDebug("数据更新: {Key} = {Value}", key, item.Value);
@@ -153,6 +166,26 @@ public class DataCollectionService : IHostedService, IDisposable
         return _latestData
             .Where(kvp => kvp.Key.StartsWith($"{protocolName}."))
             .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+    }
+
+    // --- 管理接口需要的简单状态/控制 ---
+    public object GetStatusSummary()
+    {
+        using var context = _dbFactory.CreateDbContext();
+        return new
+        {
+            protocols = context.ProtocolConfigs.Where(p => p.IsEnabled).Select(p => p.Name).ToList(),
+            items = _latestData.Count
+        };
+    }
+
+    public void ReloadConfiguration()
+    {
+        // 这里可以扩展为从 Admin 拉取配置；当前简单实现为重启协议轮询
+        _protocolManager.StopAllProtocols();
+        _protocolManager.StopPolling();
+        _protocolManager.StartAllProtocols();
+        _protocolManager.StartPolling();
     }
 
     public void Dispose()

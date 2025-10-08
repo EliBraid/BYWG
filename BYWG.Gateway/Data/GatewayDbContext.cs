@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using BYWG.Shared.Models;
+using GatewayModel = BYWG.Shared.Models.Gateway;
 
 namespace BYWG.Gateway.Data;
 
@@ -20,7 +21,7 @@ public class GatewayDbContext : DbContext
     /// <summary>
     /// 网关表
     /// </summary>
-    public DbSet<Gateway> Gateways { get; set; }
+    public DbSet<GatewayModel> Gateways { get; set; }
 
     /// <summary>
     /// 数据点表
@@ -57,13 +58,26 @@ public class GatewayDbContext : DbContext
         });
 
         // 配置网关实体
-        modelBuilder.Entity<Gateway>(entity =>
+        modelBuilder.Entity<GatewayModel>(entity =>
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
             entity.Property(e => e.IpAddress).IsRequired().HasMaxLength(45);
             entity.Property(e => e.Description).HasMaxLength(500);
             entity.Property(e => e.Version).HasMaxLength(50);
+
+            // 将系统信息配置为 Owned 类型，避免需要主键
+            entity.OwnsOne(e => e.SystemInfo, owned =>
+            {
+                owned.Property(p => p.CpuUsage);
+                owned.Property(p => p.MemoryUsage);
+                owned.Property(p => p.DiskUsage);
+                owned.Property(p => p.NetworkTraffic);
+                owned.Property(p => p.Uptime);
+                owned.Property(p => p.OperatingSystem);
+                owned.Property(p => p.DeviceCount);
+                owned.Property(p => p.ProtocolCount);
+            });
         });
 
         // 配置数据点实体

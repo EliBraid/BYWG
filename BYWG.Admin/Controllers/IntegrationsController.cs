@@ -27,7 +27,7 @@ public class IntegrationsController : ControllerBase
     }
 
     [HttpPost("opcua/config")]
-    [Authorize(Roles = "Admin")] // 只有管理员可以保存配置
+    [Authorize(Roles = "Admin,admin")] // 只有管理员可以保存配置
     public IActionResult SaveOpcUaConfig([FromBody] object config)
     {
         return Ok(new { message = "OPC UA configuration saved successfully" });

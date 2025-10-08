@@ -12,7 +12,7 @@ namespace BYWG.Gateway.Services;
 /// </summary>
 public class CommunicationService : IHostedService, IDisposable
 {
-    private readonly GatewayDbContext _context;
+    private readonly IDbContextFactory<GatewayDbContext> _dbFactory;
     private readonly ILogger<CommunicationService> _logger;
     private readonly HttpClient _httpClient;
     private readonly Timer _heartbeatTimer;
@@ -21,11 +21,11 @@ public class CommunicationService : IHostedService, IDisposable
     private readonly string _gatewayId;
 
     public CommunicationService(
-        GatewayDbContext context,
+        IDbContextFactory<GatewayDbContext> dbFactory,
         ILogger<CommunicationService> logger,
         IHttpClientFactory httpClientFactory)
     {
-        _context = context;
+        _dbFactory = dbFactory;
         _logger = logger;
         _httpClient = httpClientFactory.CreateClient();
         _adminApiUrl = Environment.GetEnvironmentVariable("ADMIN_API_URL") ?? "http://localhost:5000";
@@ -83,8 +83,8 @@ public class CommunicationService : IHostedService, IDisposable
                     DiskUsage = GetDiskUsage(),
                     Uptime = Environment.TickCount64,
                     OperatingSystem = Environment.OSVersion.ToString(),
-                    DeviceCount = await _context.Devices.CountAsync(),
-                    ProtocolCount = await _context.ProtocolConfigs.CountAsync()
+                    DeviceCount = await (await _dbFactory.CreateDbContextAsync()).Devices.CountAsync(),
+                    ProtocolCount = await (await _dbFactory.CreateDbContextAsync()).ProtocolConfigs.CountAsync()
                 }
             };
 
@@ -144,8 +144,8 @@ public class CommunicationService : IHostedService, IDisposable
                     MemoryUsage = GetMemoryUsage(),
                     DiskUsage = GetDiskUsage(),
                     Uptime = Environment.TickCount64,
-                    DeviceCount = await _context.Devices.CountAsync(),
-                    ProtocolCount = await _context.ProtocolConfigs.CountAsync()
+                    DeviceCount = await (await _dbFactory.CreateDbContextAsync()).Devices.CountAsync(),
+                    ProtocolCount = await (await _dbFactory.CreateDbContextAsync()).ProtocolConfigs.CountAsync()
                 }
             };
 
@@ -185,7 +185,8 @@ public class CommunicationService : IHostedService, IDisposable
     {
         try
         {
-            var devices = await _context.Devices.ToListAsync();
+            using var context = await _dbFactory.CreateDbContextAsync();
+            var devices = await context.Devices.ToListAsync();
             var deviceStatuses = devices.Select(d => new
             {
                 DeviceId = d.Id,

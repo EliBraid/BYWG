@@ -1,13 +1,27 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { listDevices, createDevice, updateDevice, deleteDevice, searchDevices, type DeviceDto, type CreateDeviceRequest, type UpdateDeviceRequest } from '@/api/devices'
+import { listDevices, createDevice, updateDevice, deleteDevice, searchDevices, getDevicePoints, importDevicePointsFromTemplate, createDevicePoint, updateDevicePoint, deleteDevicePoint, testDeviceConnection, type DeviceDto, type CreateDeviceRequest, type UpdateDeviceRequest, type DevicePointDto, type TestConnectionRequest, type TestConnectionResponse } from '@/api/devices'
+import { reloadDevice, getGatewayConfig, getGatewayLatestSnapshot } from '@/api/gateways'
+import { listProtocolTemplates, type ProtocolTemplateDto } from '@/api/devices'
 
 const devices = ref<DeviceDto[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 const searchQuery = ref('')
+// 设备详情-点位
+const showPointsModal = ref(false)
+const selectedDeviceId = ref<number | null>(null)
+const selectedDeviceName = ref('')
+const pointsLoading = ref(false)
+const devicePoints = ref<DevicePointDto[]>([])
+const latestSnapshot = ref<Record<string, any>>({})
+let latestTimer: number | null = null
+const importTemplateId = ref<number | null>(null)
+const templateOptions = ref<ProtocolTemplateDto[]>([])
 // 新建设备表单与弹窗
 const showCreateModal = ref(false)
+const isEditing = ref(false)
+const editDeviceId = ref<number | null>(null)
 const createForm = ref<CreateDeviceRequest>({
   name: '',
   type: '',
@@ -31,6 +45,8 @@ function openCreateModal() {
     parameters: {}
   }
   showCreateModal.value = true
+  isEditing.value = false
+  editDeviceId.value = null
 }
 
 function closeCreateModal() {
@@ -42,14 +58,59 @@ async function submitCreateDevice() {
   loading.value = true
   error.value = null
   try {
-    const created = await createDevice(createForm.value)
-    devices.value.unshift(created)
+    if (isEditing.value && editDeviceId.value != null) {
+      const updated = await updateDevice(editDeviceId.value, createForm.value)
+      const idx = devices.value.findIndex(d => d.id === editDeviceId.value)
+      if (idx !== -1) devices.value[idx] = updated
+    } else {
+      const created = await createDevice(createForm.value)
+      devices.value.unshift(created)
+    }
     showCreateModal.value = false
   } catch (e: any) {
     error.value = e.message || String(e)
   } finally {
     loading.value = false
   }
+}
+
+async function testConnection() {
+  if (!createForm.value.ipAddress || !createForm.value.port) {
+    alert('请填写 IP 和端口')
+    return
+  }
+  try {
+    const req: TestConnectionRequest = {
+      ipAddress: createForm.value.ipAddress,
+      port: createForm.value.port,
+      protocol: createForm.value.protocol,
+      timeoutMs: 3000
+    }
+    const resp: TestConnectionResponse = await testDeviceConnection(req)
+    if (resp.success) {
+      alert(`连接成功，延迟 ${resp.latencyMs ?? 0} ms`)
+    } else {
+      alert(`连接失败：${resp.message}`)
+    }
+  } catch (e: any) {
+    alert('连接测试异常：' + (e.message || String(e)))
+  }
+}
+
+function openEditModal(device: DeviceDto) {
+  createForm.value = {
+    name: device.name,
+    type: device.type,
+    ipAddress: device.ipAddress,
+    port: device.port,
+    protocol: device.protocol,
+    description: device.description || '',
+    gatewayId: device.gatewayId,
+    parameters: device.parameters || {}
+  }
+  isEditing.value = true
+  editDeviceId.value = device.id
+  showCreateModal.value = true
 }
 const statusFilter = ref('all')
 const sortBy = ref('name')
@@ -63,7 +124,7 @@ const filteredDevices = computed(() => {
   if (searchQuery.value) {
     filtered = filtered.filter(device => 
       device.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      device.ip.includes(searchQuery.value)
+      device.ipAddress.includes(searchQuery.value)
     )
   }
 
@@ -75,14 +136,11 @@ const filteredDevices = computed(() => {
 
   // 排序
   filtered.sort((a, b) => {
-    let aValue = a[sortBy.value as keyof DeviceDto]
-    let bValue = b[sortBy.value as keyof DeviceDto]
-    
-    if (typeof aValue === 'string' && typeof bValue === 'string') {
-      aValue = aValue.toLowerCase()
-      bValue = bValue.toLowerCase()
-    }
-    
+    const aRaw = a[sortBy.value as keyof DeviceDto]
+    const bRaw = b[sortBy.value as keyof DeviceDto]
+    const aValue = typeof aRaw === 'string' ? aRaw.toLowerCase() : aRaw
+    const bValue = typeof bRaw === 'string' ? bRaw.toLowerCase() : bRaw
+    if (aValue === undefined || bValue === undefined) return 0
     if (sortOrder.value === 'asc') {
       return aValue < bValue ? -1 : aValue > bValue ? 1 : 0
     } else {
@@ -110,6 +168,109 @@ async function fetchDevices() {
     console.error('获取设备列表失败:', e)
   } finally {
     loading.value = false
+  }
+}
+
+async function openDeviceDetails(device: DeviceDto) {
+  selectedDeviceId.value = device.id
+  selectedDeviceName.value = device.name
+  showPointsModal.value = true
+  pointsLoading.value = true
+  try {
+    devicePoints.value = await getDevicePoints(device.id)
+    // 获取最新快照
+    latestSnapshot.value = await getGatewayLatestSnapshot()
+    // 模板列表
+    templateOptions.value = await listProtocolTemplates()
+    // 开启定时刷新
+    if (latestTimer) { clearInterval(latestTimer) }
+    latestTimer = window.setInterval(async () => {
+      latestSnapshot.value = await getGatewayLatestSnapshot()
+    }, 5000)
+  } catch (e: any) {
+    alert('加载点位失败：' + (e.message || String(e)))
+  } finally {
+    pointsLoading.value = false
+  }
+}
+
+function closePointsModal() {
+  showPointsModal.value = false
+  selectedDeviceId.value = null
+  selectedDeviceName.value = ''
+  devicePoints.value = []
+  latestSnapshot.value = {}
+  if (latestTimer) { clearInterval(latestTimer); latestTimer = null }
+}
+
+async function handleImportTemplate() {
+  if (!selectedDeviceId.value || !importTemplateId.value) return
+  try {
+    await importDevicePointsFromTemplate(selectedDeviceId.value, importTemplateId.value)
+    // 重新加载点位
+    devicePoints.value = await getDevicePoints(selectedDeviceId.value)
+    alert('导入成功')
+  } catch (e: any) {
+    alert('导入失败：' + (e.message || String(e)))
+  }
+}
+
+function getPointLatestValue(p: DevicePointDto) {
+  // 快照key示例：ProtocolName.PointName 或 自定义映射；此处先按地址或名称两种尝试
+  if (!latestSnapshot.value) return '-'
+  const byAddress = latestSnapshot.value[p.address] || latestSnapshot.value[String(p.address)]
+  if (byAddress !== undefined) return byAddress
+  const byName = latestSnapshot.value[p.name]
+  if (byName !== undefined) return byName
+  return '-'
+}
+
+async function savePoint(p: DevicePointDto) {
+  if (!selectedDeviceId.value) return
+  try {
+    const updated = await updateDevicePoint(selectedDeviceId.value, p.id, {
+      name: p.name,
+      address: p.address,
+      dataType: p.dataType,
+      unit: p.unit,
+      access: p.access,
+      intervalMs: p.intervalMs,
+      enabled: p.enabled
+    })
+    Object.assign(p, updated)
+    alert('保存成功')
+  } catch (e: any) {
+    alert('保存失败：' + (e.message || String(e)))
+  }
+}
+
+async function removePoint(p: DevicePointDto) {
+  if (!selectedDeviceId.value) return
+  if (!confirm(`确认删除点位 ${p.name}?`)) return
+  try {
+    await deleteDevicePoint(selectedDeviceId.value, p.id)
+    devicePoints.value = devicePoints.value.filter(x => x.id !== p.id)
+    alert('删除成功')
+  } catch (e: any) {
+    alert('删除失败：' + (e.message || String(e)))
+  }
+}
+
+async function addPoint() {
+  if (!selectedDeviceId.value) return
+  try {
+    const created = await createDevicePoint(selectedDeviceId.value, {
+      name: 'NewPoint',
+      address: '40001',
+      dataType: 'INT16',
+      unit: '',
+      access: 'R',
+      intervalMs: 1000,
+      enabled: true
+    })
+    devicePoints.value.push(created)
+  } catch (e: any) {
+    alert('新增失败：' + (e.message || String(e)))
   }
 }
 
@@ -234,6 +395,15 @@ function getStatusText(status: number): string {
 }
 
 onMounted(fetchDevices)
+
+async function handleReload(deviceId: number) {
+  try {
+    await reloadDevice(deviceId)
+    alert('已触发网关重载')
+  } catch (e: any) {
+    alert('重载失败：' + (e.message || String(e)))
+  }
+}
 </script>
 
 <template>
@@ -284,14 +454,10 @@ onMounted(fetchDevices)
         <h3>设备列表</h3>
         <div class="panel-actions">
           <button class="btn-refresh" @click="fetchDevices" :disabled="loading">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/>
-            </svg>
+            <i class="fas fa-rotate-right"></i>
           </button>
           <button type="button" class="btn-add" @click="openCreateModal">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
-            </svg>
+            <i class="fas fa-plus" style="margin-right:8px"></i>
             添加设备
           </button>
         </div>
@@ -393,20 +559,17 @@ onMounted(fetchDevices)
             </td>
               <td class="device-time">2分钟前</td>
               <td class="device-actions">
-                <button class="btn-action" title="查看详情">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor"/>
-                  </svg>
+                <button class="btn-action" title="查看详情" @click="openDeviceDetails(device)">
+                  <i class="fas fa-eye"></i>
                 </button>
-                <button class="btn-action" title="编辑设备" disabled>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/>
-                  </svg>
+                <button class="btn-action" title="编辑设备" @click="openEditModal(device)">
+                  <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn-action danger" title="删除设备" disabled>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill="currentColor"/>
-                  </svg>
+                <button class="btn-action danger" title="删除设备" @click="handleDeleteDevice(device.id)">
+                  <i class="fas fa-trash"></i>
+                </button>
+                <button class="btn-action" title="重载采集" @click="handleReload(device.id)">
+                  <i class="fas fa-sync-alt"></i>
                 </button>
             </td>
           </tr>
@@ -463,8 +626,86 @@ onMounted(fetchDevices)
         </div>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn" @click="testConnection" :disabled="loading"><i class="fas fa-plug" style="margin-right:6px"></i>测试连接</button>
         <button type="button" class="btn" @click="closeCreateModal" :disabled="loading">取消</button>
         <button type="button" class="btn-primary" @click="submitCreateDevice" :disabled="loading || !createForm.name || !createForm.type || !createForm.ipAddress || !createForm.protocol">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 设备点位弹窗 -->
+  <div v-if="showPointsModal" class="modal-mask" @click.self="closePointsModal">
+    <div class="modal-container" style="width: 880px">
+      <div class="modal-header">
+        <h3>设备点位 - {{ selectedDeviceName }}</h3>
+        <button type="button" class="modal-close" @click="closePointsModal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div v-if="pointsLoading" class="loading-state">
+          <div class="loading-spinner"></div>
+          <span>加载点位中...</span>
+        </div>
+        <div v-else>
+          <div class="filters" style="margin-bottom:12px">
+            <select v-model.number="importTemplateId" class="filter-select" style="max-width:260px">
+              <option :value="null">选择模板</option>
+              <option v-for="t in templateOptions" :key="t.id" :value="t.id">{{ t.name }} ({{ t.protocol }})</option>
+            </select>
+            <button class="btn" @click="handleImportTemplate" :disabled="!selectedDeviceId || !importTemplateId">从模板导入</button>
+          </div>
+          <table class="devices-table">
+            <thead>
+              <tr>
+                <th>名称</th>
+                <th>地址/节点</th>
+                <th>类型</th>
+                <th>单位</th>
+                <th>读写</th>
+                <th>周期(ms)</th>
+                <th>最近值</th>
+                <th>启用</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="p in devicePoints" :key="p.id">
+                <td><input v-model="p.name" class="search-input" style="max-width:160px" /></td>
+                <td><input v-model="p.address" class="search-input" style="max-width:140px" /></td>
+                <td><input v-model="p.dataType" class="search-input" style="max-width:100px" /></td>
+                <td><input v-model="p.unit" class="search-input" style="max-width:80px" /></td>
+                <td>
+                  <select v-model="p.access" class="filter-select" style="max-width:80px">
+                    <option value="R">R</option>
+                    <option value="RW">RW</option>
+                  </select>
+                </td>
+                <td><input v-model.number="p.intervalMs" type="number" class="search-input" style="max-width:100px" /></td>
+                <td>{{ getPointLatestValue(p) }}</td>
+                <td>
+                  <select v-model="p.enabled" class="filter-select" style="max-width:80px">
+                    <option :value="true">是</option>
+                    <option :value="false">否</option>
+                  </select>
+                </td>
+                <td>
+                  <button class="btn" @click="savePoint(p)">保存</button>
+                  <button class="btn danger" @click="removePoint(p)">删除</button>
+                </td>
+              </tr>
+              <tr v-if="devicePoints.length === 0">
+                <td colspan="7" style="text-align:center;color:#6c757d;">暂无点位</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top:12px">
+            <button class="btn" @click="addPoint">新增点位</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" @click="closePointsModal">关闭</button>
       </div>
     </div>
   </div>
