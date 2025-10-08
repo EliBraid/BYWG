@@ -46,6 +46,12 @@ public class User
     public string? Department { get; set; }
 
     /// <summary>
+    /// 密码哈希
+    /// </summary>
+    [Required]
+    public string PasswordHash { get; set; } = string.Empty;
+
+    /// <summary>
     /// 角色
     /// </summary>
     [Required]
@@ -88,6 +94,16 @@ public class User
 /// </summary>
 public class UserPreferences
 {
+    /// <summary>
+    /// 偏好设置ID
+    /// </summary>
+    public int Id { get; set; }
+
+    /// <summary>
+    /// 用户ID
+    /// </summary>
+    public int UserId { get; set; }
+
     /// <summary>
     /// 语言设置
     /// </summary>

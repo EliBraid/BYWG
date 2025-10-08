@@ -46,12 +46,12 @@ builder.Services.AddDbContext<AdminDbContext>(options =>
     }
     else
     {
-        // 本地开发无数据库时使用SQLite文件，便于快速跑通
-        options.UseSqlite("Data Source=bywg_admin_dev.db");
+        // 使用PostgreSQL数据库
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
     }
 });
 
-// 添加JWT认证
+// 添加JWT认证 - 验证来自 BYWG.Auth 的token
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using BYWG.Admin.Services;
 using BYWG.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BYWG.Admin.Controllers;
 
@@ -64,6 +65,7 @@ public class DevicesController : ControllerBase
     /// 创建设备
     /// </summary>
     [HttpPost]
+    [Authorize(Roles = "Admin")] // 只有管理员可以创建设备
     public async Task<ActionResult<Device>> CreateDevice([FromBody] Device device)
     {
         try
@@ -87,6 +89,7 @@ public class DevicesController : ControllerBase
     /// 更新设备
     /// </summary>
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")] // 只有管理员可以更新设备
     public async Task<ActionResult<Device>> UpdateDevice(int id, [FromBody] Device device)
     {
         try
@@ -119,6 +122,7 @@ public class DevicesController : ControllerBase
     /// 删除设备
     /// </summary>
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")] // 只有管理员可以删除设备
     public async Task<ActionResult> DeleteDevice(int id)
     {
         try

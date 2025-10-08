@@ -37,7 +37,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // 添加数据库
 builder.Services.AddDbContext<AuthDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // 添加身份认证
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

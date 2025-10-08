@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using BYWG.Admin.Services;
 using BYWG.Shared.Models;
 
@@ -9,6 +10,7 @@ namespace BYWG.Admin.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/gateways")]
+[Authorize] // 需要认证
 public class GatewaysController : ControllerBase
 {
     private readonly IGatewayService _gatewayService;
@@ -64,6 +66,7 @@ public class GatewaysController : ControllerBase
     /// 创建网关
     /// </summary>
     [HttpPost]
+    [Authorize(Roles = "Admin")] // 只有管理员可以创建网关
     public async Task<ActionResult<Gateway>> CreateGateway([FromBody] Gateway gateway)
     {
         try
@@ -87,6 +90,7 @@ public class GatewaysController : ControllerBase
     /// 更新网关
     /// </summary>
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")] // 只有管理员可以更新网关
     public async Task<ActionResult<Gateway>> UpdateGateway(int id, [FromBody] Gateway gateway)
     {
         try
@@ -119,6 +123,7 @@ public class GatewaysController : ControllerBase
     /// 删除网关
     /// </summary>
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")] // 只有管理员可以删除网关
     public async Task<ActionResult> DeleteGateway(int id)
     {
         try
