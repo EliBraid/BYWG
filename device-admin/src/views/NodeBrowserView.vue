@@ -205,7 +205,9 @@
       <div class="modal-content" @click.stop>
         <div class="modal-header">
           <h3>连接 OPC UA 服务器</h3>
-          <button @click="closeConnectionModal" class="close-btn">×</button>
+          <button @click="closeConnectionModal" class="close-btn">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="connectToServer" class="connection-form">
@@ -1034,7 +1036,6 @@ onMounted(() => {
 .close-btn {
   background: none;
   border: none;
-  font-size: 24px;
   color: #6c757d;
   cursor: pointer;
   padding: 0;
@@ -1043,6 +1044,10 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.close-btn i {
+  font-size: 16px;
 }
 
 .modal-body {

@@ -1,10 +1,108 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { getCurrentUser, getRoleInfo, formatLastLogin } from './utils/auth'
+import { sendHeartbeat, getOnlineCount } from './api/auth'
 
 const route = useRoute()
 const sidebarCollapsed = ref(false)
 const showUserMenu = ref(false)
+
+// 用户信息 - 从localStorage或API获取
+const currentUser = ref({
+  id: 0,
+  username: '',
+  fullName: '',
+  email: '',
+  role: '',
+  roleName: '',
+  avatar: '',
+  lastLoginAt: '',
+  department: '',
+  phone: ''
+})
+
+// 从localStorage获取用户信息
+function loadUserInfo() {
+  try {
+    const userInfoStr = localStorage.getItem('userInfo')
+    if (userInfoStr) {
+      const user = JSON.parse(userInfoStr)
+      currentUser.value = {
+        id: user.id || 0,
+        username: user.username || '',
+        fullName: user.fullName || user.username || '',
+        email: user.email || '',
+        role: user.role || '',
+        roleName: getRoleInfo(user.role || '').name,
+        avatar: user.avatar || '',
+        lastLoginAt: user.lastLoginAt || '',
+        department: user.department || '技术部',
+        phone: user.phone || ''
+      }
+      console.log('从localStorage加载用户信息:', currentUser.value)
+    } else {
+      console.log('localStorage中没有用户信息')
+    }
+  } catch (error) {
+    console.error('加载用户信息失败:', error)
+  }
+}
+
+
+// 获取当前用户角色信息
+const userRoleInfo = computed(() => getRoleInfo(currentUser.value.role))
+
+// 系统状态
+const systemStatus = ref({
+  status: 'checking', // checking, online, offline, error
+  message: '检查中...'
+})
+const onlineCount = ref(0)
+
+// 权限检查函数（支持后端校验）
+async function hasPermission(permission: string): Promise<boolean> {
+  // 首先尝试后端权限校验
+  try {
+    const hasBackendPermission = await checkPermission(permission)
+    if (hasBackendPermission !== null) {
+      return hasBackendPermission
+    }
+  } catch (error) {
+    console.log('后端权限校验失败，使用前端权限校验')
+  }
+  
+  // 如果后端不可用，使用前端权限校验
+  const role = currentUser.value.role
+  
+  // 权限映射
+  const permissions: Record<string, string[]> = {
+    admin: ['system', 'user_management', 'device_management', 'monitoring', 'all'],
+    operator: ['device_management', 'monitoring'],
+    technician: ['device_management', 'monitoring', 'system'],
+    viewer: ['monitoring']
+  }
+  
+  const userPermissions = permissions[role] || []
+  return userPermissions.includes(permission) || userPermissions.includes('all')
+}
+
+// 同步权限检查函数（用于模板中的v-if）
+function hasPermissionSync(permission: string): boolean {
+  const role = currentUser.value.role
+  
+  // 权限映射
+  const permissions: Record<string, string[]> = {
+    admin: ['system', 'user_management', 'device_management', 'monitoring', 'all'],
+    operator: ['device_management', 'monitoring'],
+    technician: ['device_management', 'monitoring', 'system'],
+    viewer: ['monitoring']
+  }
+  
+  const userPermissions = permissions[role] || []
+  return userPermissions.includes(permission) || userPermissions.includes('all')
+}
+
 
 // 判断是否为登录页面
 const isLoginPage = computed(() => {
@@ -56,18 +154,201 @@ function goToSettings() {
   window.location.href = '/settings'
 }
 
+// 刷新用户信息
+async function refreshUserInfo() {
+  showUserMenu.value = false
+  console.log('刷新用户信息...')
+  await fetchCurrentUser()
+  console.log('用户信息已刷新:', currentUser.value)
+}
+
+// 检查系统状态
+async function checkSystemStatus() {
+  try {
+    systemStatus.value = {
+      status: 'checking',
+      message: '检查中...'
+    }
+
+    // 检查认证服务状态
+    const authResponse = await fetch('https://localhost:52923/api/auth/me', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (authResponse.ok) {
+      systemStatus.value = {
+        status: 'online',
+        message: '系统正常'
+      }
+    } else if (authResponse.status === 401) {
+      systemStatus.value = {
+        status: 'error',
+        message: '认证失败'
+      }
+    } else {
+      systemStatus.value = {
+        status: 'offline',
+        message: '服务异常'
+      }
+    }
+  } catch (error) {
+    console.error('系统状态检查失败:', error)
+    systemStatus.value = {
+      status: 'offline',
+      message: '连接失败'
+    }
+  }
+}
+
 function goToHelp() {
   showUserMenu.value = false
   window.location.href = '/help'
 }
 
-function logout() {
+async function logout() {
   showUserMenu.value = false
   if (confirm('确定要注销登录吗？')) {
-    // 清除登录状态
+    // 清除心跳定时器
+    if (heartbeatTimer) {
+      clearInterval(heartbeatTimer)
+      heartbeatTimer = null
+    }
+    
+    // 调用后端注销API（清除在线状态）
+    try {
+      await fetch('https://localhost:52923/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      })
+    } catch (error) {
+      console.warn('注销API调用失败:', error)
+    }
+    
+    // 清除本地状态
+    localStorage.removeItem('token')
+    localStorage.removeItem('userInfo')
     localStorage.removeItem('isLoggedIn')
+    
+    // 重置用户信息
+    currentUser.value = {
+      id: 0,
+      username: '',
+      fullName: '',
+      email: '',
+      role: '',
+      roleName: '',
+      avatar: '',
+      lastLoginAt: '',
+      department: '',
+      phone: ''
+    }
+    
     // 跳转到登录页面
     window.location.href = '/login'
+  }
+}
+
+// 从API获取当前用户信息
+async function fetchCurrentUser() {
+  try {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      console.log('未找到登录token，使用本地用户信息')
+      return
+    }
+
+    const response = await fetch('https://localhost:52923/api/auth/me', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (response.ok) {
+      const userData = await response.json()
+      console.log('从API获取用户信息:', userData)
+      
+      currentUser.value = {
+        id: userData.id,
+        username: userData.username,
+        fullName: userData.fullName || userData.username,
+        email: userData.email,
+        role: userData.role.toLowerCase(), // 转换为小写以匹配前端逻辑
+        roleName: getRoleInfo(userData.role.toLowerCase()).name,
+        avatar: userData.avatar || '',
+        lastLoginAt: userData.lastLoginAt || new Date().toISOString(),
+        department: userData.department || '技术部',
+        phone: userData.phone || ''
+      }
+      
+      // 保存到localStorage
+      localStorage.setItem('userInfo', JSON.stringify(currentUser.value))
+      console.log('用户信息已更新:', currentUser.value)
+    } else if (response.status === 401) {
+      // Token过期，清除登录状态
+      console.log('Token过期，清除登录状态')
+      localStorage.removeItem('token')
+      localStorage.removeItem('userInfo')
+      localStorage.removeItem('isLoggedIn')
+      window.location.href = '/login'
+    } else {
+      console.log('API获取用户信息失败，使用本地缓存')
+    }
+  } catch (error) {
+    console.log('API获取用户信息出错，使用本地缓存:', error)
+  }
+}
+
+// 检查用户权限（基于角色的权限检查）
+async function checkPermission(permission: string): Promise<boolean> {
+  try {
+    const token = localStorage.getItem('token')
+    if (!token) return false
+
+    // 获取当前用户信息
+    const response = await fetch('https://localhost:52923/api/auth/me', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (response.ok) {
+      const userData = await response.json()
+      
+      // 基于角色的权限检查
+      const rolePermissions: Record<string, string[]> = {
+        'admin': ['system', 'user_management', 'device_management', 'monitoring', 'all'],
+        'operator': ['device_management', 'monitoring'],
+        'technician': ['device_management', 'monitoring', 'system'],
+        'viewer': ['monitoring']
+      }
+      
+      const userRole = userData.role.toLowerCase()
+      const userPermissions = rolePermissions[userRole] || []
+      return userPermissions.includes(permission) || userPermissions.includes('all')
+    } else if (response.status === 401) {
+      // Token过期，清除登录状态
+      localStorage.removeItem('token')
+      localStorage.removeItem('userInfo')
+      localStorage.removeItem('isLoggedIn')
+      window.location.href = '/login'
+      return false
+    }
+    
+    return false
+  } catch (error) {
+    console.error('权限检查失败:', error)
+    return false
   }
 }
 
@@ -81,11 +362,42 @@ function handleClickOutside(event: Event) {
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
+  // 加载用户信息
+  loadUserInfo()
+  // 尝试从API获取最新用户信息
+  fetchCurrentUser()
+  // 检查系统状态
+  checkSystemStatus()
+  // 启动心跳与在线人数刷新
+  startHeartbeat()
+  
+  // 调试信息
+  console.log('当前用户信息:', currentUser.value)
+  console.log('用户角色信息:', userRoleInfo.value)
 })
 
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
+  // 清理心跳定时器
+  if (heartbeatTimer) {
+    clearInterval(heartbeatTimer)
+    heartbeatTimer = null
+  }
 })
+
+let heartbeatTimer: number | null = null
+async function startHeartbeat() {
+  await sendHeartbeat()
+  await refreshOnlineCount()
+  heartbeatTimer = window.setInterval(async () => {
+    await sendHeartbeat()
+    await refreshOnlineCount()
+  }, 30000)
+}
+
+async function refreshOnlineCount() {
+  onlineCount.value = await getOnlineCount()
+}
 </script>
 
 <template>
@@ -130,7 +442,7 @@ onUnmounted(() => {
       
       <nav class="sidebar-nav">
         <!-- 系统监控 -->
-        <div class="nav-section">
+        <div class="nav-section" v-if="hasPermissionSync('monitoring')">
           <div class="nav-section-title" v-show="!sidebarCollapsed">系统监控</div>
           <RouterLink to="/dashboard" class="nav-item" :title="sidebarCollapsed ? '数据仪表板' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -153,7 +465,7 @@ onUnmounted(() => {
         </div>
 
         <!-- 设备管理 -->
-        <div class="nav-section">
+        <div class="nav-section" v-if="hasPermissionSync('device_management')">
           <div class="nav-section-title" v-show="!sidebarCollapsed">设备管理</div>
           <RouterLink to="/devices" class="nav-item" :title="sidebarCollapsed ? '设备列表' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -251,7 +563,7 @@ onUnmounted(() => {
         </div>
 
         <!-- 系统设置 -->
-        <div class="nav-section">
+        <div class="nav-section" v-if="hasPermissionSync('system')">
           <div class="nav-section-title" v-show="!sidebarCollapsed">系统设置</div>
           <RouterLink to="/settings" class="nav-item" :title="sidebarCollapsed ? '系统设置' : ''">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -259,7 +571,7 @@ onUnmounted(() => {
             </svg>
             <span v-show="!sidebarCollapsed">系统设置</span>
           </RouterLink>
-          <RouterLink to="/users" class="nav-item" :title="sidebarCollapsed ? '用户管理' : ''">
+          <RouterLink to="/users" class="nav-item" :title="sidebarCollapsed ? '用户管理' : ''" v-if="hasPermissionSync('user_management')">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H16c-.8 0-1.54.37-2.01.99L12 11l-1.99-2.01A2.5 2.5 0 0 0 8 8H5.46c-.8 0-1.54.37-2.01.99L1 13.5V16h2v6h2v-6h2.5l2.5-7.5h2l2.5 7.5H14v6h2z" fill="currentColor"/>
             </svg>
@@ -286,31 +598,35 @@ onUnmounted(() => {
             </div>
           </div>
           <div class="header-actions">
-            <div class="status-indicator">
-              <div class="status-dot online"></div>
-              <span>系统正常</span>
+            <div class="status-indicator" @click="checkSystemStatus" title="点击刷新状态">
+              <div class="status-dot" :class="systemStatus.status"></div>
+              <span>{{ systemStatus.message }}</span>
             </div>
             <div class="user-menu">
               <div class="user-dropdown" @click="toggleUserMenu">
                 <button class="user-button">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
-                  </svg>
-                  <span>管理员</span>
+                  <div class="user-avatar-small">
+                    <i :class="userRoleInfo.icon" style="font-size: 14px; color: white;"></i>
+                  </div>
+                  <div class="user-info-small">
+                    <span class="user-name-small">{{ currentUser.fullName || currentUser.username || '未登录' }}</span>
+                    <span class="user-role-small" :style="{ color: userRoleInfo.color }">{{ userRoleInfo.name || '未知角色' }}</span>
+                  </div>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="dropdown-arrow">
                     <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
                   </svg>
                 </button>
                 <div v-if="showUserMenu" class="user-dropdown-menu">
                   <div class="user-info">
-                    <div class="user-avatar">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
-                      </svg>
+                    <div class="user-avatar" :style="{ backgroundColor: userRoleInfo.color }">
+                      <i :class="userRoleInfo.icon" style="font-size: 18px; color: white;"></i>
                     </div>
                     <div class="user-details">
-                      <div class="user-name">管理员</div>
-                      <div class="user-role">系统管理员</div>
+                      <div class="user-name">{{ currentUser.fullName || currentUser.username || '未登录' }}</div>
+                      <div class="user-role" :style="{ color: userRoleInfo.color }">{{ userRoleInfo.name || '未知角色' }}</div>
+                      <div class="user-email">{{ currentUser.email || '未设置邮箱' }}</div>
+                      <div class="user-department">{{ currentUser.department || '未设置部门' }}</div>
+                      <div class="user-last-login">最后登录: {{ formatLastLogin(currentUser.lastLoginAt) || '未知' }}</div>
                     </div>
                   </div>
                   <div class="dropdown-divider"></div>
@@ -328,6 +644,15 @@ onUnmounted(() => {
                         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" stroke-width="2"/>
                       </svg>
                       系统设置
+                    </button>
+                    <button class="dropdown-item" @click="refreshUserInfo">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" stroke="currentColor" stroke-width="2"/>
+                        <path d="M21 3v5h-5" stroke="currentColor" stroke-width="2"/>
+                        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" stroke="currentColor" stroke-width="2"/>
+                        <path d="M3 21v-5h5" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                      刷新用户信息
                     </button>
                     <button class="dropdown-item" @click="goToHelp">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -635,6 +960,30 @@ onUnmounted(() => {
   background: rgba(40, 167, 69, 0.1);
   border-radius: 20px;
   border: 1px solid rgba(40, 167, 69, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.status-indicator:hover {
+  background: rgba(40, 167, 69, 0.2);
+}
+
+.status-indicator.checking {
+  background: rgba(255, 193, 7, 0.1);
+  border-color: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+}
+
+.status-indicator.offline {
+  background: rgba(220, 53, 69, 0.1);
+  border-color: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+}
+
+.status-indicator.error {
+  background: rgba(253, 126, 20, 0.1);
+  border-color: rgba(253, 126, 20, 0.2);
+  color: #fd7e14;
 }
 
 .status-dot {
@@ -644,9 +993,25 @@ onUnmounted(() => {
   animation: pulse 2s infinite;
 }
 
+.status-dot.checking {
+  background: #ffc107;
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+  animation: pulse 1s infinite;
+}
+
 .status-dot.online {
   background: #28a745;
   box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+}
+
+.status-dot.offline {
+  background: #dc3545;
+  box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+}
+
+.status-dot.error {
+  background: #fd7e14;
+  box-shadow: 0 0 10px rgba(253, 126, 20, 0.5);
 }
 
 .user-menu {
@@ -657,7 +1022,7 @@ onUnmounted(() => {
 .user-button {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   padding: 8px 16px;
   background: rgba(74, 144, 226, 0.1);
   border: 1px solid rgba(74, 144, 226, 0.2);
@@ -666,6 +1031,38 @@ onUnmounted(() => {
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 500;
+}
+
+.user-avatar-small {
+  width: 32px;
+  height: 32px;
+  background: #4a90e2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.user-info-small {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.user-name-small {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+  line-height: 1.2;
+}
+
+.user-role-small {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 .user-button:hover {
@@ -701,38 +1098,62 @@ onUnmounted(() => {
 
 .user-info {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   padding: 16px;
   background: #f8f9fa;
 }
 
 .user-avatar {
-  width: 40px;
-  height: 40px;
-  background: #00d4ff;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
+  flex-shrink: 0;
 }
 
 .user-details {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
+  flex: 1;
 }
 
 .user-name {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: #2c3e50;
+  line-height: 1.2;
 }
 
 .user-role {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.user-email {
   font-size: 12px;
   color: #6c757d;
+  line-height: 1.2;
+}
+
+.user-department {
+  font-size: 12px;
+  color: #6c757d;
+  line-height: 1.2;
+}
+
+.user-last-login {
+  font-size: 11px;
+  color: #95a5a6;
+  line-height: 1.2;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid #e9ecef;
 }
 
 .dropdown-divider {

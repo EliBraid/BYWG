@@ -34,7 +34,8 @@ public class TokenService : ITokenService
             issuer: _configuration["JWT:Issuer"],
             audience: _configuration["JWT:Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(1),
+            // Dev: extend token lifetime to reduce frequent 401 during development
+            expires: DateTime.UtcNow.AddHours(8),
             signingCredentials: credentials
         );
 

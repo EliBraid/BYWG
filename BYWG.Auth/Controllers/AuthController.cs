@@ -10,11 +10,13 @@ public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
     private readonly ITokenService _tokenService;
+    private readonly IOnlineUserService _onlineUserService;
 
-    public AuthController(IAuthService authService, ITokenService tokenService)
+    public AuthController(IAuthService authService, ITokenService tokenService, IOnlineUserService onlineUserService)
     {
         _authService = authService;
         _tokenService = tokenService;
+        _onlineUserService = onlineUserService;
     }
 
     [HttpPost("login")]
@@ -27,6 +29,8 @@ public class AuthController : ControllerBase
         }
 
         var token = _tokenService.GenerateJwtToken(user);
+        // 记录一次心跳（视为上线）
+        _onlineUserService.UpdateHeartbeat(user.Id);
         
         return Ok(new
         {
@@ -41,7 +45,7 @@ public class AuthController : ControllerBase
                 createdAt = user.CreatedAt,
                 updatedAt = user.UpdatedAt
             },
-            expiresIn = 3600
+            expiresIn = 8 * 3600
         });
     }
 
@@ -60,8 +64,16 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("logout")]
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public IActionResult Logout()
     {
+        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+        if (userIdClaim != null)
+        {
+            var userId = int.Parse(userIdClaim.Value);
+            // 清除该用户的在线状态
+            _onlineUserService.RemoveUser(userId);
+        }
         return Ok(new { message = "Logged out successfully" });
     }
 
@@ -83,6 +95,9 @@ public class AuthController : ControllerBase
             return NotFound();
         }
 
+        // 访问即刷新心跳
+        _onlineUserService.UpdateHeartbeat(user.Id);
+
         return Ok(new
         {
             id = user.Id,
@@ -91,8 +106,37 @@ public class AuthController : ControllerBase
             role = user.Role,
             isEnabled = user.IsEnabled,
             createdAt = user.CreatedAt,
-            updatedAt = user.UpdatedAt
+            updatedAt = user.UpdatedAt,
+            online = _onlineUserService.IsUserOnline(user.Id)
         });
+    }
+
+    /// <summary>
+    /// 心跳上报，刷新在线状态
+    /// </summary>
+    [HttpPost("heartbeat")]
+    [Microsoft.AspNetCore.Authorization.Authorize]
+    public IActionResult Heartbeat()
+    {
+        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+        {
+            return Unauthorized();
+        }
+        var userId = int.Parse(userIdClaim.Value);
+        _onlineUserService.UpdateHeartbeat(userId);
+        return Ok(new { message = "heartbeat ok", online = true });
+    }
+
+    /// <summary>
+    /// 获取当前在线人数
+    /// </summary>
+    [HttpGet("online-count")]
+    [Microsoft.AspNetCore.Authorization.Authorize]
+    public IActionResult GetOnlineCount()
+    {
+        var count = _onlineUserService.GetOnlineCount();
+        return Ok(new { online = count });
     }
 }
 

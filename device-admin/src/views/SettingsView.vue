@@ -524,7 +524,9 @@
       <div class="modal-content" @click.stop>
         <div class="modal-header">
           <h3>恢复备份</h3>
-          <button @click="closeRestoreModal" class="close-btn">×</button>
+          <button @click="closeRestoreModal" class="close-btn">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
         <div class="modal-body">
           <div class="backup-list">
@@ -562,7 +564,9 @@
       <div class="modal-content large" @click.stop>
         <div class="modal-header">
           <h3>备份列表</h3>
-          <button @click="closeBackupList" class="close-btn">×</button>
+          <button @click="closeBackupList" class="close-btn">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
         <div class="modal-body">
           <div class="backup-table">
@@ -1065,7 +1069,6 @@ onMounted(() => {
 .close-btn {
   background: none;
   border: none;
-  font-size: 24px;
   color: #6c757d;
   cursor: pointer;
   padding: 0;
@@ -1074,6 +1077,10 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.close-btn i {
+  font-size: 16px;
 }
 
 .modal-body {

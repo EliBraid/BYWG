@@ -208,7 +208,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { login, type LoginRequest } from '@/api/auth'
+import { login } from '../api/auth'
 
 const router = useRouter()
 
@@ -254,35 +254,26 @@ async function handleLogin() {
   isLoading.value = true
   
   try {
-    // 使用真实的API登录
-    const loginRequest: LoginRequest = {
-      username: loginForm.username,
-      password: loginForm.password,
-      rememberMe: loginForm.rememberMe
-    }
+    // 调用BYWG.Auth登录API
+    const response = await login({
+      Username: loginForm.username,
+      Password: loginForm.password
+    })
     
-    const response = await login(loginRequest)
-    
-    // 登录成功，保存用户信息
-    localStorage.setItem('user', JSON.stringify(response.user))
-    localStorage.setItem('auth_token', response.token)
+    // 保存认证信息
+    localStorage.setItem('token', response.token)
+    localStorage.setItem('userInfo', JSON.stringify(response.user))
+    localStorage.setItem('isLoggedIn', 'true')
     
     console.log('登录成功:', response.user)
     
-    // 跳转到主界面
-    await router.push('/dashboard')
+    // 跳转到主界面并强制刷新页面以确保用户信息更新
+    window.location.href = '/dashboard'
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('登录失败:', error)
-    
-    // 显示错误信息
-    const errorMessage = error.message || '登录失败，请检查用户名和密码'
+    const errorMessage = error instanceof Error ? error.message : '登录失败，请检查用户名和密码'
     alert(errorMessage)
-    
-    // 如果是网络错误，提供默认凭据提示
-    if (error.message?.includes('fetch')) {
-      alert('无法连接到服务器，请检查网络连接或使用默认凭据：\n\n用户名：admin\n密码：123456')
-    }
   } finally {
     isLoading.value = false
   }

@@ -105,8 +105,25 @@
       </div>
     </div>
 
+    <!-- 加载状态 -->
+    <div v-if="loading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>加载中...</p>
+    </div>
+
+    <!-- 错误信息 -->
+    <div v-if="error" class="error-container">
+      <div class="error-message">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
+        </svg>
+        {{ error }}
+        <button @click="refreshUsers" class="retry-btn">重试</button>
+      </div>
+    </div>
+
     <!-- 用户列表 -->
-    <div class="users-table-container">
+    <div v-if="!loading && !error" class="users-table-container">
       <table class="users-table">
         <thead>
           <tr>
@@ -143,8 +160,7 @@
             </td>
             <td class="user-info">
               <div class="user-avatar">
-                <img v-if="user.avatar" :src="user.avatar" :alt="user.username" />
-                <div v-else class="avatar-placeholder">
+                <div class="avatar-placeholder">
                   {{ user.username.charAt(0).toUpperCase() }}
                 </div>
               </div>
@@ -159,41 +175,58 @@
               </span>
             </td>
             <td>
-              <div class="status-indicator" :class="user.status">
+              <div class="status-indicator" :class="user.online ? 'online' : (!user.isEnabled ? 'inactive' : 'offline')">
                 <div class="status-dot"></div>
-                <span>{{ getStatusText(user.status) }}</span>
+                <span>{{ user.online ? '在线' : (!user.isEnabled ? '禁用' : '离线') }}</span>
               </div>
             </td>
             <td class="last-login">
-              <div class="login-time">{{ user.lastLogin }}</div>
-              <div class="login-ip" v-if="user.lastLoginIp">{{ user.lastLoginIp }}</div>
+              <div class="login-time">{{ user.lastLoginAt ? formatDate(user.lastLoginAt) : '从未登录' }}</div>
             </td>
-            <td class="created-at">{{ user.createdAt }}</td>
+            <td class="created-at">{{ formatDate(user.createdAt) }}</td>
             <td class="actions">
               <button class="btn-icon" @click="viewUser(user)" title="查看详情">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor"/>
-                </svg>
+                <i class="fas fa-eye"></i>
               </button>
               <button class="btn-icon" @click="editUser(user)" title="编辑用户">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/>
-                </svg>
+                <i class="fas fa-edit"></i>
               </button>
               <button class="btn-icon" @click="resetPassword(user)" title="重置密码">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" fill="currentColor"/>
-                </svg>
+                <i class="fas fa-key"></i>
               </button>
               <button class="btn-icon danger" @click="deleteUser(user)" title="删除用户">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill="currentColor"/>
-                </svg>
+                <i class="fas fa-trash"></i>
               </button>
             </td>
           </tr>
         </tbody>
       </table>
+      
+      <!-- 分页控件 -->
+      <div class="pagination-container">
+        <div class="pagination-info">
+          显示 {{ (currentPage - 1) * pageSize + 1 }} - {{ Math.min(currentPage * pageSize, totalCount) }} 条，共 {{ totalCount }} 条
+        </div>
+        <div class="pagination-controls">
+          <button 
+            class="pagination-btn" 
+            :disabled="currentPage <= 1"
+            @click="currentPage = Math.max(1, currentPage - 1)"
+          >
+            上一页
+          </button>
+          <span class="pagination-page">
+            第 {{ currentPage }} 页，共 {{ totalPages }} 页
+          </span>
+          <button 
+            class="pagination-btn" 
+            :disabled="currentPage >= totalPages"
+            @click="currentPage = Math.min(totalPages, currentPage + 1)"
+          >
+            下一页
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- 批量操作 -->
@@ -223,10 +256,51 @@
       </div>
     </div>
   </div>
+
+  <!-- 添加用户对话框 -->
+  <AddUserDialog 
+    v-model:visible="showAddUserDialog" 
+    @success="onUserCreated"
+  />
+
+  <!-- 用户详情对话框 -->
+  <UserDetailDialog 
+    v-model:visible="showUserDetailDialog"
+    :user="selectedUser"
+    @edit="onEditUser"
+  />
+
+  <!-- 编辑用户对话框 -->
+  <EditUserDialog 
+    v-model:visible="showEditUserDialog"
+    :user="selectedUser"
+    @success="refreshUsers"
+  />
+
+  <!-- 重置密码对话框 -->
+  <ResetPasswordDialog 
+    v-model:visible="showResetPasswordDialog"
+    :user="selectedUser"
+    @success="refreshUsers"
+  />
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { 
+  getUsers, 
+  getUserStats, 
+  deleteUser as deleteUserApi, 
+  batchUpdateStatus, 
+  batchDelete as batchDeleteApi,
+  type UserDto,
+  type UserListParams,
+  type UserStats
+} from '../api/users'
+import AddUserDialog from '../components/AddUserDialog.vue'
+import UserDetailDialog from '../components/UserDetailDialog.vue'
+import EditUserDialog from '../components/EditUserDialog.vue'
+import ResetPasswordDialog from '../components/ResetPasswordDialog.vue'
 
 // 搜索和筛选
 const searchQuery = ref('')
@@ -236,115 +310,47 @@ const sortBy = ref('username')
 const selectAll = ref(false)
 const selectedUsers = ref<number[]>([])
 
-// 模拟用户数据
-const users = ref([
-  {
-    id: 1,
-    username: 'admin',
-    email: 'admin@bywg.com',
-    role: 'admin',
-    status: 'online',
-    lastLogin: '2分钟前',
-    lastLoginIp: '192.168.1.100',
-    createdAt: '2024-01-15',
-    avatar: null
-  },
-  {
-    id: 2,
-    username: 'operator1',
-    email: 'operator1@bywg.com',
-    role: 'operator',
-    status: 'active',
-    lastLogin: '1小时前',
-    lastLoginIp: '192.168.1.101',
-    createdAt: '2024-01-20',
-    avatar: null
-  },
-  {
-    id: 3,
-    username: 'viewer1',
-    email: 'viewer1@bywg.com',
-    role: 'viewer',
-    status: 'offline',
-    lastLogin: '1天前',
-    lastLoginIp: '192.168.1.102',
-    createdAt: '2024-01-25',
-    avatar: null
-  },
-  {
-    id: 4,
-    username: 'operator2',
-    email: 'operator2@bywg.com',
-    role: 'operator',
-    status: 'inactive',
-    lastLogin: '3天前',
-    lastLoginIp: '192.168.1.103',
-    createdAt: '2024-02-01',
-    avatar: null
-  },
-  {
-    id: 5,
-    username: 'viewer2',
-    email: 'viewer2@bywg.com',
-    role: 'viewer',
-    status: 'online',
-    lastLogin: '30分钟前',
-    lastLoginIp: '192.168.1.104',
-    createdAt: '2024-02-05',
-    avatar: null
-  }
-])
+// 分页
+const currentPage = ref(1)
+const pageSize = ref(10)
+const totalPages = ref(0)
+const totalCount = ref(0)
+
+// 加载状态
+const loading = ref(false)
+const error = ref('')
+
+// 用户数据
+const users = ref<UserDto[]>([])
+const userStats = ref<UserStats>({
+  total: 0,
+  active: 0,
+  admins: 0,
+  online: 0
+})
+
+// 在线用户状态（由后端返回online字段，不再前端模拟）
+
+// 对话框状态
+const showAddUserDialog = ref(false)
+const showUserDetailDialog = ref(false)
+const showEditUserDialog = ref(false)
+const showResetPasswordDialog = ref(false)
+const selectedUser = ref<UserDto | null>(null)
 
 // 计算属性
 const filteredUsers = computed(() => {
-  let filtered = users.value
-
-  // 搜索过滤
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
-    filtered = filtered.filter(user => 
-      user.username.toLowerCase().includes(query) ||
-      user.email.toLowerCase().includes(query) ||
-      getRoleText(user.role).toLowerCase().includes(query)
-    )
-  }
-
-  // 角色过滤
-  if (roleFilter.value) {
-    filtered = filtered.filter(user => user.role === roleFilter.value)
-  }
-
-  // 状态过滤
-  if (statusFilter.value) {
-    filtered = filtered.filter(user => user.status === statusFilter.value)
-  }
-
-  // 排序
-  filtered.sort((a, b) => {
-    switch (sortBy.value) {
-      case 'username':
-        return a.username.localeCompare(b.username)
-      case 'role':
-        return a.role.localeCompare(b.role)
-      case 'lastLogin':
-        return new Date(b.lastLogin).getTime() - new Date(a.lastLogin).getTime()
-      case 'createdAt':
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      default:
-        return 0
-    }
-  })
-
-  return filtered
+  return users.value
 })
 
-const userStats = computed(() => {
-  const total = users.value.length
-  const active = users.value.filter(u => u.status === 'active' || u.status === 'online').length
-  const admins = users.value.filter(u => u.role === 'admin').length
-  const online = users.value.filter(u => u.status === 'online').length
+// 监听搜索和筛选条件变化，重新加载数据
+watch([searchQuery, roleFilter, statusFilter, currentPage], () => {
+  loadUsers()
+}, { deep: true })
 
-  return { total, active, admins, online }
+// 监听分页变化
+watch(currentPage, () => {
+  loadUsers()
 })
 
 // 方法
@@ -352,19 +358,33 @@ function getRoleText(role: string) {
   const roleMap: Record<string, string> = {
     admin: '管理员',
     operator: '操作员',
-    viewer: '观察员'
+    viewer: '观察员',
+    user: '用户'
   }
   return roleMap[role] || '未知'
 }
 
-function getStatusText(status: string) {
-  const statusMap: Record<string, string> = {
-    online: '在线',
-    active: '活跃',
-    inactive: '非活跃',
-    offline: '离线'
+// 状态显示由后端online字段决定
+
+// 移除旧的前端状态推断函数，直接由后端online决定
+
+function formatDate(dateString: string) {
+  const date = new Date(dateString)
+  const now = new Date()
+  const diffMs = now.getTime() - date.getTime()
+  const diffMinutes = Math.floor(diffMs / (1000 * 60))
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+  
+  if (diffMinutes < 60) {
+    return `${diffMinutes}分钟前`
+  } else if (diffHours < 24) {
+    return `${diffHours}小时前`
+  } else if (diffDays < 7) {
+    return `${diffDays}天前`
+  } else {
+    return date.toLocaleDateString('zh-CN')
   }
-  return statusMap[status] || '未知'
 }
 
 function toggleSelectAll() {
@@ -375,41 +395,152 @@ function toggleSelectAll() {
   }
 }
 
-function refreshUsers() {
-  console.log('刷新用户列表...')
+// 加载用户列表
+async function loadUsers() {
+  try {
+    loading.value = true
+    error.value = ''
+    
+    const params: UserListParams = {
+      page: currentPage.value,
+      pageSize: pageSize.value,
+      search: searchQuery.value || undefined,
+      role: roleFilter.value || undefined,
+      status: statusFilter.value || undefined
+    }
+    
+    const response = await getUsers(params)
+    users.value = response.users
+    totalCount.value = response.totalCount
+    totalPages.value = response.totalPages
+    
+  } catch (err: any) {
+    error.value = err.message || '加载用户列表失败'
+    console.error('加载用户列表失败:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+// 加载用户统计
+async function loadUserStats() {
+  try {
+    const stats = await getUserStats()
+    userStats.value = stats
+  } catch (err: any) {
+    console.error('加载用户统计失败:', err)
+  }
+}
+
+async function refreshUsers() {
+  await Promise.all([loadUsers(), loadUserStats()])
 }
 
 function addUser() {
-  console.log('添加新用户...')
+  showAddUserDialog.value = true
 }
 
-function viewUser(user: any) {
-  console.log('查看用户详情:', user.username)
+function onUserCreated() {
+  refreshUsers()
 }
 
-function editUser(user: any) {
-  console.log('编辑用户:', user.username)
+function viewUser(user: UserDto) {
+  selectedUser.value = user
+  showUserDetailDialog.value = true
 }
 
-function resetPassword(user: any) {
-  console.log('重置密码:', user.username)
+function editUser(user: UserDto) {
+  selectedUser.value = user
+  showEditUserDialog.value = true
 }
 
-function deleteUser(user: any) {
-  console.log('删除用户:', user.username)
+function resetPassword(user: UserDto) {
+  selectedUser.value = user
+  showResetPasswordDialog.value = true
 }
 
-function batchActivate() {
-  console.log('批量激活用户:', selectedUsers.value)
+function onEditUser(user: UserDto) {
+  selectedUser.value = user
+  showEditUserDialog.value = true
 }
 
-function batchDeactivate() {
-  console.log('批量停用用户:', selectedUsers.value)
+async function deleteUser(user: UserDto) {
+  if (!confirm(`确定要删除用户 "${user.username}" 吗？此操作不可撤销。`)) {
+    return
+  }
+  
+  try {
+    await deleteUserApi(user.id)
+    await refreshUsers()
+  } catch (err: any) {
+    alert('删除用户失败: ' + (err.message || '未知错误'))
+  }
 }
 
-function batchDelete() {
-  console.log('批量删除用户:', selectedUsers.value)
+async function batchActivate() {
+  if (selectedUsers.value.length === 0) {
+    alert('请先选择要激活的用户')
+    return
+  }
+  
+  try {
+    await batchUpdateStatus({
+      userIds: selectedUsers.value,
+      isEnabled: true
+    })
+    selectedUsers.value = []
+    selectAll.value = false
+    await refreshUsers()
+  } catch (err: any) {
+    alert('批量激活失败: ' + (err.message || '未知错误'))
+  }
 }
+
+async function batchDeactivate() {
+  if (selectedUsers.value.length === 0) {
+    alert('请先选择要停用的用户')
+    return
+  }
+  
+  try {
+    await batchUpdateStatus({
+      userIds: selectedUsers.value,
+      isEnabled: false
+    })
+    selectedUsers.value = []
+    selectAll.value = false
+    await refreshUsers()
+  } catch (err: any) {
+    alert('批量停用失败: ' + (err.message || '未知错误'))
+  }
+}
+
+async function batchDelete() {
+  if (selectedUsers.value.length === 0) {
+    alert('请先选择要删除的用户')
+    return
+  }
+  
+  if (!confirm(`确定要删除选中的 ${selectedUsers.value.length} 个用户吗？此操作不可撤销。`)) {
+    return
+  }
+  
+  try {
+    await batchDeleteApi({
+      userIds: selectedUsers.value
+    })
+    selectedUsers.value = []
+    selectAll.value = false
+    await refreshUsers()
+  } catch (err: any) {
+    alert('批量删除失败: ' + (err.message || '未知错误'))
+  }
+}
+
+// 组件挂载时加载数据
+onMounted(() => {
+  refreshUsers()
+})
 </script>
 
 <style scoped>
@@ -744,6 +875,10 @@ function batchDelete() {
   color: #27ae60;
 }
 
+.status-indicator.recent {
+  color: #f39c12;
+}
+
 .status-indicator.active {
   color: #4a90e2;
 }
@@ -761,6 +896,16 @@ function batchDelete() {
   height: 8px;
   border-radius: 50%;
   background: currentColor;
+}
+
+.status-indicator.online .status-dot {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
 }
 
 .last-login {
@@ -792,26 +937,68 @@ function batchDelete() {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
   background: white;
-  color: #6c757d;
+  color: #6b7280 !important;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.btn-icon i {
+  font-size: 14px;
+  line-height: 1;
+  display: block;
 }
 
 .btn-icon:hover {
-  background: #f8f9fa;
-  color: #495057;
-  border-color: #adb5bd;
+  background: #f3f4f6;
+  color: #374151 !important;
+  border-color: #9ca3af;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-icon:hover i {
+  color: #374151 !important;
+}
+
+.btn-icon:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.btn-icon.danger {
+  color: #dc2626 !important;
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.btn-icon.danger i {
+  color: #dc2626 !important;
 }
 
 .btn-icon.danger:hover {
-  background: #f8d7da;
-  color: #721c24;
-  border-color: #f5c6cb;
+  background: #fee2e2;
+  color: #b91c1c !important;
+  border-color: #fca5a5;
+}
+
+.btn-icon.danger:hover i {
+  color: #b91c1c !important;
+}
+
+.btn-icon.danger:active {
+  background: #fecaca;
+  color: #991b1b !important;
+}
+
+.btn-icon.danger:active i {
+  color: #991b1b !important;
 }
 
 .batch-actions {
@@ -887,5 +1074,111 @@ function batchDelete() {
   .batch-buttons {
     justify-content: center;
   }
+}
+
+/* 加载状态样式 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #6c757d;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4a90e2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 错误状态样式 */
+.error-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  max-width: 500px;
+}
+
+.retry-btn {
+  padding: 6px 12px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.3s ease;
+}
+
+.retry-btn:hover {
+  background: #c82333;
+}
+
+/* 分页样式 */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}
+
+.pagination-info {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pagination-btn {
+  padding: 8px 16px;
+  border: 1px solid #dee2e6;
+  background: white;
+  color: #495057;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #f8f9fa;
+  border-color: #adb5bd;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-page {
+  color: #6c757d;
+  font-size: 14px;
 }
 </style>

@@ -264,7 +264,9 @@
       <div class="modal-content" @click.stop>
         <div class="modal-header">
           <h3>修改密码</h3>
-          <button @click="closeChangePasswordModal" class="close-btn">×</button>
+          <button @click="closeChangePasswordModal" class="close-btn">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="changePassword" class="password-form">
@@ -843,7 +845,6 @@ onMounted(() => {
 .close-btn {
   background: none;
   border: none;
-  font-size: 24px;
   color: #6c757d;
   cursor: pointer;
   padding: 0;
@@ -852,6 +853,10 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.close-btn i {
+  font-size: 16px;
 }
 
 .modal-body {

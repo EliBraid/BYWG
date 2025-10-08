@@ -52,7 +52,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["JWT:Issuer"],
             ValidAudience = builder.Configuration["JWT:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]))
+                Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"])),
+            // 容忍少量时间偏差，减少边界时间401
+            ClockSkew = TimeSpan.FromMinutes(2)
         };
     });
 
@@ -74,6 +76,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddSingleton<IOnlineUserService, OnlineUserService>();
 
 var app = builder.Build();
 

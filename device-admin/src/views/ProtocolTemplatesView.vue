@@ -258,7 +258,9 @@
       <div class="modal-content large" @click.stop>
         <div class="modal-header">
           <h3>{{ showCreateTemplateModal ? '新建协议模板' : '编辑协议模板' }}</h3>
-          <button @click="closeModal" class="close-btn">×</button>
+          <button @click="closeModal" class="close-btn">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="saveTemplate" class="template-form">
@@ -1151,7 +1153,6 @@ onMounted(() => {
 .close-btn {
   background: none;
   border: none;
-  font-size: 24px;
   color: #6c757d;
   cursor: pointer;
   padding: 0;
@@ -1160,6 +1161,10 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.close-btn i {
+  font-size: 16px;
 }
 
 .modal-body {

@@ -421,7 +421,9 @@ onMounted(fetchDevices)
     <div class="modal-container">
       <div class="modal-header">
         <h3>新增设备</h3>
-        <button type="button" class="modal-close" @click="closeCreateModal">×</button>
+        <button type="button" class="modal-close" @click="closeCreateModal">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
       <div class="modal-body">
         <div class="form-row">
@@ -516,10 +518,17 @@ onMounted(fetchDevices)
 .modal-close {
   background: transparent;
   border: none;
-  font-size: 18px;
-  line-height: 1;
   cursor: pointer;
   color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.modal-close i {
+  font-size: 16px;
 }
 
 .modal-close:hover {
