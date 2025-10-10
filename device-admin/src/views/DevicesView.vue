@@ -1692,6 +1692,11 @@ function cancelWrite() {
   max-width: 100%;
   min-height: calc(100vh - 120px);
 }
+
+/* 统一表格边线渲染，避免某列基线看起来偏高 */
+.devices-table {
+  border-collapse: collapse;
+}
 /* 新建设备弹窗样式 */
 .modal-mask {
   position: fixed;
@@ -2350,11 +2355,25 @@ function cancelWrite() {
   margin-left: 8px;
   opacity: 0.6;
 }
+/* 统一表格内所有文本的行高 */
+.devices-table td, 
+.device-name span, 
+.device-ip, 
+.status-text, 
+.device-time {
+  line-height: 1.4; /* 统一行高，确保文本垂直重心一致 */
+  font-size: 14px; /* 统一字体大小（已有，但确认无冲突） */
+}
 
 .devices-table td {
-  padding: 16px;
+  padding: 12px 16px; /* 恢复上下内边距，行高随内容自然确定 */
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   vertical-align: middle;
+}
+
+/* 去掉操作栏单元格的下边线，避免按钮下方出现一条线的视觉效果 */
+.devices-table td.device-actions {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* 与其它单元格一致的基线 */
 }
 
 .device-actions {
@@ -2362,13 +2381,17 @@ function cancelWrite() {
   gap: 8px;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  min-height: 48px;
+  height: auto;
 }
-
+.btn-action i, 
+.status-dot, 
+.expand-icon i {
+  vertical-align: middle; /* 关键：覆盖默认的baseline */
+}
 .btn-action {
-  width: 32px;
+  width: 32px;  /* 原28px，改为与.device-icon一致 */
   height: 32px;
+  line-height: 32px; /* 确保按钮内图标垂直居中 */
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -2376,7 +2399,7 @@ function cancelWrite() {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  background: rgba(74, 144, 226, 0.1);
+  background: transparent;
   color: #4a90e2;
 }
 
@@ -2390,7 +2413,7 @@ function cancelWrite() {
 
 .device-info {
   display: flex;
-  align-items: center;
+  align-items: center; /* 已设置，确保保留 */
   gap: 12px;
 }
 
@@ -2415,10 +2438,10 @@ function cancelWrite() {
   color: #6c757d;
   font-size: 14px;
 }
-
+/* 状态列的flex容器：明确垂直居中 */
 .status-indicator {
   display: flex;
-  align-items: center;
+  align-items: center; /* 补充：确保状态点与文本垂直居中 */
   gap: 8px;
 }
 
@@ -2443,9 +2466,19 @@ function cancelWrite() {
 /* 删除重复的样式定义 */
 
 .btn-action:hover:not(:disabled) {
-  background: rgba(74, 144, 226, 0.2);
-  transform: translateY(-1px);
+  background: rgba(74, 144, 226, 0.06);  /* 轻一点的悬停 */
+  box-shadow: none;                      /* 去掉阴影 */
 }
+.btn-action i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  line-height: 1;                        /* 去除行高影响 */
+}
+
+.btn-action svg { display: block; }      /* 去掉基线影响 */
 
 .btn-action.danger {
   background: rgba(220, 53, 69, 0.1);
@@ -2488,15 +2521,13 @@ function cancelWrite() {
     font-size: 14px;
   }
   
-  .devices-table th,
-  .devices-table td {
-    padding: 12px 8px;
-  }
-  
   .device-actions {
-    flex-direction: column;
-    gap: 4px;
-  }
+  display: flex;
+  align-items: center; /* 补充：确保按钮组垂直居中 */
+  gap: 8px;
+  justify-content: center;
+  height: 100%; /* 确保容器占满单元格高度 */
+}
   
   .btn-action {
     width: 28px;
@@ -2517,10 +2548,6 @@ function cancelWrite() {
     font-size: 12px;
   }
   
-  .devices-table th,
-  .devices-table td {
-    padding: 8px 4px;
-  }
 }
 
 /* 设备点位弹窗样式 */
