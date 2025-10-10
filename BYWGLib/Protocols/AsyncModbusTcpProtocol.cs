@@ -818,6 +818,105 @@ namespace BYWGLib.Protocols
             // 暂提供最小实现：不支持写入
             throw new NotSupportedException("当前实现未提供同步写入；请使用异步写入接口");
         }
+
+        /// <summary>
+        /// 异步写入单个保持寄存器（FC6）
+        /// </summary>
+        public async Task<bool> WriteSingleRegisterAsync(int startAddress, ushort value, int unitId = 1, int timeoutMs = DefaultTimeout)
+        {
+            var requestData = BuildWriteSingleRegisterRequest(unitId, startAddress, value);
+            var resp = await _networkClient.SendAndReceiveAsync(requestData);
+            // 简单校验：回显功能码与地址、值
+            if (resp.Length >= 12 && resp.Span[7] == 0x06)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 异步写入多个保持寄存器（FC16）
+        /// </summary>
+        public async Task<bool> WriteMultipleRegistersAsync(int startAddress, ushort[] values, int unitId = 1, int timeoutMs = DefaultTimeout)
+        {
+            if (values == null || values.Length == 0) throw new ArgumentException("values 不能为空");
+            var requestData = BuildWriteMultipleRegistersRequest(unitId, startAddress, values);
+            var resp = await _networkClient.SendAndReceiveAsync(requestData);
+            if (resp.Length >= 12 && resp.Span[7] == 0x10)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 便捷写入：按地址字符串与数据类型写入（默认 FC6 单寄存器）
+        /// </summary>
+        public async Task<bool> WriteAsync(string address, string dataType, object value, int? functionCode = null)
+        {
+            if (string.IsNullOrWhiteSpace(address)) throw new ArgumentException("address 不能为空");
+            if (string.IsNullOrWhiteSpace(dataType)) dataType = "uint16";
+            var (fc, startAddress, quantity) = ParseModbusAddress(address, dataType);
+            var useFc = functionCode ?? 6; // 默认 FC6
+
+            if (useFc == 6)
+            {
+                ushort val = Convert.ToUInt16(value);
+                return await WriteSingleRegisterAsync(startAddress, val, _unitId, _timeout);
+            }
+            else if (useFc == 16)
+            {
+                // 将 value 解析为 ushort[]
+                ushort[] arr;
+                if (value is ushort[] uarr) arr = uarr;
+                else if (value is IEnumerable<ushort> us) arr = us.ToArray();
+                else arr = new ushort[] { Convert.ToUInt16(value) };
+                return await WriteMultipleRegistersAsync(startAddress, arr, _unitId, _timeout);
+            }
+            else
+            {
+                throw new NotSupportedException($"暂不支持功能码: {useFc}");
+            }
+        }
+
+        private ReadOnlyMemory<byte> BuildWriteSingleRegisterRequest(int unitId, int address, ushort value)
+        {
+            using var builder = new NetworkRequestBuilder(_arrayPool);
+            int transactionId = Interlocked.Increment(ref _transactionId);
+            // MBAP
+            builder.WriteUInt16BigEndian((ushort)transactionId);
+            builder.WriteUInt16BigEndian(0);
+            builder.WriteUInt16BigEndian(6);
+            builder.WriteByte((byte)unitId);
+            // PDU FC6
+            builder.WriteByte(0x06);
+            builder.WriteUInt16BigEndian((ushort)address);
+            builder.WriteUInt16BigEndian(value);
+            return builder.Build();
+        }
+
+        private ReadOnlyMemory<byte> BuildWriteMultipleRegistersRequest(int unitId, int startAddress, ushort[] values)
+        {
+            using var builder = new NetworkRequestBuilder(_arrayPool);
+            int transactionId = Interlocked.Increment(ref _transactionId);
+            int byteCount = values.Length * 2;
+            // MBAP 长度 = 7 (UnitId+FC+Addr(2)+Qty(2)+ByteCount+Data(N))
+            int length = 7 + byteCount;
+            builder.WriteUInt16BigEndian((ushort)transactionId);
+            builder.WriteUInt16BigEndian(0);
+            builder.WriteUInt16BigEndian((ushort)length);
+            builder.WriteByte((byte)unitId);
+            // PDU FC16
+            builder.WriteByte(0x10);
+            builder.WriteUInt16BigEndian((ushort)startAddress);
+            builder.WriteUInt16BigEndian((ushort)values.Length);
+            builder.WriteByte((byte)byteCount);
+            foreach (var v in values)
+            {
+                builder.WriteUInt16BigEndian(v);
+            }
+            return builder.Build();
+        }
         
         /// <summary>
         /// 扫描设备可用的地址范围

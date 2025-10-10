@@ -26,6 +26,55 @@ public class DevicesController : ControllerBase
             ?? Environment.GetEnvironmentVariable("GATEWAY_API_URL")
             ?? "http://localhost:5080";
     }
+        public record WriteCommandRequest(object? PointId, string? Address, int? FunctionCode, object Value, bool? ReadBack);
+        public record WriteCommandResult(bool Success, object? Value, string? Message);
+
+        /// <summary>
+        /// 对设备写入（转发到Gateway）
+        /// </summary>
+        [HttpPost("{deviceId}/commands/write")]
+        public async Task<ActionResult<WriteCommandResult>> WriteCommand(int deviceId, [FromBody] WriteCommandRequest req)
+        {
+            try
+            {
+                if (req == null || (string.IsNullOrWhiteSpace(req.Address) && req.PointId == null))
+                {
+                    return BadRequest(new { message = "参数无效：需要 Address 或 PointId" });
+                }
+
+                // 目前先按 Address 转发；PointId 将来可查询点位派生地址
+                var payload = new
+                {
+                    DeviceId = deviceId,
+                    Address = req.Address,
+                    Value = req.Value,
+                    FunctionCode = req.FunctionCode,
+                    ReadBack = req.ReadBack == true
+                };
+
+                var url = $"{_gatewayApiBase}/api/management/write";
+                using var http = _httpClientFactory.CreateClient();
+                http.Timeout = TimeSpan.FromSeconds(10);
+                var json = System.Text.Json.JsonSerializer.Serialize(payload);
+                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                var resp = await http.PostAsync(url, content);
+                var text = await resp.Content.ReadAsStringAsync();
+                if (!resp.IsSuccessStatusCode)
+                {
+                    _logger.LogWarning("写入失败: {Status} {Body}", resp.StatusCode, text);
+                    return StatusCode((int)resp.StatusCode, new { message = text });
+                }
+                var result = System.Text.Json.JsonSerializer.Deserialize<WriteCommandResult>(text,
+                    new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+                    ?? new WriteCommandResult(true, null, null);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "写入命令失败: 设备 {DeviceId}", deviceId);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
 
     /// <summary>
     /// 测试设备连接（基础连通性）

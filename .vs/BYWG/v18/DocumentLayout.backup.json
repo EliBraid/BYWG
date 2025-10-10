@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "F:\\CSharp\\BYWG\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|f:\\csharp\\bywg\\bywg.gateway\\services\\datacollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|solutionrelative:bywg.gateway\\services\\datacollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|f:\\csharp\\bywg\\bywg.gateway\\controllers\\managementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|solutionrelative:bywg.gateway\\controllers\\managementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|f:\\csharp\\bywg\\bywg.admin\\services\\deviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|solutionrelative:bywg.admin\\services\\deviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|f:\\csharp\\bywg\\bywg.gateway\\services\\datacollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AEBE246D-F04D-2CBC-5E9B-8306DE65462C}|BYWG.Gateway\\BYWG.Gateway.csproj|solutionrelative:bywg.gateway\\services\\datacollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D3780415-EE5A-7B04-7BE0-1140BB8013C4}|BYWG.Admin\\BYWG.Admin.csproj|f:\\csharp\\bywg\\bywg.admin\\controllers\\devicescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -299,21 +299,25 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "DataCollectionService.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Gateway\\Services\\DataCollectionService.cs",
               "RelativeDocumentMoniker": "BYWG.Gateway\\Services\\DataCollectionService.cs",
               "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Gateway\\Services\\DataCollectionService.cs",
               "RelativeToolTip": "BYWG.Gateway\\Services\\DataCollectionService.cs",
-              "ViewState": "AgIAAAsDAAAAAAAAAAAmwB8DAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAGcAAAAAAAAAAAAAwH0AAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-08T10:06:36.513Z",
               "EditorCaption": ""
@@ -338,14 +342,14 @@
               "RelativeDocumentMoniker": "BYWG.Admin\\Controllers\\DevicesController.cs",
               "ToolTip": "F:\\CSharp\\BYWG\\BYWG.Admin\\Controllers\\DevicesController.cs",
               "RelativeToolTip": "BYWG.Admin\\Controllers\\DevicesController.cs",
-              "ViewState": "AgIAAEQBAAAAAAAAAADwv1kBAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAHUBAAAAAAAAAADwv4oBAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-08T01:32:25.701Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "DeviceService.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Admin\\Services\\DeviceService.cs",
               "RelativeDocumentMoniker": "BYWG.Admin\\Services\\DeviceService.cs",
@@ -358,7 +362,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "ManagementController.cs",
               "DocumentMoniker": "F:\\CSharp\\BYWG\\BYWG.Gateway\\Controllers\\ManagementController.cs",
               "RelativeDocumentMoniker": "BYWG.Gateway\\Controllers\\ManagementController.cs",
@@ -380,10 +384,6 @@
               "ViewState": "AgIAACwAAAAAAAAAAAAAwDwAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-08T10:05:00.126Z"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             },
             {
               "$type": "Document",

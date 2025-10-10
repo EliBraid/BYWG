@@ -73,6 +73,34 @@ public class ManagementController : ControllerBase
         return Ok(new { message = "数据同步和协议配置重载已完成" });
     }
 
+    public record WriteCommandRequest(int DeviceId, string Address, object Value, int? FunctionCode, bool? ReadBack);
+
+    [HttpPost("write")]
+    public async Task<IActionResult> Write([FromBody] WriteCommandRequest request)
+    {
+        if (request == null || string.IsNullOrWhiteSpace(request.Address))
+        {
+            return BadRequest(new { message = "参数无效" });
+        }
+
+        var dataCollectionService = GetDataCollectionService();
+        try
+        {
+            var result = await dataCollectionService.WriteToDeviceAsync(
+                request.DeviceId,
+                request.Address,
+                request.Value,
+                request.FunctionCode,
+                request.ReadBack == true
+            );
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
     [HttpGet("points")]
     public IActionResult GetPoints()
     {

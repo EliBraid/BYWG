@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-import { listDevices, createDevice, updateDevice, deleteDevice, getDevicePoints, importDevicePointsFromTemplate, createDevicePoint, updateDevicePoint, deleteDevicePoint, batchDeleteDevicePoints, batchUpdateDevicePointsStatus, testDeviceConnection, type DeviceDto, type CreateDeviceRequest, type UpdateDeviceRequest, type DevicePointDto, type TestConnectionRequest, type TestConnectionResponse } from '@/api/devices'
+import { listDevices, createDevice, updateDevice, deleteDevice, getDevicePoints, importDevicePointsFromTemplate, createDevicePoint, updateDevicePoint, deleteDevicePoint, batchDeleteDevicePoints, batchUpdateDevicePointsStatus, testDeviceConnection, type DeviceDto, type CreateDeviceRequest, type UpdateDeviceRequest, type DevicePointDto, type TestConnectionRequest, type TestConnectionResponse, type WriteCommandRequest } from '@/api/devices'
 import { reloadDevice, getGatewayLatestSnapshot } from '@/api/gateways'
 import { listProtocolTemplates, type ProtocolTemplateDto } from '@/api/devices'
 import { useWebSocket, type RealtimeDataUpdate, type PointValueUpdate } from '@/api/websocket'
+import { writeDeviceCommand } from '@/api/devices'
 
 const devices = ref<DeviceDto[]>([])
 const loading = ref(false)
@@ -1092,6 +1093,86 @@ async function handleReload(deviceId: number) {
     alert('重载失败：' + (e.message || String(e)))
   }
 }
+
+// 写入对话框
+const showWriteModal = ref(false)
+const writeValue = ref<any>('')
+const writeTargetPoint = ref<DevicePointDto | null>(null)
+const writeLoading = ref(false)
+
+// 写入相关
+function openWriteDialog(p: DevicePointDto) {
+  writeTargetPoint.value = p
+  writeValue.value = ''
+  showWriteModal.value = true
+}
+
+async function confirmWrite() {
+  if (!selectedDeviceId.value || !writeTargetPoint.value) return
+  try {
+    // 基于点位数据类型做一次前端类型校验与转换
+    let payloadValue: any = writeValue.value
+    const dt = (writeTargetPoint.value.dataType || '').toUpperCase()
+    if (dt.includes('INT')) {
+      const num = Number(payloadValue)
+      if (!Number.isFinite(num)) { alert('请输入数值'); return }
+      payloadValue = Math.trunc(num)
+    } else if (dt.includes('FLOAT') || dt.includes('DOUBLE')) {
+      const num = Number(payloadValue)
+      if (!Number.isFinite(num)) { alert('请输入数值'); return }
+      payloadValue = num
+    }
+
+    writeLoading.value = true
+    // 映射写入功能码：读保持(3)->写保持(6); 线圈读(1)->写(5); 输入寄存器(4)/离散输入(2)不支持写
+    const srcFc = writeTargetPoint.value.functionCode ?? 3
+    let writeFc: number | undefined = undefined
+    if (srcFc === 3) writeFc = 6
+    else if (srcFc === 1) writeFc = 5
+    else if (srcFc === 4 || srcFc === 2) { alert('该点类型为只读，无法写入'); return }
+    else writeFc = 6
+
+    const req: WriteCommandRequest = {
+      address: writeTargetPoint.value.address,
+      functionCode: writeFc,
+      value: payloadValue,
+      readBack: true
+    }
+    const result = await writeDeviceCommand(selectedDeviceId.value, req)
+    console.log('写入结果:', result)
+    // 本地乐观更新：更新该设备快照与全局快照对应键
+    try {
+      const device = devices.value.find(d => d.id === selectedDeviceId.value)
+      const p = writeTargetPoint.value
+      if (device && p) {
+        const protocolKey = `${device.protocol}_${device.ipAddress}_${device.port}`
+        const nameKey = `${protocolKey}.${p.name}`
+        const addrKey = `${protocolKey}.${p.address}`
+        const v = (result && (result as any).value) ?? payloadValue
+        // 更新全局
+        latestSnapshot.value = { ...latestSnapshot.value, [nameKey]: v, [addrKey]: v }
+        // 更新设备快照
+        const did = selectedDeviceId.value as number
+        if (!deviceSnapshots.value[did]) deviceSnapshots.value[did] = {}
+        deviceSnapshots.value[did][nameKey] = v
+        deviceSnapshots.value[did][addrKey] = v
+      }
+    } catch {}
+    // 关闭弹窗
+    showWriteModal.value = false
+    // 轻量刷新，等待WS优先
+    if (!refreshInProgress) refreshSnapshotDataAsync()
+    alert('写入成功')
+  } catch (e: any) {
+    alert('写入失败：' + (e.message || String(e)))
+  } finally {
+    writeLoading.value = false
+  }
+}
+
+function cancelWrite() {
+  showWriteModal.value = false
+}
 </script>
 
 <template>
@@ -1570,6 +1651,9 @@ async function handleReload(deviceId: number) {
                   <button class="btn-delete" @click="removePoint(p)" title="删除">
                     <i class="fas fa-trash"></i>
                   </button>
+                  <button class="btn-save" @click.stop="openWriteDialog(p)" title="写入">
+                    <i class="fas fa-pen"></i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -1582,6 +1666,18 @@ async function handleReload(deviceId: number) {
           <span class="enabled-count">启用 {{ devicePoints.filter(p => p.enabled).length }} 个</span>
         </div>
         <button type="button" class="btn-close" @click="closePointsModal">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <div v-if="showWriteModal" class="modal-overlay write-overlay" @click.self="cancelWrite">
+    <div class="modal" @click.stop>
+      <h3>写入点位</h3>
+      <p v-if="writeTargetPoint">目标: {{ writeTargetPoint.name }} (地址 {{ writeTargetPoint.address }})</p>
+      <input v-model="writeValue" placeholder="输入写入值" />
+      <div class="modal-actions">
+        <button class="btn-primary" type="button" :disabled="writeLoading" @click.stop.prevent="confirmWrite">{{ writeLoading ? '写入中...' : '确认' }}</button>
+        <button class="btn-secondary" type="button" :disabled="writeLoading" @click.stop.prevent="cancelWrite">取消</button>
       </div>
     </div>
   </div>
@@ -3083,6 +3179,13 @@ async function handleReload(deviceId: number) {
     justify-content: space-between;
   }
 }
+
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal { background: #fff; padding: 16px; border-radius: 6px; width: 360px; box-shadow: 0 6px 24px rgba(0,0,0,0.2); }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+/* 写入弹窗置于更高层，避免被设备详情弹窗覆盖 */
+.write-overlay { z-index: 4000 !important; }
+.write-overlay .modal { z-index: 4001 !important; }
 </style>
 
 

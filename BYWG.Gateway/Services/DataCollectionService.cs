@@ -227,6 +227,77 @@ public class DataCollectionService : IHostedService, IDisposable
         }
     }
 
+        public async Task<object> WriteToDeviceAsync(int deviceId, string address, object value, int? functionCode, bool readBack)
+        {
+            // 定位设备与协议名
+            var devices = _communicationService.GetCachedDevices();
+            var device = devices.FirstOrDefault(d => d.Id == deviceId);
+            if (device == null) throw new InvalidOperationException($"设备 {deviceId} 不存在或未同步");
+            var protocolName = GetProtocolName(device);
+
+            if (!_protocolManager.TryGetProtocol(protocolName, out var proto))
+            {
+                // 协议不存在则尝试创建一次
+                await CreateProtocolForDevice(device);
+                if (!_protocolManager.TryGetProtocol(protocolName, out proto))
+                    throw new InvalidOperationException($"协议 {protocolName} 不可用");
+            }
+
+            // 仅支持 AsyncModbusTcpProtocol 写入最小闭环
+            if (proto is BYWGLib.Protocols.AsyncModbusTcpProtocol modbus)
+            {
+                // 归一化从JSON反序列化来的值（JsonElement -> 基础类型）
+                object normalizedValue = NormalizeJsonValue(value);
+                var ok = await modbus.WriteAsync(address, "uint16", normalizedValue, functionCode);
+                if (!ok) throw new InvalidOperationException("写入失败");
+
+                object? readBackValue = null;
+                if (readBack)
+                {
+                    readBackValue = await modbus.ReadAsync(address, "uint16");
+                }
+
+                // 更新缓存键（name 或 address 需与前端匹配约定，这里先用 address）
+                var key = $"{protocolName}.{address}";
+                _latestData.AddOrUpdate(key, readBack ? (readBackValue ?? value) : value, (k, _) => readBack ? (readBackValue ?? value) : value);
+
+                // 可选：触发一次采集，尽快同步
+                TriggerImmediateCollection();
+
+                return new { success = true, value = readBack ? (readBackValue ?? value) : value };
+            }
+
+            throw new NotSupportedException("当前仅实现 ModbusTCP 写入");
+        }
+
+        private static object NormalizeJsonValue(object value)
+        {
+            if (value is System.Text.Json.JsonElement je)
+            {
+                switch (je.ValueKind)
+                {
+                    case System.Text.Json.JsonValueKind.Number:
+                        if (je.TryGetInt64(out var l)) return l;
+                        if (je.TryGetDouble(out var d)) return d;
+                        break;
+                    case System.Text.Json.JsonValueKind.String:
+                        var s = je.GetString();
+                        if (long.TryParse(s, out var li)) return li;
+                        if (double.TryParse(s, out var di)) return di;
+                        return s ?? string.Empty;
+                    case System.Text.Json.JsonValueKind.True:
+                        return true;
+                    case System.Text.Json.JsonValueKind.False:
+                        return false;
+                    case System.Text.Json.JsonValueKind.Null:
+                        return 0;
+                }
+                // 默认返回原值文本
+                return je.ToString() ?? string.Empty;
+            }
+            return value;
+        }
+
     private string GetProtocolName(Device device)
     {
         return $"{device.Protocol}_{device.IpAddress}_{device.Port}";
