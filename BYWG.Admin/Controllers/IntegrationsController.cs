@@ -8,19 +8,31 @@ namespace BYWG.Admin.Controllers;
 [Authorize] // 需要认证
 public class IntegrationsController : ControllerBase
 {
+    private readonly IConfiguration _configuration;
+
+    public IntegrationsController(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     // OPC UA 集成
     [HttpGet("opcua/config")]
     public IActionResult GetOpcUaConfig()
     {
+        var endpoint = _configuration["Integrations:OpcUa:Endpoint"] ?? "opc.tcp://localhost:4840";
+        var securityMode = _configuration["Integrations:OpcUa:SecurityMode"] ?? "None";
+        var securityPolicy = _configuration["Integrations:OpcUa:SecurityPolicy"] ?? "None";
+        var authMode = _configuration["Integrations:OpcUa:AuthMode"] ?? "Anonymous";
+        var enabled = bool.TryParse(_configuration["Integrations:OpcUa:Enabled"], out var e1) ? e1 : true;
         var config = new
         {
             id = "opcua-1",
             name = "OPC UA Integration",
-            endpoint = "opc.tcp://localhost:4840",
-            securityMode = "None",
-            securityPolicy = "None",
-            authMode = "Anonymous",
-            enabled = true,
+            endpoint,
+            securityMode,
+            securityPolicy,
+            authMode,
+            enabled,
             mappings = new object[0]
         };
         return Ok(config);
@@ -55,18 +67,26 @@ public class IntegrationsController : ControllerBase
     [HttpGet("mqtt/config")]
     public IActionResult GetMqttConfig()
     {
+        var host = _configuration["Integrations:Mqtt:Host"] ?? "localhost";
+        var port = int.TryParse(_configuration["Integrations:Mqtt:Port"], out var p) ? p : 1883;
+        var username = _configuration["Integrations:Mqtt:Username"] ?? string.Empty;
+        var password = _configuration["Integrations:Mqtt:Password"] ?? string.Empty;
+        var clientId = _configuration["Integrations:Mqtt:ClientId"] ?? "bywg-admin";
+        var cleanSession = bool.TryParse(_configuration["Integrations:Mqtt:CleanSession"], out var cs) ? cs : true;
+        var ssl = bool.TryParse(_configuration["Integrations:Mqtt:Ssl"], out var s) ? s : false;
+        var enabled = bool.TryParse(_configuration["Integrations:Mqtt:Enabled"], out var e2) ? e2 : true;
         var config = new
         {
             id = "mqtt-1",
             name = "MQTT Integration",
-            host = "localhost",
-            port = 1883,
-            username = "",
-            password = "",
-            clientId = "bywg-admin",
-            cleanSession = true,
-            ssl = false,
-            enabled = true,
+            host,
+            port,
+            username,
+            password,
+            clientId,
+            cleanSession,
+            ssl,
+            enabled,
             mappings = new object[0]
         };
         return Ok(config);
@@ -100,16 +120,22 @@ public class IntegrationsController : ControllerBase
     [HttpGet("rest/config")]
     public IActionResult GetRestConfig()
     {
+        var baseUrl = _configuration["Integrations:Rest:BaseUrl"] ?? "http://localhost:8080/api";
+        var authMode = _configuration["Integrations:Rest:AuthMode"] ?? "None";
+        var timeoutMs = int.TryParse(_configuration["Integrations:Rest:TimeoutMs"], out var t) ? t : 5000;
+        var retryCount = int.TryParse(_configuration["Integrations:Rest:RetryCount"], out var r) ? r : 3;
+        var verifyTLS = bool.TryParse(_configuration["Integrations:Rest:VerifyTLS"], out var v) ? v : true;
+        var enabled = bool.TryParse(_configuration["Integrations:Rest:Enabled"], out var e3) ? e3 : true;
         var config = new
         {
             id = "rest-1",
             name = "REST Integration",
-            baseUrl = "http://localhost:8080/api",
-            authMode = "None",
-            timeoutMs = 5000,
-            retryCount = 3,
-            verifyTLS = true,
-            enabled = true,
+            baseUrl,
+            authMode,
+            timeoutMs,
+            retryCount,
+            verifyTLS,
+            enabled,
             mappings = new object[0]
         };
         return Ok(config);

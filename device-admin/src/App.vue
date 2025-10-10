@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { getCurrentUser, getRoleInfo, formatLastLogin } from './utils/auth'
+import { getRoleInfo, formatLastLogin } from './utils/auth'
 import { sendHeartbeat, getOnlineCount } from './api/auth'
 
 const route = useRoute()
 const sidebarCollapsed = ref(false)
 const showUserMenu = ref(false)
+
+// 认证服务基地址：优先取 VITE_AUTH_API_URL；未配置则走同域反代 /api
+const AUTH_API_BASE = (import.meta.env.VITE_AUTH_API_URL as string | undefined)?.replace(/\/$/, '') || ''
+const authUrl = (path: string) => `${AUTH_API_BASE || ''}${path}` || path
 
 // 用户信息 - 从localStorage或API获取
 const currentUser = ref({
@@ -60,32 +64,7 @@ const systemStatus = ref({
 })
 const onlineCount = ref(0)
 
-// 权限检查函数（支持后端校验）
-async function hasPermission(permission: string): Promise<boolean> {
-  // 首先尝试后端权限校验
-  try {
-    const hasBackendPermission = await checkPermission(permission)
-    if (hasBackendPermission !== null) {
-      return hasBackendPermission
-    }
-  } catch (error) {
-    console.log('后端权限校验失败，使用前端权限校验')
-  }
-  
-  // 如果后端不可用，使用前端权限校验
-  const role = currentUser.value.role
-  
-  // 权限映射
-  const permissions: Record<string, string[]> = {
-    admin: ['system', 'user_management', 'device_management', 'monitoring', 'all'],
-    operator: ['device_management', 'monitoring'],
-    technician: ['device_management', 'monitoring', 'system'],
-    viewer: ['monitoring']
-  }
-  
-  const userPermissions = permissions[role] || []
-  return userPermissions.includes(permission) || userPermissions.includes('all')
-}
+// hasPermission(异步版)未在模板/代码中使用，已移除以消除未使用警告
 
 // 同步权限检查函数（用于模板中的v-if）
 function hasPermissionSync(permission: string): boolean {
@@ -170,8 +149,8 @@ async function checkSystemStatus() {
       message: '检查中...'
     }
 
-    // 检查认证服务状态
-    const authResponse = await fetch('https://localhost:52923/api/auth/me', {
+    // 检查认证服务状态（配置化）
+    const authResponse = await fetch(authUrl('/api/auth/me'), {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -218,9 +197,9 @@ async function logout() {
       heartbeatTimer = null
     }
     
-    // 调用后端注销API（清除在线状态）
+    // 调用后端注销API（清除在线状态，配置化）
     try {
-      await fetch('https://localhost:52923/api/auth/logout', {
+      await fetch(authUrl('/api/auth/logout'), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -264,7 +243,7 @@ async function fetchCurrentUser() {
       return
     }
 
-    const response = await fetch('https://localhost:52923/api/auth/me', {
+    const response = await fetch(authUrl('/api/auth/me'), {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -307,50 +286,7 @@ async function fetchCurrentUser() {
   }
 }
 
-// 检查用户权限（基于角色的权限检查）
-async function checkPermission(permission: string): Promise<boolean> {
-  try {
-    const token = localStorage.getItem('token')
-    if (!token) return false
-
-    // 获取当前用户信息
-    const response = await fetch('https://localhost:52923/api/auth/me', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    })
-
-    if (response.ok) {
-      const userData = await response.json()
-      
-      // 基于角色的权限检查
-      const rolePermissions: Record<string, string[]> = {
-        'admin': ['system', 'user_management', 'device_management', 'monitoring', 'all'],
-        'operator': ['device_management', 'monitoring'],
-        'technician': ['device_management', 'monitoring', 'system'],
-        'viewer': ['monitoring']
-      }
-      
-      const userRole = userData.role.toLowerCase()
-      const userPermissions = rolePermissions[userRole] || []
-      return userPermissions.includes(permission) || userPermissions.includes('all')
-    } else if (response.status === 401) {
-      // Token过期，清除登录状态
-      localStorage.removeItem('token')
-      localStorage.removeItem('userInfo')
-      localStorage.removeItem('isLoggedIn')
-      window.location.href = '/login'
-      return false
-    }
-    
-    return false
-  } catch (error) {
-    console.error('权限检查失败:', error)
-    return false
-  }
-}
+// 移除未使用的 checkPermission 函数以消除构建告警
 
 // 点击外部关闭下拉菜单
 function handleClickOutside(event: Event) {

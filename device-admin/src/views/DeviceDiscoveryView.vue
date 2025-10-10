@@ -22,7 +22,7 @@
           </svg>
           停止扫描
         </button>
-        <button @click="showConfigModal = true" class="config-btn">
+        <button @click="openConfigModal" class="config-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" stroke-width="2"/>
@@ -366,8 +366,21 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 const isScanning = ref(false)
 const scanProgress = ref(0)
 const showConfigModal = ref(false)
-const selectedDevice = ref(null)
-const connectionResult = ref(null)
+type DiscoveredDevice = {
+  id: number;
+  name: string;
+  ip: string;
+  mac: string;
+  type: string;
+  vendor: string;
+  model: string;
+  status: 'online' | 'offline' | 'unknown';
+  protocols: string[];
+  discoveredAt: Date;
+  selected: boolean;
+}
+const selectedDevice = ref<DiscoveredDevice | null>(null)
+const connectionResult = ref<{ success: boolean; message: string } | null>(null)
 const selectedProtocol = ref('')
 const selectedStatus = ref('')
 const allDevicesSelected = ref(false)
@@ -396,7 +409,7 @@ const availableProtocols = ref([
 const protocols = ref(['Modbus TCP', 'OPC UA', 'Ethernet/IP', 'Profinet', 'BACnet', 'DNP3'])
 
 // 发现的设备
-const discoveredDevices = ref([
+const discoveredDevices = ref<DiscoveredDevice[]>([
   {
     id: 1,
     name: 'PLC-001',
@@ -485,15 +498,15 @@ function startScan() {
       clearInterval(interval)
       
       // 模拟发现新设备
-      const newDevice = {
+      const newDevice: DiscoveredDevice = {
         id: Date.now(),
         name: `Device-${Math.floor(Math.random() * 1000)}`,
         ip: `192.168.1.${Math.floor(Math.random() * 254) + 1}`,
         mac: '00:1B:44:11:3A:' + Math.floor(Math.random() * 255).toString(16).padStart(2, '0'),
-        type: ['PLC', 'HMI', 'SCADA', 'Sensor'][Math.floor(Math.random() * 4)],
-        vendor: ['Siemens', 'Schneider', 'Rockwell', 'ABB'][Math.floor(Math.random() * 4)],
+        type: (['PLC', 'HMI', 'SCADA', 'Sensor'][Math.floor(Math.random() * 4)]) as string,
+        vendor: (['Siemens', 'Schneider', 'Rockwell', 'ABB'][Math.floor(Math.random() * 4)]) as string,
         model: 'Model-' + Math.floor(Math.random() * 1000),
-        status: Math.random() > 0.3 ? 'online' : 'offline',
+        status: (Math.random() > 0.3 ? 'online' : 'offline') as 'online' | 'offline' | 'unknown',
         protocols: ['Modbus TCP', 'OPC UA', 'Ethernet/IP'].slice(0, Math.floor(Math.random() * 3) + 1),
         discoveredAt: new Date(),
         selected: false
@@ -508,7 +521,7 @@ function stopScan() {
   scanProgress.value = 0
 }
 
-function testConnection(device: any) {
+function testConnection(device: DiscoveredDevice) {
   // 模拟连接测试
   const success = Math.random() > 0.3
   connectionResult.value = {
@@ -521,7 +534,7 @@ function testConnection(device: any) {
   }
 }
 
-function viewDeviceDetails(device: any) {
+function viewDeviceDetails(device: DiscoveredDevice) {
   selectedDevice.value = device
 }
 
@@ -530,7 +543,7 @@ function closeDeviceDetail() {
   connectionResult.value = null
 }
 
-function addDevice(device: any) {
+function addDevice(device: DiscoveredDevice) {
   // 实现添加设备到系统的逻辑
   console.log('添加设备到系统:', device)
   alert(`设备 ${device.name} 已添加到系统`)

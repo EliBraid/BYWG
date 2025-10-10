@@ -200,13 +200,13 @@ const debug = reactive<{ method: 'GET'|'POST'|'PUT'; path: string; body: string;
 async function runDebug(){ loading.value=true; try { await new Promise(r=>setTimeout(r,400)); debug.result = `${debug.method} ${form.value.baseUrl}${debug.path} OK`; logs.value.unshift(`[${new Date().toLocaleTimeString()}] 调试 ${debug.method} ${debug.path} 成功`) } finally { loading.value=false } }
 
 async function refreshLogs(){
-  try { const { data } = await getRestLogs(); logs.value = data } catch { logs.value.unshift(`[${new Date().toLocaleTimeString()}] 刷新日志`) }
+  try { const data = await getRestLogs(); logs.value = data } catch { logs.value.unshift(`[${new Date().toLocaleTimeString()}] 刷新日志`) }
 }
 function clearLogs(){ logs.value = [] }
 
 onMounted(async ()=>{
   try {
-    const { data } = await getRestConfig()
+    const data = await getRestConfig()
     Object.assign(form.value, data)
   } catch {
     // 本地回退：尝试从 localStorage 读取

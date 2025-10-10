@@ -5,6 +5,18 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using BYWGLib;
 
+// 在开发环境中，如果检测到环境变量包含占位符，则临时清除它
+// 这样可以确保开发环境使用配置文件，生产环境使用环境变量
+if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+{
+    var adminApiUrl = Environment.GetEnvironmentVariable("ADMIN_API_URL");
+    if (!string.IsNullOrEmpty(adminApiUrl) && adminApiUrl.Contains("<"))
+    {
+        Environment.SetEnvironmentVariable("ADMIN_API_URL", null);
+        Console.WriteLine("开发环境：检测到ADMIN_API_URL包含占位符，已临时清除。将使用配置文件中的URL。");
+    }
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // 配置Serilog
@@ -31,16 +43,28 @@ builder.Services.AddPooledDbContextFactory<GatewayDbContext>(options =>
         // 本地默认文件，避免未配置连接串时的空值问题
         conn = "Data Source=gateway.db";
     }
+    
+    // 确保使用SQLite连接字符串格式
+    if (conn.Contains("Host=") || conn.Contains("Port=") || conn.Contains("Database="))
+    {
+        Log.Warning("检测到PostgreSQL格式的连接字符串，但Gateway项目使用SQLite。将使用默认SQLite连接字符串。");
+        conn = "Data Source=gateway.db";
+    }
+    
+    Log.Information("使用SQLite数据库连接: {ConnectionString}", conn);
     options.UseSqlite(conn);
 });
 
 // 预先创建数据库（在构建应用前，避免托管服务启动时表未创建）
+// 注意：这里使用BuildServiceProvider是必要的，因为需要在应用启动前创建数据库
+#pragma warning disable ASP0000
 using (var sp = builder.Services.BuildServiceProvider())
 {
     var factory = sp.GetRequiredService<IDbContextFactory<GatewayDbContext>>();
     using var ctx = factory.CreateDbContext();
     ctx.Database.EnsureCreated();
 }
+#pragma warning restore ASP0000
 
 // 添加SignalR
 builder.Services.AddSignalR();
@@ -59,6 +83,7 @@ builder.Services.AddCors(options =>
 
 // 注册服务
 builder.Services.AddSingleton<ProtocolManager>();
+builder.Services.AddSingleton<CommunicationService>();
 builder.Services.AddHostedService<DataCollectionService>();
 builder.Services.AddHostedService<CommunicationService>();
 // 已移除不存在的后台服务
@@ -80,12 +105,12 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHub<DataHub>("/dataHub");
 
-// （运行时再次确保一次，防御性处理）
+// 运行时执行迁移（生产推荐）：自动将数据库迁移到最新
 using (var scope = app.Services.CreateScope())
 {
     var factory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<GatewayDbContext>>();
     using var context = factory.CreateDbContext();
-    context.Database.EnsureCreated();
+    context.Database.Migrate();
 }
 
 Log.Information("BYWG Gateway 启动完成");

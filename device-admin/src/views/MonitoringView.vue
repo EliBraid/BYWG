@@ -391,13 +391,18 @@ function refreshData() {
   networkTraffic.value = Math.floor(Math.random() * 5) + 10
   
   // 添加新的数据流条目
-  const newData = {
+  const pick = <T,>(arr: readonly T[]): T => {
+    const idx = Math.floor(Math.random() * arr.length)
+    // 在泛型推断下断言索引合法，避免 T | undefined 推断
+    return arr[idx] as T
+  }
+  const newData: { timestamp: Date; deviceName: string; tagName: string; value: string; unit: string; level: 'normal'|'warning'|'error' } = {
     timestamp: new Date(),
-    deviceName: devices.value[Math.floor(Math.random() * devices.value.length)].name,
-    tagName: ['Temperature', 'Pressure', 'Speed', 'Voltage'][Math.floor(Math.random() * 4)],
+    deviceName: (devices.value.length > 0 ? pick(devices.value).name : 'Unknown'),
+    tagName: pick(['Temperature', 'Pressure', 'Speed', 'Voltage'] as const),
     value: (Math.random() * 100).toFixed(1),
-    unit: ['°C', 'Bar', 'RPM', 'V'][Math.floor(Math.random() * 4)],
-    level: ['normal', 'warning', 'error'][Math.floor(Math.random() * 3)]
+    unit: pick(['°C', 'Bar', 'RPM', 'V'] as const),
+    level: pick(['normal', 'warning', 'error'] as const)
   }
   dataStream.value.unshift(newData)
   

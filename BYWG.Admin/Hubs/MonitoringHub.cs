@@ -77,4 +77,22 @@ public class MonitoringHub : Hub
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"Gateway_{gatewayId}");
         _logger.LogInformation("客户端 {ConnectionId} 离开网关 {GatewayId} 监控组", Context.ConnectionId, gatewayId);
     }
+
+    /// <summary>
+    /// 加入点位监控组
+    /// </summary>
+    public async Task JoinPointMonitoring(int deviceId, int pointId)
+    {
+        await Groups.AddToGroupAsync(Context.ConnectionId, $"Point_{deviceId}_{pointId}");
+        _logger.LogInformation("客户端 {ConnectionId} 加入点位 {DeviceId}_{PointId} 监控组", Context.ConnectionId, deviceId, pointId);
+    }
+
+    /// <summary>
+    /// 离开点位监控组
+    /// </summary>
+    public async Task LeavePointMonitoring(int deviceId, int pointId)
+    {
+        await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"Point_{deviceId}_{pointId}");
+        _logger.LogInformation("客户端 {ConnectionId} 离开点位 {DeviceId}_{PointId} 监控组", Context.ConnectionId, deviceId, pointId);
+    }
 }

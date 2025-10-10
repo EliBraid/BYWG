@@ -169,6 +169,7 @@ public class GatewaysController : ControllerBase
     /// 更新网关心跳
     /// </summary>
     [HttpPost("{gatewayId}/heartbeat")]
+    [AllowAnonymous] // Gateway服务不需要用户认证
     public async Task<ActionResult> UpdateHeartbeat(string gatewayId, [FromBody] GatewayHeartbeatRequest request)
     {
         try

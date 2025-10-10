@@ -279,6 +279,8 @@ namespace BYWGLib
         {
             lock (lockObject)
             {
+                Log.Debug("ProtocolManager收到DataReceived事件: 协议={0}, 数据项数量={1}", e.ProtocolName, e.DataItems.Count);
+                
                 // 更新数据项
                 var changedItems = new List<IndustrialDataItem>();
                 
@@ -286,6 +288,7 @@ namespace BYWGLib
                 {
                     string key = $"{e.ProtocolName}.{item.Name}";
                     
+                    // 第一次读取或者数据值发生变化时，都触发事件
                     if (!dataItems.TryGetValue(key, out var existingItem) ||
                         !Equals(existingItem.Value, item.Value))
                     {
@@ -297,7 +300,16 @@ namespace BYWGLib
                 // 触发数据变化事件
                 if (changedItems.Count > 0 && DataChanged != null)
                 {
+                    Log.Debug("触发DataChanged事件: 变化项数量={0}", changedItems.Count);
+                    foreach (var item in changedItems)
+                    {
+                        Log.Debug("变化项: Id={0}, Name={1}, Value={2}", item.Id, item.Name, item.Value);
+                    }
                     DataChanged(this, new DataChangedEventArgs(changedItems));
+                }
+                else
+                {
+                    Log.Debug("没有变化项或DataChanged事件为空，跳过事件触发");
                 }
                 
                 // 更新数据传输统计

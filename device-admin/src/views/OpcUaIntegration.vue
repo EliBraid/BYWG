@@ -266,7 +266,7 @@ async function runDebug(){
 
 async function refreshLogs(){
   try {
-    const { data } = await getOpcUaLogs()
+    const data = await getOpcUaLogs()
     logs.value = data
   } catch {
     logs.value.unshift(`[${new Date().toLocaleTimeString()}] 刷新日志`)
@@ -276,7 +276,7 @@ function clearLogs(){ logs.value = [] }
 
 onMounted(async ()=>{
   try {
-    const { data } = await getOpcUaConfig()
+    const data = await getOpcUaConfig()
     Object.assign(form.value, data)
   } catch {
     const cache = localStorage.getItem('opcuaConfig')

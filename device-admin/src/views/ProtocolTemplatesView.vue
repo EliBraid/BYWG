@@ -534,7 +534,8 @@ function saveTemplate() {
     templates.value.push(newTemplate)
   } else if (showEditTemplateModal.value && editingTemplate.value) {
     // 编辑现有模板
-    const template = templates.value.find(t => t.id === editingTemplate.value.id)
+  const templateId = (editingTemplate.value as any)?.id as number | undefined
+  const template = templateId ? templates.value.find(t => t.id === templateId) : undefined
     if (template) {
       template.name = templateForm.value.name
       template.description = templateForm.value.description
@@ -569,8 +570,9 @@ function validateConfig() {
   try {
     JSON.parse(templateForm.value.config)
     alert('配置格式正确')
-  } catch (error) {
-    alert('配置格式错误: ' + error.message)
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error)
+    alert('配置格式错误: ' + message)
   }
 }
 
@@ -578,8 +580,9 @@ function formatConfig() {
   try {
     const parsed = JSON.parse(templateForm.value.config)
     templateForm.value.config = JSON.stringify(parsed, null, 2)
-  } catch (error) {
-    alert('无法格式化配置: ' + error.message)
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error)
+    alert('无法格式化配置: ' + message)
   }
 }
 

@@ -101,7 +101,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import type { UserDto } from '../api/users'
 
 interface Props {
@@ -114,7 +113,7 @@ interface Emits {
   (e: 'edit', user: UserDto): void
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
 function closeDialog() {

@@ -341,8 +341,22 @@ const viewMode = ref('grid')
 const searchQuery = ref('')
 const showCreateGroupModal = ref(false)
 const showEditGroupModal = ref(false)
-const selectedGroup = ref(null)
-const editingGroup = ref(null)
+type GroupDevice = { id: number; name: string; ip: string; status: string; protocol: string; lastUpdate: Date }
+type Group = {
+  id: number
+  name: string
+  description: string
+  type: string
+  color: string
+  deviceCount: number
+  onlineCount: number
+  offlineCount: number
+  protocolCount: number
+  updatedAt: Date
+  devices: GroupDevice[]
+}
+const selectedGroup = ref<Group | null>(null)
+const editingGroup = ref<Group | null>(null)
 
 // 分组表单
 const groupForm = ref({
@@ -433,7 +447,7 @@ function refreshGroups() {
   console.log('刷新分组数据')
 }
 
-function selectGroup(group: any) {
+function selectGroup(group: Group) {
   selectedGroup.value = group
 }
 
@@ -441,7 +455,7 @@ function closeGroupDetail() {
   selectedGroup.value = null
 }
 
-function editGroup(group: any) {
+function editGroup(group: Group) {
   editingGroup.value = group
   groupForm.value = {
     name: group.name,
@@ -452,7 +466,7 @@ function editGroup(group: any) {
   showEditGroupModal.value = true
 }
 
-function deleteGroup(group: any) {
+function deleteGroup(group: Group) {
   if (confirm(`确定要删除分组 "${group.name}" 吗？此操作将移除分组中的所有设备。`)) {
     const index = groups.value.findIndex(g => g.id === group.id)
     if (index > -1) {
@@ -492,7 +506,7 @@ function saveGroup() {
     groups.value.push(newGroup)
   } else if (showEditGroupModal.value && editingGroup.value) {
     // 编辑现有分组
-    const group = groups.value.find(g => g.id === editingGroup.value.id)
+    const group = editingGroup.value ? groups.value.find(g => g.id === editingGroup.value!.id) : undefined
     if (group) {
       group.name = groupForm.value.name
       group.description = groupForm.value.description
@@ -515,18 +529,18 @@ function removeDevicesFromGroup() {
 }
 
 function removeDeviceFromGroup(device: any) {
-  if (selectedGroup.value) {
-    const group = groups.value.find(g => g.id === selectedGroup.value.id)
-    if (group) {
-      const deviceIndex = group.devices.findIndex(d => d.id === device.id)
-      if (deviceIndex > -1) {
-        group.devices.splice(deviceIndex, 1)
-        group.deviceCount--
-        if (device.status === 'online') {
-          group.onlineCount--
-        } else {
-          group.offlineCount--
-        }
+  if (!selectedGroup.value) return
+  const currentGroupId = selectedGroup.value.id
+  const group = groups.value.find(g => g.id === currentGroupId)
+  if (group) {
+    const deviceIndex = group.devices.findIndex(d => d.id === device.id)
+    if (deviceIndex > -1) {
+      group.devices.splice(deviceIndex, 1)
+      group.deviceCount--
+      if (device.status === 'online') {
+        group.onlineCount--
+      } else {
+        group.offlineCount--
       }
     }
   }

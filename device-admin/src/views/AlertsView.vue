@@ -272,11 +272,24 @@ import { ref, computed, onMounted } from 'vue'
 const selectedLevel = ref('')
 const selectedDevice = ref('')
 const selectedStatus = ref('')
-const selectedTimeRange = ref('')
+type TimeKey = '' | '1h' | '24h' | '7d' | '30d'
+const selectedTimeRange = ref<TimeKey>('')
 const searchQuery = ref('')
 const currentPage = ref(1)
 const pageSize = ref(20)
-const selectedAlert = ref(null)
+type AlertItem = {
+  id: number
+  title: string
+  description: string
+  level: 'critical' | 'warning' | 'info'
+  status: 'unread' | 'read' | 'acknowledged' | 'resolved'
+  deviceName: string
+  timestamp: Date
+  acknowledgedBy: string | null
+  resolvedBy: string | null
+  selected: boolean
+}
+const selectedAlert = ref<AlertItem | null>(null)
 
 // 设备列表
 const devices = ref([
@@ -375,13 +388,14 @@ const filteredAlerts = computed(() => {
 
   if (selectedTimeRange.value) {
     const now = new Date()
-    const timeMap = {
+    const timeMap: Record<Exclude<TimeKey, ''>, number> = {
       '1h': 60 * 60 * 1000,
       '24h': 24 * 60 * 60 * 1000,
       '7d': 7 * 24 * 60 * 60 * 1000,
       '30d': 30 * 24 * 60 * 60 * 1000
     }
-    const timeDiff = timeMap[selectedTimeRange.value]
+    const key = selectedTimeRange.value as Exclude<TimeKey, ''>
+    const timeDiff = timeMap[key]
     if (timeDiff) {
       filtered = filtered.filter(alert => 
         now.getTime() - alert.timestamp.getTime() <= timeDiff

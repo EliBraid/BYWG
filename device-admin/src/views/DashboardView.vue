@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { listDevices } from '@/api/devices'
-type Device = { status: string }
+import { getGatewayLatestSnapshot } from '@/api/gateways'
+type Device = { id: number, status: number, name: string, ipAddress: string }
 
 const onlineCount = ref(0)
 const offlineCount = ref(0)
@@ -11,6 +12,7 @@ const cpuUsage = ref(45)
 const memoryUsage = ref(68)
 const networkTraffic = ref(1250)
 const lastUpdate = ref(new Date())
+const deviceSnapshots = ref<Record<number, Record<string, any>>>({})
 // 边缘网关集群数据
 const edgeGateways = ref([
   {
@@ -79,9 +81,52 @@ async function refreshSummary() {
   try {
     const list = await listDevices() as Device[]
     totalCount.value = list.length
-    onlineCount.value = list.filter(d => d.status === 'online').length
-    offlineCount.value = totalCount.value - onlineCount.value
+    
+    // 获取实时快照数据来判断设备状态
+    let online = 0
+    let offline = 0
+    
+    for (const device of list) {
+      try {
+        const snapshot = await getGatewayLatestSnapshot()
+        
+        // 检查快照数据是否有效
+        if (snapshot && Object.keys(snapshot).length > 0) {
+          const hasValidData = Object.values(snapshot).some(value => 
+            value !== null && value !== undefined && value !== '' && value !== '无数据'
+          )
+          if (hasValidData) {
+            online++
+            deviceSnapshots.value[device.id] = snapshot
+          } else {
+            offline++
+            deviceSnapshots.value[device.id] = {}
+          }
+        } else {
+          // 如果没有快照数据，使用数据库状态
+          if (device.status === 1) {
+            online++
+          } else {
+            offline++
+          }
+          deviceSnapshots.value[device.id] = {}
+        }
+      } catch (error) {
+        // 获取快照失败，使用数据库状态
+        if (device.status === 1) {
+          online++
+        } else {
+          offline++
+        }
+        deviceSnapshots.value[device.id] = {}
+      }
+    }
+    
+    onlineCount.value = online
+    offlineCount.value = offline
     lastUpdate.value = new Date()
+    
+    console.log(`Dashboard统计: 总数=${totalCount.value}, 在线=${onlineCount.value}, 离线=${offlineCount.value}`)
     
     // 模拟系统状态更新
     cpuUsage.value = Math.floor(Math.random() * 30) + 30

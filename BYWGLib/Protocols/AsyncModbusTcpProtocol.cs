@@ -195,7 +195,16 @@ namespace BYWGLib.Protocols
                 // 触发数据接收事件
                 if (dataItems.Count > 0)
                 {
+                    Log.Debug("触发DataReceived事件: 协议={0}, 数据项数量={1}", Name, dataItems.Count);
+                    foreach (var item in dataItems)
+                    {
+                        Log.Debug("数据项: Id={0}, Name={1}, Value={2}", item.Id, item.Name, item.Value);
+                    }
                     DataReceived?.Invoke(this, new DataReceivedEventArgs(Name, dataItems));
+                }
+                else
+                {
+                    Log.Debug("没有数据项，跳过DataReceived事件触发");
                 }
             }
             catch (Exception ex)
@@ -426,7 +435,8 @@ namespace BYWGLib.Protocols
             }
             
             // 计算每个数据点的起始位置
-            int currentDataIndex = 0;
+            // 根据数据点的实际地址计算偏移量，而不是简单的递增
+            int startAddress = request.StartAddress;
             
             foreach (var dataPoint in request.DataPoints)
             {
@@ -434,11 +444,15 @@ namespace BYWGLib.Protocols
                 {
                     int dataTypeLength = GetLengthForType(dataPoint.DataType);
                     
+                    // 计算数据点在响应中的偏移量
+                    int dataPointAddress = int.Parse(dataPoint.Address);
+                    int offsetInResponse = (dataPointAddress - startAddress) * 2; // 每个寄存器2字节
+                    
                     // 检查是否有足够的数据
-                    if (currentDataIndex + dataTypeLength > dataLength)
+                    if (offsetInResponse + dataTypeLength > dataLength)
                     {
                         Log.Error("数据点 '{0}' 数据不足: 需要{1}字节，剩余{2}字节", 
-                            dataPoint.Name, dataTypeLength, dataLength - currentDataIndex);
+                            dataPoint.Name, dataTypeLength, dataLength - offsetInResponse);
                         
                         var errorItem = new IndustrialDataItem
                         {
@@ -454,12 +468,12 @@ namespace BYWGLib.Protocols
                     }
                     
                     // 提取数据并解析
-                    var dataSlice = responseSpan.Slice(dataStartIndex + currentDataIndex, dataTypeLength);
+                    var dataSlice = responseSpan.Slice(dataStartIndex + offsetInResponse, dataTypeLength);
                     
                     // 添加详细的调试信息
                     Log.Debug("数据点 '{0}': 起始位置={1}, 数据类型长度={2}, 数据切片=[{3}]", 
                         dataPoint.Name, 
-                        dataStartIndex + currentDataIndex, 
+                        dataStartIndex + offsetInResponse, 
                         dataTypeLength,
                         string.Join(" ", dataSlice.ToArray().Select(b => b.ToString("X2"))));
                     
@@ -475,8 +489,10 @@ namespace BYWGLib.Protocols
                         Quality = Quality.Good
                     };
                     
+                    Log.Debug("创建IndustrialDataItem: Id={0}, Name={1}, Value={2}, DataType={3}", 
+                        dataItem.Id, dataItem.Name, dataItem.Value, dataItem.DataType);
+                    
                     dataItems.Add(dataItem);
-                    currentDataIndex += dataTypeLength;
                 }
                 catch (Exception ex)
                 {
@@ -534,12 +550,12 @@ namespace BYWGLib.Protocols
             if (typeLower == "bit" || typeLower == "bool")
                 return (data[0] & 0x01) == 0x01;
             
-            if (typeLower == "word" || typeLower == "uint16")
+            if (typeLower == "word" || typeLower == "uint16" || typeLower == "unsign")
             {
                 if (data.Length < 2)
                     return null;
                 ushort result = (ushort)((data[0] << 8) | data[1]);
-                Log.Debug("解析uint16: {0} -> {1}", string.Join(" ", data.ToArray().Select(b => b.ToString("X2"))), result);
+                Log.Debug("解析uint16/unsign: {0} -> {1}", string.Join(" ", data.ToArray().Select(b => b.ToString("X2"))), result);
                 return result;
             }
 
@@ -621,7 +637,7 @@ namespace BYWGLib.Protocols
             
             if (typeLower == "bit" || typeLower == "bool")
                 return 1;
-            if (typeLower == "word" || typeLower == "uint16" || typeLower == "int16" || typeLower == "signed")
+            if (typeLower == "word" || typeLower == "uint16" || typeLower == "int16" || typeLower == "signed" || typeLower == "unsign")
                 return 2;
             if (typeLower == "dword" || typeLower == "uint32" || typeLower == "int32")
                 return 4;

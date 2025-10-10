@@ -234,9 +234,10 @@ async function testRoute() {
   try {
     await router.push('/dashboard')
     console.log('路由跳转成功')
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('路由跳转失败:', error)
-    alert('路由跳转失败: ' + error.message)
+    const message = error instanceof Error ? error.message : String(error)
+    alert('路由跳转失败: ' + message)
   }
 }
 

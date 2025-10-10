@@ -186,13 +186,13 @@ const debug = reactive<{ topic: string; qos: 0|1|2; pubTopic: string; payload: s
 async function runDebug(){ loading.value=true; try { await new Promise(r=>setTimeout(r,400)); debug.result = `订阅 ${debug.topic} (QoS ${debug.qos}); 发布 ${debug.pubTopic} => ${debug.payload}`; logs.value.unshift(`[${new Date().toLocaleTimeString()}] 调试发布/订阅成功`) } finally { loading.value=false } }
 
 async function refreshLogs(){
-  try { const { data } = await getMqttLogs(); logs.value = data } catch { logs.value.unshift(`[${new Date().toLocaleTimeString()}] 刷新日志`) }
+  try { const data = await getMqttLogs(); logs.value = data } catch { logs.value.unshift(`[${new Date().toLocaleTimeString()}] 刷新日志`) }
 }
 function clearLogs(){ logs.value = [] }
 
 onMounted(async ()=>{
   try {
-    const { data } = await getMqttConfig()
+    const data = await getMqttConfig()
     Object.assign(form.value, data)
   } catch {
     const cache = localStorage.getItem('mqttConfig')

@@ -113,6 +113,18 @@ public class DeviceService : IDeviceService
                 return false;
             }
 
+            // 先删除关联的数据点
+            var dataPoints = await _context.DataPoints
+                .Where(dp => dp.DeviceId == id)
+                .ToListAsync();
+            
+            if (dataPoints.Any())
+            {
+                _context.DataPoints.RemoveRange(dataPoints);
+                _logger.LogInformation("删除设备 {DeviceName} 的 {Count} 个数据点", device.Name, dataPoints.Count);
+            }
+
+            // 再删除设备
             _context.Devices.Remove(device);
             await _context.SaveChangesAsync();
 
